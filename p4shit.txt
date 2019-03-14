@@ -1,21 +1,21 @@
 
 
 EXPR : ASSIGN_EXPR
-	 | CALC_EXPR
-	 | BOOL_EXPR
-	 | IVAL
-	 | FVAL
-	 | IDENT
-	 ;
+     | CALC_EXPR
+     | BOOL_EXPR
+     | IVAL
+     | FVAL
+     | IDENT
+     ;
 
 CALC_EXPR : EXPR OP EXPR ;
 
 ASSIGN_EXPR : TYPE IDENT ASSIGN EXPR ;
    
 BOOL_EXPR : EXPR BOOL_OP EXPR
-		  | TRUE
-		  | FALSE
-		  ;
+          | TRUE
+          | FALSE
+          ;
 
 OP : OP_PRES_ONE
    | OP_PRES_TWO
@@ -24,22 +24,22 @@ OP_PRES_ONE : MULT | DIV | MOD ;
 OP_PRES_TWO : PLUS | MINUS ;
    
 BOOL_OP : EQ
-		| GRT
-		| LESS
-		| GRT_EQ
-		| LESS_EQ
-		| OR
-		| AND
-		;
-		
+        | GRT
+        | LESS
+        | GRT_EQ
+        | LESS_EQ
+        | OR
+        | AND
+        ;
+        
 MOD_OP : INCR
-	   | DECR
-	   ;
+       | DECR
+       ;
 
 TYPE : INT
-	 | STRING
-	 | DOUBLE
-	 ;
+     | STRING
+     | DOUBLE
+     ;
 
 IVAL : DIG ;
 FVAL : DIG.DECDIG ;
