@@ -22,6 +22,8 @@ expr                : assign_expr
 
 calc_expr           : calc_expr_one
                     | calc_expr_two
+                    | IDENT INCR
+                    | IDENT DECR
                     ;
 
 calc_expr_one       : val (op_pres_one val)* ;
