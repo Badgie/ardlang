@@ -11,6 +11,8 @@ calc_expr           : val op val ;
 
 assign_expr         : type IDENT ASSIGN val
                     | type IDENT ASSIGN expr
+                    | IDENT ASSIGN val
+                    | IDENT ASSIGN expr
                     ;
    
 bool_expr           : val bool_op val
@@ -40,6 +42,7 @@ mod_op              : INCR
 type                : INT
                     | STRING
                     | DOUBLE
+                    | BOOL
                     ;
 
 val                 : ival
@@ -91,9 +94,12 @@ NULL                : 'null' ;
 INT                 : 'int' ;
 STRING              : 'str' ;
 DOUBLE              : 'dbl' ;
+BOOL                : 'boolean'
+                    | 'bool'
+                    ;
 
 WHITESPACE          : ' ' -> skip ;
 
 IDENT               : [a-zA-Z]([a-zA-Z0-9]*)? ;
 DIG                 : [1-9][0-9]* | [0] ;
-DECDIG              : [0-9]* ;
+DECDIG              : [0-9]+ ;
