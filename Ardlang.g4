@@ -11,9 +11,6 @@ task                : TASK IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START expr*
 
 function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START expr* BLOCK_END ;
 
-param               : var PARAM_DELIM param
-                    | var
-                    ;
 
 expr                : assign_expr
                     | calc_expr
@@ -43,9 +40,15 @@ bool_expr           : var bool_op var
                     | FALSE
                     ;
 
+
+param               : var PARAM_DELIM param
+                    | var
+                    ;
+
 op                  : op_pres_one
                     | op_pres_two
                     ;
+
 op_pres_one         : MULT | DIV | MOD ;
 op_pres_two         : PLUS | MINUS ;
    
@@ -89,8 +92,10 @@ MULT                : '*' ;
 DIV                 : '/' ;
 MOD                 : '%' ;
 ASSIGN              : '=' ;
+
 INCR                : '++' ;
 DECR                : '--' ;
+
 EQ                  : '==' ;
 GRT                 : '>' ;
 LESS                : '<' ;
@@ -98,6 +103,7 @@ GRT_EQ              : '>=' ;
 LESS_EQ             : '<=' ;
 OR                  : 'or' ;
 AND                 : 'and' ;
+
 ARRAY_START         : '[' ;
 ARRAY_END           : ']' ;
 BLOCK_START         : '{' ;
