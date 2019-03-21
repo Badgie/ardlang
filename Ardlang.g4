@@ -15,6 +15,12 @@ function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START expr*
 expr                : assign_expr
                     | calc_expr
                     | bool_expr
+                    | if_expr
+                    ;
+
+if_expr             : IF PAREN_LEFT bool_expr PAREN_RIGHT BLOCK_START expr* BLOCK_END (if_expr)*
+                    | ELSE IF PAREN_LEFT bool_expr PAREN_RIGHT BLOCK_START expr* BLOCK_END
+                    | ELSE BLOCK_START expr* BLOCK_END
                     ;
 
 calc_expr           : calc_expr_one
@@ -36,8 +42,7 @@ assign_expr         : type IDENT ASSIGN var
                     ;
    
 bool_expr           : var bool_op var
-                    | TRUE
-                    | FALSE
+                    | (NOT)? bool
                     ;
 
 
@@ -75,6 +80,11 @@ var                 : val
                     | STRING
                     ;
 
+bool                : TRUE
+                    | FALSE
+                    | IDENT
+                    ;
+
 val                 : ival
                     | fval
                     | IDENT
@@ -103,6 +113,7 @@ GRT_EQ              : '>=' ;
 LESS_EQ             : '<=' ;
 OR                  : 'or' ;
 AND                 : 'and' ;
+NOT                 : '!' ;
 
 ARRAY_START         : '[' ;
 ARRAY_END           : ']' ;
