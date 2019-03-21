@@ -1,6 +1,19 @@
 grammar Ardlang ;
 
-prog                : expr+ EOF ;
+prog                : stmt+ EOF ;
+
+stmt                : task
+                    | function
+                    | expr
+                    ;
+
+task                : TASK IDENT PAREN_LEFT param* PAREN_RIGHT ASSIGN BLOCK_START expr* BLOCK_END ;
+
+function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START expr* BLOCK_END ;
+
+param               : val PARAM_DELIM param
+                    | val
+                    ;
 
 expr                : assign_expr
                     | calc_expr
@@ -83,6 +96,10 @@ ARRAY_START         : '[' ;
 ARRAY_END           : ']' ;
 BLOCK_START         : '{' ;
 BLOCK_END           : '}' ;
+PAREN_LEFT          : '(' ;
+PAREN_RIGHT         : ')' ;
+FUNC_DELIM          : ':' ;
+PARAM_DELIM         : ',' ;
 
 // keywords
 RETURN              : 'return' ;
@@ -91,7 +108,7 @@ IF                  : 'if' ;
 ELSE                : 'else' ;
 THEN                : 'then' ;
 FUNC                : 'function' ;
-TASK                : 'task' ;
+TASK                : 'task ' ;
 
 // literals
 TRUE                : 'true' ;
