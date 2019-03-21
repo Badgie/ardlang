@@ -7,7 +7,15 @@ expr                : assign_expr
                     | bool_expr
                     ;
 
-calc_expr           : val op val ;
+calc_expr           : calc_expr_one
+                    | calc_expr_two
+                    ;
+
+calc_expr_one       : val (op_pres_one val)* ;
+
+calc_expr_two       : val (op_pres_two calc_expr_one)*
+                    | val
+                    ;
 
 assign_expr         : type IDENT ASSIGN val
                     | type IDENT ASSIGN expr
@@ -83,6 +91,7 @@ IF                  : 'if' ;
 ELSE                : 'else' ;
 THEN                : 'then' ;
 FUNC                : 'function' ;
+TASK                : 'task' ;
 
 // literals
 TRUE                : 'true' ;
