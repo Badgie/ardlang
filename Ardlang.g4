@@ -1,20 +1,19 @@
-grammar Ardlang
+grammar Ardlang ;
 
 prog                : expr+ EOF ;
 
 expr                : assign_expr
                     | calc_expr
                     | bool_expr
-                    | ival
-                    | fval
-                    | IDENT
                     ;
 
-calc_expr           : expr op expr ;
+calc_expr           : val op val ;
 
-assign_expr         : type IDENT ASSIGN expr ;
+assign_expr         : type IDENT ASSIGN val
+                    | type IDENT ASSIGN expr
+                    ;
    
-bool_expr           : expr bool_op expr
+bool_expr           : val bool_op val
                     | TRUE
                     | FALSE
                     ;
@@ -41,6 +40,11 @@ mod_op              : INCR
 type                : INT
                     | STRING
                     | DOUBLE
+                    ;
+
+val                 : ival
+                    | fval
+                    | IDENT
                     ;
 
 ival                : DIG ;
