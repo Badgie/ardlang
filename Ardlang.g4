@@ -7,12 +7,12 @@ stmt                : task
                     | expr
                     ;
 
-task                : TASK IDENT PAREN_LEFT param* PAREN_RIGHT ASSIGN BLOCK_START expr* BLOCK_END ;
+task                : TASK IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START expr* BLOCK_END ;
 
 function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START expr* BLOCK_END ;
 
-param               : val PARAM_DELIM param
-                    | val
+param               : var PARAM_DELIM param
+                    | var
                     ;
 
 expr                : assign_expr
@@ -32,13 +32,13 @@ calc_expr_two       : val (op_pres_two calc_expr_one)*
                     | val
                     ;
 
-assign_expr         : type IDENT ASSIGN val
+assign_expr         : type IDENT ASSIGN var
                     | type IDENT ASSIGN expr
-                    | IDENT ASSIGN val
+                    | IDENT ASSIGN var
                     | IDENT ASSIGN expr
                     ;
    
-bool_expr           : val bool_op val
+bool_expr           : var bool_op var
                     | TRUE
                     | FALSE
                     ;
@@ -62,10 +62,14 @@ mod_op              : INCR
                     | DECR
                     ;
 
-type                : INT
+type                : TYPE_INT
+                    | TYPE_STRING
+                    | TYPE_DOUBLE
+                    | TYPE_BOOL
+                    ;
+
+var                 : val
                     | STRING
-                    | DOUBLE
-                    | BOOL
                     ;
 
 val                 : ival
@@ -100,7 +104,7 @@ BLOCK_START         : '{' ;
 BLOCK_END           : '}' ;
 PAREN_LEFT          : '(' ;
 PAREN_RIGHT         : ')' ;
-FUNC_DELIM          : ':' ;
+QUOTE               : '"' ;
 PARAM_DELIM         : ',' ;
 
 // keywords
@@ -119,16 +123,19 @@ VOID                : 'void' ;
 NULL                : 'null' ;
 
 // types
-INT                 : 'int' ;
-STRING              : 'str' ;
-DOUBLE              : 'dbl' ;
-BOOL                : 'boolean'
+TYPE_INT            : 'int' ;
+TYPE_STRING         : 'str' ;
+TYPE_DOUBLE         : 'dbl' ;
+TYPE_BOOL           : 'boolean'
                     | 'bool'
                     ;
 
 WHITESPACE          : ' ' -> skip ;
 NEWLINE             : '\n' -> skip ;
+CAR_RETURN          : '\r' -> skip ;
 
 IDENT               : [a-zA-Z]([a-zA-Z0-9]*)? ;
 DIG                 : [1-9][0-9]* | [0] ;
 DECDIG              : [0-9]+ ;
+fragment CHARS      : ~[.]* ;
+STRING              : QUOTE CHARS QUOTE ;
