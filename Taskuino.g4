@@ -1,4 +1,4 @@
-grammar Ardlang ;
+grammar Taskuino ;
 
 prog                : stmts+ EOF ;
 
