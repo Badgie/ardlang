@@ -1,24 +1,26 @@
 grammar Ardlang
 
-expr                : ASSIGN_EXPR
-                    | CALC_EXPR
-                    | BOOL_EXPR
-                    | IVAL
-                    | FVAL
+prog                : expr+ EOF ;
+
+expr                : assign_expr
+                    | calc_expr
+                    | bool_expr
+                    | ival
+                    | fval
                     | IDENT
                     ;
 
-calc_expr           : EXPR OP EXPR ;
+calc_expr           : expr op expr ;
 
-assign_expr         : TYPE IDENT ASSIGN EXPR ;
+assign_expr         : type IDENT ASSIGN expr ;
    
-bool_expr           : EXPR BOOL_OP EXPR
+bool_expr           : expr bool_op expr
                     | TRUE
                     | FALSE
                     ;
 
-op                  : OP_PRES_ONE
-                    | OP_PRES_TWO
+op                  : op_pres_one
+                    | op_pres_two
                     ;
 op_pres_one         : MULT | DIV | MOD ;
 op_pres_two         : PLUS | MINUS ;
