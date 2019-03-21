@@ -1,47 +1,47 @@
 grammar Ardlang ;
 
-prog                : stmt+ EOF ;
+prog                : stmts+ EOF ;
 
-stmt                : task
+stmts               : task
                     | function
-                    | expr
+                    | stmt
                     ;
 
-task                : TASK IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START expr* BLOCK_END ;
+task                : TASK IDENT PAREN_LEFT param PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
 
-function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START expr* BLOCK_END ;
+function            : FUNC IDENT PAREN_LEFT param PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
 
 
-expr                : assign_expr
-                    | calc_expr
-                    | bool_expr
-                    | if_expr
+stmt                : assign_stmt
+                    | calc_stmt
+                    | bool_stmt
+                    | if_stmt
                     ;
 
-if_expr             : IF PAREN_LEFT bool_expr PAREN_RIGHT BLOCK_START expr* BLOCK_END (if_expr)*
-                    | ELSE IF PAREN_LEFT bool_expr PAREN_RIGHT BLOCK_START expr* BLOCK_END
-                    | ELSE BLOCK_START expr* BLOCK_END
+if_stmt             : IF PAREN_LEFT bool_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END (if_stmt)*
+                    | ELSE IF PAREN_LEFT bool_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END
+                    | ELSE BLOCK_START stmt* BLOCK_END
                     ;
 
-calc_expr           : calc_expr_one
-                    | calc_expr_two
+calc_stmt           : calc_stmt_one
+                    | calc_stmt_two
                     | IDENT INCR
                     | IDENT DECR
                     ;
 
-calc_expr_one       : val (op_pres_one val)* ;
+calc_stmt_one       : val (op_pres_one val)* ;
 
-calc_expr_two       : val (op_pres_two calc_expr_one)*
+calc_stmt_two       : val (op_pres_two calc_stmt_one)*
                     | val
                     ;
 
-assign_expr         : type IDENT ASSIGN var
-                    | type IDENT ASSIGN expr
+assign_stmt         : type IDENT ASSIGN var
+                    | type IDENT ASSIGN stmt
                     | IDENT ASSIGN var
-                    | IDENT ASSIGN expr
+                    | IDENT ASSIGN stmt
                     ;
    
-bool_expr           : var bool_op var
+bool_stmt           : var bool_op var
                     | (NOT)? bool
                     ;
 
