@@ -78,6 +78,7 @@ type                : TYPE_INT
 
 var                 : val
                     | STRING
+                    | bool
                     ;
 
 bool                : TRUE
