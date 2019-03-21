@@ -1,4 +1,4 @@
-
+grammar Ardlang
 
 expr                : ASSIGN_EXPR
                     | CALC_EXPR
@@ -42,7 +42,9 @@ type                : INT
                     ;
 
 ival                : DIG ;
-fval                : DIG.DECDIG ;
+fval                : DIG.DECDIG
+                    | .DECDIG
+                    ;
 
 // lexer
 PLUS                : '+' ;
@@ -83,6 +85,8 @@ NULL                : 'null' ;
 INT                 : 'int' ;
 STRING              : 'str' ;
 DOUBLE              : 'dbl' ;
+
+WHITESPACE          : ' ' -> skip ;
 
 IDENT               : [a-zA-Z]([a-zA-Z0-9]*)? ;
 DIG                 : [1-9][0-9]* | [0] ;
