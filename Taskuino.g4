@@ -132,7 +132,7 @@ IF                  : 'if' ;
 ELSE                : 'else' ;
 THEN                : 'then' ;
 FUNC                : 'function' ;
-TASK                : 'task ' ;
+TASK                : 'task' ;
 
 // literals
 TRUE                : 'true' ;
@@ -144,9 +144,7 @@ NULL                : 'null' ;
 TYPE_INT            : 'int' ;
 TYPE_STRING         : 'str' ;
 TYPE_DOUBLE         : 'dbl' ;
-TYPE_BOOL           : 'boolean'
-                    | 'bool'
-                    ;
+TYPE_BOOL           : 'bool' ;
 
 WHITESPACE          : ' ' -> skip ;
 NEWLINE             : '\n' -> skip ;
