@@ -16,12 +16,15 @@ stmt                : assign_stmt
                     | calc_stmt
                     | bool_stmt
                     | if_stmt
+                    | for_stmt
                     ;
 
 if_stmt             : IF PAREN_LEFT bool_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END (if_stmt)*
                     | ELSE IF PAREN_LEFT bool_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END
                     | ELSE BLOCK_START stmt* BLOCK_END
                     ;
+
+for_stmt            : FOR PAREN_LEFT var ';' bool_stmt ';' calc_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
 
 calc_stmt           : calc_stmt_one
                     | calc_stmt_two
