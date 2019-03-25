@@ -1,15 +1,15 @@
 grammar Taskuino ;
 
-prog                : stmts+ EOF ;
+prog                : stmts* EOF ;
 
 stmts               : task
                     | function
                     | stmt
                     ;
 
-task                : TASK IDENT PAREN_LEFT param PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
+task                : TASK IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
 
-function            : FUNC IDENT PAREN_LEFT param PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
+function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
 
 
 stmt                : assign_stmt
@@ -18,19 +18,23 @@ stmt                : assign_stmt
                     | if_stmt
                     | for_stmt
                     | dcl_stmt
+                    | method_stmt
                     ;
 
-if_stmt             : IF PAREN_LEFT bool_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END (if_stmt)*
-                    | ELSE IF PAREN_LEFT bool_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END
+if_stmt             : IF PAREN_LEFT if_cond PAREN_RIGHT BLOCK_START stmt* BLOCK_END (if_stmt)*
+                    | ELSE IF PAREN_LEFT if_cond PAREN_RIGHT BLOCK_START stmt* BLOCK_END
                     | ELSE BLOCK_START stmt* BLOCK_END
                     ;
 
-for_stmt            : FOR PAREN_LEFT var ';' bool_stmt ';' calc_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
+if_cond             : bool_stmt
+                    | method_stmt
+                    ;
+
+for_stmt            : FOR PAREN_LEFT var SEMICOLON bool_stmt SEMICOLON calc_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
 
 calc_stmt           : calc_stmt_one
                     | calc_stmt_two
-                    | IDENT INCR
-                    | IDENT DECR
+                    | IDENT mod_op
                     ;
 
 calc_stmt_one       : val (op_pres_one val)* ;
@@ -47,20 +51,18 @@ assign_stmt         : type IDENT ASSIGN var
 
 dcl_stmt            : type IDENT
                     | COMP_DCL IDENT
-                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param BLOCK_END)?
+                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param* BLOCK_END)?
                     ;
    
 bool_stmt           : var bool_op var
                     | (NOT)? bool
                     ;
 
+method_stmt         : IDENT DOT_OP IDENT PAREN_LEFT param* PAREN_RIGHT ;
+
 
 param               : var PARAM_DELIM param
                     | var
-                    ;
-
-op                  : op_pres_one
-                    | op_pres_two
                     ;
 
 op_pres_one         : MULT | DIV | MOD ;
@@ -117,7 +119,7 @@ ASSIGN              : '=' ;
 INCR                : '++' ;
 DECR                : '--' ;
 
-EQ                  : '==' ;
+EQ                  : 'is' ;
 GRT                 : '>' ;
 LESS                : '<' ;
 GRT_EQ              : '>=' ;
@@ -134,6 +136,8 @@ PAREN_LEFT          : '(' ;
 PAREN_RIGHT         : ')' ;
 QUOTE               : '"' ;
 PARAM_DELIM         : ',' ;
+SEMICOLON           : ';' ;
+DOT_OP              : '.' ;
 
 // keywords
 RETURN              : 'return' ;

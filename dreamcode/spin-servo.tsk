@@ -1,0 +1,13 @@
+Servo srv
+Button btn
+
+btn.mode(INPUT)
+srv.mode(OUTPUT)
+
+task spinServo(1000) {
+    if (btn.active()) {
+        srv.actuate(100, 1)
+    } else {
+        srv.stop()
+    }
+}
