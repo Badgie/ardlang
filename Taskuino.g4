@@ -17,6 +17,7 @@ stmt                : assign_stmt
                     | bool_stmt
                     | if_stmt
                     | for_stmt
+                    | dcl_stmt
                     ;
 
 if_stmt             : IF PAREN_LEFT bool_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END (if_stmt)*
@@ -42,6 +43,11 @@ assign_stmt         : type IDENT ASSIGN var
                     | type IDENT ASSIGN stmt
                     | IDENT ASSIGN var
                     | IDENT ASSIGN stmt
+                    ;
+
+dcl_stmt            : type IDENT
+                    | COMP_DCL IDENT
+                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param BLOCK_END)?
                     ;
    
 bool_stmt           : var bool_op var
@@ -77,6 +83,7 @@ type                : TYPE_INT
                     | TYPE_STRING
                     | TYPE_DOUBLE
                     | TYPE_BOOL
+                    | COMP_DCL
                     ;
 
 var                 : val
@@ -134,7 +141,7 @@ FOR                 : 'for' ;
 IF                  : 'if' ;
 ELSE                : 'else' ;
 THEN                : 'then' ;
-FUNC                : 'function' ;
+FUNC                : 'func' ;
 TASK                : 'task' ;
 
 // literals
@@ -153,6 +160,7 @@ WHITESPACE          : ' ' -> skip ;
 NEWLINE             : '\n' -> skip ;
 CAR_RETURN          : '\r' -> skip ;
 
+COMP_DCL            : [A-Z]([a-z]*) ;
 IDENT               : [a-zA-Z]([a-zA-Z0-9]*)? ;
 DIG                 : [1-9][0-9]* | [0] ;
 DECDIG              : [0-9]+ ;
