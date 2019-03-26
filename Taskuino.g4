@@ -54,8 +54,10 @@ dcl_stmt            : type IDENT
                     | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param* BLOCK_END)?
                     ;
    
-bool_stmt           : var bool_op var
+bool_stmt           : bool_stmt bool_op bool_stmt
+                    | PAREN_LEFT? var bool_op var PAREN_RIGHT?
                     | (NOT)? bool
+                    | var
                     ;
 
 method_stmt         : IDENT DOT_OP IDENT PAREN_LEFT param* PAREN_RIGHT ;
