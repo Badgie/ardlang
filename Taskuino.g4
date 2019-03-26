@@ -46,7 +46,7 @@ calc_stmt_two       : val (op_pres_two calc_stmt_one)*
 assign_stmt         : type IDENT ASSIGN var
                     | type IDENT ASSIGN stmt
                     | IDENT ASSIGN var
-                    | IDENT ASSIGN stmt
+                    | IDENT ASSIGN calc_stmt
                     ;
 
 dcl_stmt            : type IDENT
@@ -94,8 +94,6 @@ type                : TYPE_INT
 var                 : val
                     | STRING
                     | bool
-                    | IDENT ARRAY_START var ARRAY_END
-                    | IDENT
                     ;
 
 bool                : TRUE
@@ -105,6 +103,7 @@ bool                : TRUE
 
 val                 : ival
                     | fval
+                    | IDENT ARRAY_START var ARRAY_END
                     | IDENT
                     ;
 
