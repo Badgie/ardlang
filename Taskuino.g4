@@ -30,11 +30,11 @@ if_cond             : bool_stmt
                     | method_stmt
                     ;
 
-for_stmt            : FOR PAREN_LEFT var SEMICOLON bool_stmt SEMICOLON calc_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
+for_stmt            : FOR PAREN_LEFT (var | assign_stmt) SEMICOLON bool_stmt SEMICOLON calc_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
 
 calc_stmt           : calc_stmt_one
                     | calc_stmt_two
-                    | IDENT mod_op
+                    | var mod_op
                     ;
 
 calc_stmt_one       : val (op_pres_one val)* ;
@@ -58,6 +58,7 @@ bool_stmt           : bool_stmt bool_op bool_stmt
                     | PAREN_LEFT? var bool_op var PAREN_RIGHT?
                     | (NOT)? bool
                     | var
+                    | method_stmt
                     ;
 
 method_stmt         : IDENT DOT_OP IDENT PAREN_LEFT param* PAREN_RIGHT ;
@@ -93,6 +94,8 @@ type                : TYPE_INT
 var                 : val
                     | STRING
                     | bool
+                    | IDENT ARRAY_START var ARRAY_END
+                    | IDENT
                     ;
 
 bool                : TRUE
