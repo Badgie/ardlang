@@ -6,7 +6,7 @@ Button btnTwo
 int actual = 0
 int expected = 10
 
-task ledTask() {
+task ledTask(1000) {
     if (actual is expected) {
         greenLed.emit()
     } else if (actual > expected) {
@@ -16,7 +16,7 @@ task ledTask() {
     }
 }
 
-task incrActual() {
+task incrActual(100) {
     if (btnOne.active() or btnTwo.active()) {
         actual++
     } else if (btnOne.active() and btnTwo.active()) {

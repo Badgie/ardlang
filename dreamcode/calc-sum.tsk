@@ -3,7 +3,7 @@ int sum = 0
 Button btn
 LCD lcd
 
-task incrTask() {
+task incrTask(100) {
     if (btn.active()) {
         for (int i = 0; i < array.length(); i++) {
             array[i]++
@@ -11,7 +11,7 @@ task incrTask() {
     }
 }
 
-task displaySum() {
+task displaySum(1000) {
     for (int j = 0; j < array.length(); j++) {
         sum = sum + array[j]
     }
