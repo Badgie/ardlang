@@ -12,9 +12,12 @@ task incrTask(100) {
 }
 
 task displaySum(1000) {
+    calcSum()
+    lcd.write(sum)
+}
+
+func calcSum() {
     for (int j = 0; j < array.length(); j++) {
         sum = sum + array[j]
     }
-
-    lcd.write(sum)
 }
