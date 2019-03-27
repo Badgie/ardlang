@@ -1,0 +1,25 @@
+LED greenLed
+LED redLed
+LED blueLed
+Button btnOne
+Button btnTwo
+int actual = 0
+int expected = 10
+
+task ledTask() {
+    if (actual is expected) {
+        greenLed.emit()
+    } else if (actual > expected) {
+        blueLed.emit()
+    } else {
+        redLed.emit()
+    }
+}
+
+task incrActual() {
+    if (btnOne.active() or btnTwo.active()) {
+        actual++
+    } else if (btnOne.active() and btnTwo.active()) {
+        actual += 2
+    }
+}
