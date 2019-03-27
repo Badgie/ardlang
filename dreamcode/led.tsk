@@ -1,8 +1,8 @@
-LED greenLed
-LED redLed
-LED blueLed
-Button btnOne
-Button btnTwo
+LED greenLed = {pin = 7, mode = OUTPUT}
+LED redLed = {pin = 8, mode = OUTPUT}
+LED blueLed = {pin = 9, mode = OUTPUT}
+Button btnOne = {pin = 5, mode = INPUT}
+Button btnTwo = {pin = 6, mode = INPUT}
 int actual = 0
 int expected = 10
 

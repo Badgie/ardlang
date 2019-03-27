@@ -1,8 +1,5 @@
-Servo srv
-Button btn
-
-btn.mode(INPUT)
-srv.mode(OUTPUT)
+Servo srv = {pin = 10, mode = OUTPUT}
+Button btn = {pin = 5, mode = INPUT}
 
 task spinServo(100) {
     if (btn.active()) {
