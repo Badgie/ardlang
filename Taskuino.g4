@@ -13,6 +13,7 @@ function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START stmt*
 
 
 stmt                : assign_stmt
+                    | assign_comp_stmt
                     | calc_stmt
                     | bool_stmt
                     | if_stmt
@@ -44,10 +45,22 @@ calc_stmt_two       : val (op_pres_two calc_stmt_one)*
                     | val
                     ;
 
-assign_stmt         : type IDENT ASSIGN var
+assign_stmt         : type_assign
+                    | typeless_assign
+                    ;
+
+assign_comp_stmt    : COMP_DCL IDENT ASSIGN BLOCK_START comp_param* BLOCK_END ;
+
+type_assign         : type IDENT ASSIGN var
                     | type IDENT ASSIGN stmt
-                    | IDENT ASSIGN var
+                    ;
+
+typeless_assign     : IDENT ASSIGN var
                     | IDENT ASSIGN calc_stmt
+                    ;
+
+comp_param          : typeless_assign PARAM_DELIM comp_param
+                    | typeless_assign
                     ;
 
 dcl_stmt            : type IDENT
@@ -95,6 +108,7 @@ type                : TYPE_INT
 var                 : val
                     | STRING
                     | bool
+                    | lconst
                     ;
 
 bool                : TRUE
@@ -111,6 +125,12 @@ val                 : ival
 ival                : DIG ;
 fval                : DIG.DECDIG
                     | .DECDIG
+                    ;
+
+lconst              : OUTPUT
+                    | INPUT
+                    | HIGH
+                    | LOW
                     ;
 
 // lexer
@@ -159,6 +179,10 @@ TRUE                : 'true' ;
 FALSE               : 'false' ;
 VOID                : 'void' ;
 NULL                : 'null' ;
+OUTPUT              : 'OUTPUT' ;
+INPUT               : 'INPUT' ;
+HIGH                : 'HIGH' ;
+LOW                 : 'LOW' ;
 
 // types
 TYPE_INT            : 'int' ;
@@ -170,7 +194,7 @@ WHITESPACE          : ' ' -> skip ;
 NEWLINE             : '\n' -> skip ;
 CAR_RETURN          : '\r' -> skip ;
 
-COMP_DCL            : [A-Z]([a-z]*) ;
+COMP_DCL            : [A-Z]([a-zA-Z]*) ;
 IDENT               : [a-zA-Z]([a-zA-Z0-9]*)? ;
 DIG                 : [1-9][0-9]* | [0] ;
 DECDIG              : [0-9]+ ;
