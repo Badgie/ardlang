@@ -35,6 +35,7 @@ for_stmt            : FOR PAREN_LEFT (var | assign_stmt) SEMICOLON bool_stmt SEM
 calc_stmt           : calc_stmt_one
                     | calc_stmt_two
                     | var mod_op
+                    | IDENT op_pres_two ASSIGN var
                     ;
 
 calc_stmt_one       : val (op_pres_one val)* ;
