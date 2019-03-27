@@ -130,6 +130,7 @@ LESS                : '<' ;
 GRT_EQ              : '>=' ;
 LESS_EQ             : '<=' ;
 OR                  : 'or' ;
+XOR                 : 'xor' ;
 AND                 : 'and' ;
 NOT                 : '!' ;
 
