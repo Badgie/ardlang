@@ -20,7 +20,10 @@ stmt                : assign_stmt
                     | for_stmt
                     | dcl_stmt
                     | method_stmt
+                    | func_stmt
                     ;
+
+func_stmt           : IDENT PAREN_LEFT param* PAREN_RIGHT ;
 
 if_stmt             : IF PAREN_LEFT if_cond PAREN_RIGHT BLOCK_START stmt* BLOCK_END (if_stmt)*
                     | ELSE IF PAREN_LEFT if_cond PAREN_RIGHT BLOCK_START stmt* BLOCK_END
