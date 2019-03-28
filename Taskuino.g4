@@ -173,7 +173,6 @@ RETURN              : 'return' ;
 FOR                 : 'for' ;
 IF                  : 'if' ;
 ELSE                : 'else' ;
-THEN                : 'then' ;
 FUNC                : 'func' ;
 TASK                : 'task' ;
 
