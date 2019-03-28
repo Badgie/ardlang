@@ -23,18 +23,11 @@ stmt                : assign_stmt
                     | func_stmt
                     ;
 
-func_stmt           : IDENT PAREN_LEFT param* PAREN_RIGHT ;
-
-if_stmt             : IF PAREN_LEFT if_cond PAREN_RIGHT BLOCK_START stmt* BLOCK_END (if_stmt)*
-                    | ELSE IF PAREN_LEFT if_cond PAREN_RIGHT BLOCK_START stmt* BLOCK_END
-                    | ELSE BLOCK_START stmt* BLOCK_END
+assign_stmt         : type_assign
+                    | typeless_assign
                     ;
 
-if_cond             : bool_stmt
-                    | method_stmt
-                    ;
-
-for_stmt            : FOR PAREN_LEFT (var | assign_stmt) SEMICOLON bool_stmt SEMICOLON calc_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
+assign_comp_stmt    : COMP_DCL IDENT ASSIGN BLOCK_START comp_param* BLOCK_END ;
 
 calc_stmt           : calc_stmt_one
                     | calc_stmt_two
@@ -42,17 +35,29 @@ calc_stmt           : calc_stmt_one
                     | IDENT op_pres_two ASSIGN var
                     ;
 
-calc_stmt_one       : val (op_pres_one val)* ;
-
-calc_stmt_two       : val (op_pres_two calc_stmt_one)*
-                    | val
+bool_stmt           : bool_stmt bool_op bool_stmt
+                    | PAREN_LEFT? var bool_op var PAREN_RIGHT?
+                    | (NOT)? bool
+                    | var
+                    | method_stmt
                     ;
 
-assign_stmt         : type_assign
-                    | typeless_assign
+if_stmt             : IF PAREN_LEFT if_cond PAREN_RIGHT BLOCK_START stmt* BLOCK_END (if_stmt)*
+                    | ELSE IF PAREN_LEFT if_cond PAREN_RIGHT BLOCK_START stmt* BLOCK_END
+                    | ELSE BLOCK_START stmt* BLOCK_END
                     ;
 
-assign_comp_stmt    : COMP_DCL IDENT ASSIGN BLOCK_START comp_param* BLOCK_END ;
+for_stmt            : FOR PAREN_LEFT (var | assign_stmt) SEMICOLON bool_stmt SEMICOLON calc_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
+
+dcl_stmt            : type IDENT
+                    | COMP_DCL IDENT
+                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param* BLOCK_END)?
+                    ;
+method_stmt         : IDENT DOT_OP IDENT PAREN_LEFT param* PAREN_RIGHT ;
+
+func_stmt           : IDENT PAREN_LEFT param* PAREN_RIGHT ;
+
+
 
 type_assign         : type IDENT ASSIGN var
                     | type IDENT ASSIGN stmt
@@ -62,24 +67,19 @@ typeless_assign     : IDENT ASSIGN var
                     | IDENT ASSIGN calc_stmt
                     ;
 
-comp_param          : typeless_assign PARAM_DELIM comp_param
-                    | typeless_assign
+calc_stmt_one       : val (op_pres_one val)* ;
+
+calc_stmt_two       : val (op_pres_two calc_stmt_one)*
+                    | val
                     ;
 
-dcl_stmt            : type IDENT
-                    | COMP_DCL IDENT
-                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param* BLOCK_END)?
-                    ;
-   
-bool_stmt           : bool_stmt bool_op bool_stmt
-                    | PAREN_LEFT? var bool_op var PAREN_RIGHT?
-                    | (NOT)? bool
-                    | var
+if_cond             : bool_stmt
                     | method_stmt
                     ;
 
-method_stmt         : IDENT DOT_OP IDENT PAREN_LEFT param* PAREN_RIGHT ;
-
+comp_param          : typeless_assign PARAM_DELIM comp_param
+                    | typeless_assign
+                    ;
 
 param               : var PARAM_DELIM param
                     | var
