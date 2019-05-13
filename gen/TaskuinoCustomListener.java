@@ -7,10 +7,10 @@ import java.util.HashMap;
 
 public class TaskuinoCustomListener extends TaskuinoBaseListener {
 	//Hashmap to store our fucking variables!
-	HashMap<String, Integer> variableMap = new HashMap();
+	HashMap<String, Integer> variableMap = new HashMap<>();
 
 	//List of current tasks
-	HashMap<String, Integer> taskMap = new HashMap();
+	HashMap<String, Integer> taskMap = new HashMap<>();
 
 	@Override public void enterStmts(TaskuinoParser.StmtsContext ctx) {
 		//Add scope rules, as wee need to have a bookmark of the global scope.
