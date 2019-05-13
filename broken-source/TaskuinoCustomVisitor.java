@@ -1,13 +1,10 @@
+package dk.aau.cs.sw411.ardlang;
 
-import org.antlr.runtime.CharStream;
+import types.Prog;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
-import types.Prog;
-import types.Stmt;
-import types.Stmts;
 
-import java.io.IOException;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
