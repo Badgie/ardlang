@@ -1,25 +1,26 @@
-LED greenLed = {pin = 7, mode = OUTPUT}
-LED redLed = {pin = 8, mode = OUTPUT}
-LED blueLed = {pin = 9, mode = OUTPUT}
-Button btnOne = {pin = 5, mode = INPUT}
-Button btnTwo = {pin = 6, mode = INPUT}
+int greenLed = 7
+int redLed = 8
+int blueLed = 9
+int btnOne = 5
+int btnTwo = 6
+
 int actual = 0
 int expected = 10
 
 task ledTask(1000) {
     if (actual is expected) {
-        greenLed.emit()
+        emitLED(greenLed)
     } else if (actual > expected) {
-        blueLed.emit()
+        emitLED(blueLed)
     } else {
-        redLed.emit()
+        emitLED(redLed)
     }
 }
 
 task incrActual(100) {
-    if (btnOne.active() or btnTwo.active()) {
+    if (isActive(btnOne) or isActive(btnTwo)) {
         actual++
-    } else if (btnOne.active() and btnTwo.active()) {
+    } else if (isActive(btnOne) and isActive(btnTwo)) {
         actual += 2
     }
 }

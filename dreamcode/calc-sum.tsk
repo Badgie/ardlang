@@ -1,11 +1,11 @@
 int[] array = {3,7,8,1,14}
 int sum = 0
-Button btn = {pin = 5, mode = INPUT}
-LCD lcd = {pin = 10, mode = OUTPUT}
+int btn = 5
+int lcd = 10
 
 task incrTask(100) {
-    if (btn.active()) {
-        for (int i = 0; i < array.length(); i++) {
+    if (isActive(btn)) {
+        for (int i = 0; i < lengthOf(array); i++) {
             array[i]++
         }
     }
@@ -13,11 +13,11 @@ task incrTask(100) {
 
 task displaySum(1000) {
     calcSum()
-    lcd.write(sum)
+    writeLCD(lcd, sum)
 }
 
 func calcSum() {
-    for (int j = 0; j < array.length(); j++) {
+    for (int j = 0; j < lengthOf(array); j++) {
         sum = sum + array[j]
     }
 }
