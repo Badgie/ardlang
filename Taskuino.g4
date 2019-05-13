@@ -87,7 +87,7 @@ param               : var PARAM_DELIM param
 
 op_pres_one         : MULT | DIV | MOD ;
 op_pres_two         : PLUS | MINUS ;
-   
+
 bool_op             : EQ
                     | GRT
                     | LESS
@@ -96,7 +96,7 @@ bool_op             : EQ
                     | OR
                     | AND
                     ;
-        
+
 mod_op              : INCR
                     | DECR
                     ;
