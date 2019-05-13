@@ -5,84 +5,67 @@ prog                : stmts* EOF ;
 stmts               : task
                     | function
                     | stmt
+                    | expr
+                    | dcl
                     ;
 
-task                : TASK IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
+task                : TASK IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END ;
 
-function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
+function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END ;
 
 
-stmt                : assign_stmt
-                    | assign_comp_stmt
-                    | calc_stmt
-                    | bool_stmt
-                    | if_stmt
+stmt                : if_stmt
                     | for_stmt
-                    | dcl_stmt
-                    | method_stmt
-                    | func_stmt
+                    | func_call
                     ;
 
-assign_stmt         : type_assign
-                    | typeless_assign
+expr                : assign
+                    | calc_expr
+                    | bool_expr
                     ;
 
-assign_comp_stmt    : COMP_DCL IDENT ASSIGN BLOCK_START comp_param* BLOCK_END ;
-
-calc_stmt           : calc_stmt_one
-                    | calc_stmt_two
-                    | var mod_op
-                    | IDENT op_pres_two ASSIGN var
+dcl                 : type IDENT
+                    | type IDENT ASSIGN val
+                    | type IDENT ASSIGN calc_expr
+                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param* BLOCK_END)?
                     ;
 
-bool_stmt           : bool_stmt bool_op bool_stmt
-                    | PAREN_LEFT? var bool_op var PAREN_RIGHT?
+assign              : IDENT ASSIGN val
+                    | IDENT ASSIGN calc_expr
+                    ;
+
+calc_expr           : calc_expr_one
+                    | calc_expr_two
+                    | number mod_op
+                    | IDENT op_pres_two ASSIGN val
+                    ;
+
+bool_expr           : bool_expr bool_op bool_expr
+                    | PAREN_LEFT? val bool_op val PAREN_RIGHT?
                     | (NOT)? bool
-                    | var
-                    | method_stmt
                     ;
 
-if_stmt             : IF PAREN_LEFT if_cond PAREN_RIGHT BLOCK_START stmt* BLOCK_END (if_stmt)*
-                    | ELSE IF PAREN_LEFT if_cond PAREN_RIGHT BLOCK_START stmt* BLOCK_END
+if_stmt             : IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END (if_stmt)*
+                    | ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END
                     | ELSE BLOCK_START stmt* BLOCK_END
                     ;
 
-for_stmt            : FOR PAREN_LEFT (var | assign_stmt) SEMICOLON bool_stmt SEMICOLON calc_stmt PAREN_RIGHT BLOCK_START stmt* BLOCK_END ;
+for_stmt            : FOR PAREN_LEFT (number | dcl) SEMICOLON bool_condition SEMICOLON calc_expr PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END ;
 
-dcl_stmt            : type IDENT
-                    | COMP_DCL IDENT
-                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param* BLOCK_END)?
-                    ;
-method_stmt         : IDENT DOT_OP IDENT PAREN_LEFT param* PAREN_RIGHT ;
+func_call           : IDENT PAREN_LEFT param* PAREN_RIGHT ;
 
-func_stmt           : IDENT PAREN_LEFT param* PAREN_RIGHT ;
+calc_expr_one       : number (op_pres_one number)* ;
 
-
-
-type_assign         : type IDENT ASSIGN var
-                    | type IDENT ASSIGN stmt
+calc_expr_two       : number (op_pres_two calc_expr_one)*
+                    | number
                     ;
 
-typeless_assign     : IDENT ASSIGN var
-                    | IDENT ASSIGN calc_stmt
+bool_condition      : bool_expr
+                    | func_call
                     ;
 
-calc_stmt_one       : val (op_pres_one val)* ;
-
-calc_stmt_two       : val (op_pres_two calc_stmt_one)*
+param               : val PARAM_DELIM param
                     | val
-                    ;
-
-if_cond             : bool_stmt
-                    | method_stmt
-                    ;
-
-comp_param          : typeless_assign PARAM_DELIM comp_param
-                    | typeless_assign
-                    ;
-
-param               : var PARAM_DELIM param
-                    | var
                     ;
 
 op_pres_one         : MULT | DIV | MOD ;
@@ -105,13 +88,13 @@ type                : TYPE_INT
                     | TYPE_STRING
                     | TYPE_DOUBLE
                     | TYPE_BOOL
-                    | COMP_DCL
                     ;
 
-var                 : val
+val                 : number
                     | STRING
                     | bool
                     | lconst
+                    | func_call
                     ;
 
 bool                : TRUE
@@ -119,10 +102,10 @@ bool                : TRUE
                     | IDENT
                     ;
 
-val                 : ival
+number              : ival
                     | fval
-                    | IDENT ARRAY_START var ARRAY_END
                     | IDENT
+                    | IDENT ARRAY_START number ARRAY_END
                     ;
 
 ival                : DIG ;
@@ -196,7 +179,6 @@ WHITESPACE          : ' ' -> skip ;
 NEWLINE             : '\n' -> skip ;
 CAR_RETURN          : '\r' -> skip ;
 
-COMP_DCL            : [A-Z]([a-zA-Z]*) ;
 IDENT               : [a-zA-Z]([a-zA-Z0-9]*)? ;
 DIG                 : [1-9][0-9]* | [0] ;
 DECDIG              : [0-9]+ ;
