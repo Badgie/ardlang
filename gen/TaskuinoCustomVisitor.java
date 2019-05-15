@@ -172,8 +172,59 @@ public class TaskuinoCustomVisitor {
     private static class BlockStmtsDclVisitor extends TaskuinoBaseVisitor<BlockStmtsDcl> {
         @Override
         public BlockStmtsDcl visitDcl(TaskuinoParser.DclContext ctx) {
-            //TODO: this - figure out how to handle the different cases
-            return new BlockStmtsDcl();
+            if (ctx.ASSIGN() == null) {
+                if (ctx.ARRAY_START() == null) {
+                    return new BlockStmtsDcl(
+                            ctx.type().getText(),
+                            ctx.IDENT().getText()
+                    );
+                } else {
+                    return new BlockStmtsDcl(
+                            ctx.type().getText(),
+                            ctx.IDENT().getText(),
+                            true,
+                            Integer.parseInt(ctx.ival().getText())
+                    );
+                }
+            } else if (ctx.ARRAY_START() != null) {
+                ParamVisitor pVisitor = new ParamVisitor();
+
+                List<Param> params = ctx.param()
+                        .stream()
+                        .map(param -> param.accept(pVisitor))
+                        .collect(toList());
+
+                return new BlockStmtsDcl(
+                        ctx.type().getText(),
+                        ctx.IDENT().getText(),
+                        params,
+                        Integer.parseInt(ctx.ival().getText())
+                );
+            } else {
+                if (ctx.val() != null) {
+                    ValVisitor vVisitor = new ValVisitor();
+                    return new BlockStmtsDcl(
+                            ctx.type().getText(),
+                            ctx.IDENT().getText(),
+                            vVisitor.visitVal(ctx.val())
+                    );
+                } else if (ctx.calc_expr() != null) {
+                    CalcExprVisitor cVisitor = new CalcExprVisitor();
+                    return new BlockStmtsDcl(
+                            ctx.type().getText(),
+                            ctx.IDENT().getText(),
+                            cVisitor.visitCalc_expr(ctx.calc_expr())
+                    );
+                } else if (ctx.func_call() != null) {
+                    FuncStmtVisitor fVisitor = new FuncStmtVisitor();
+                    return new BlockStmtsDcl(
+                            ctx.type().getText(),
+                            ctx.IDENT().getText(),
+                            fVisitor.visitFunc_call(ctx.func_call())
+                    );
+                }
+            }
+            return null;
         }
     }
 
