@@ -201,4 +201,20 @@ public class TaskuinoCustomVisitor {
             return super.visitCalc_expr(ctx);
         }
     }
+
+    private static class CalcExprOneVisitor extends TaskuinoBaseVisitor<CalcExpr> {
+        @Override
+        public CalcExpr visitCalc_expr_one(TaskuinoParser.Calc_expr_oneContext ctx) {
+            return super.visitCalc_expr_one(ctx);
+        }
+    }
+
+    private static class CalcExprTwoVisitor extends TaskuinoBaseVisitor<CalcExpr> {
+        @Override
+        public CalcExpr visitCalc_expr_two(TaskuinoParser.Calc_expr_twoContext ctx) {
+            return super.visitCalc_expr_two(ctx);
+        }
+    }
+
+    
 }
