@@ -277,7 +277,32 @@ public class TaskuinoCustomVisitor {
     private static class ForStmtVisitor extends TaskuinoBaseVisitor<ForStmt> {
         @Override
         public ForStmt visitFor_stmt(TaskuinoParser.For_stmtContext ctx) {
-            return super.visitFor_stmt(ctx);
+            BlockStmtsVisitor blockVisitor = new BlockStmtsVisitor();
+            BoolConditionVisitor boolVisitor = new BoolConditionVisitor();
+            CalcExprVisitor calcVisitor = new CalcExprVisitor();
+            BlockStmtsDclVisitor dclVisitor = new BlockStmtsDclVisitor();
+            ValNumberVisitor numVisitor = new ValNumberVisitor();
+
+            List<StmtsBlockStmts> stmts = ctx.block_stmts()
+                    .stream()
+                    .map(stmt -> stmt.accept(blockVisitor))
+                    .collect(toList());
+
+            if (ctx.dcl() != null) {
+                return new ForStmt(
+                        dclVisitor.visitDcl(ctx.dcl()),
+                        boolVisitor.visitBool_condition(ctx.bool_condition()),
+                        calcVisitor.visitCalc_expr(ctx.calc_expr()),
+                        stmts
+                );
+            } else {
+                return new ForStmt(
+                        numVisitor.visitNumber(ctx.number()),
+                        boolVisitor.visitBool_condition(ctx.bool_condition()),
+                        calcVisitor.visitCalc_expr(ctx.calc_expr()),
+                        stmts
+                );
+            }
         }
     }
 
