@@ -558,7 +558,13 @@ public class TaskuinoCustomVisitor {
     private static class ValBoolVisitor extends TaskuinoBaseVisitor<ValBool> {
         @Override
         public ValBool visitBool(TaskuinoParser.BoolContext ctx) {
-            return super.visitBool(ctx);
+            if (ctx.TRUE() != null) {
+                return new ValBool(true);
+            } else if (ctx.FALSE() != null) {
+                return new ValBool(false);
+            } else {
+                return new ValBool(ctx.IDENT().getText());
+            }
         }
     }
 
