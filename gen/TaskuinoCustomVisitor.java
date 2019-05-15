@@ -73,11 +73,6 @@ public class TaskuinoCustomVisitor {
             ParamVisitor pVisitor = new ParamVisitor();
             BlockStmtsVisitor bVisitor = new BlockStmtsVisitor();
 
-            List<Param> params = ctx.param()
-                    .stream()
-                    .map(param -> param.accept(pVisitor))
-                    .collect(toList());
-
             List<StmtsBlockStmts> blockStmts = ctx.block_stmts()
                     .stream()
                     .map(blockstmt -> blockstmt.accept(bVisitor))
@@ -85,7 +80,7 @@ public class TaskuinoCustomVisitor {
 
             return new StmtsFunc(
                     ctx.IDENT().getText(),
-                    params,
+                    pVisitor.visitParam(ctx.param()),
                     blockStmts
             );
         }
@@ -189,15 +184,10 @@ public class TaskuinoCustomVisitor {
             } else if (ctx.ARRAY_START() != null) {
                 ParamVisitor pVisitor = new ParamVisitor();
 
-                List<Param> params = ctx.param()
-                        .stream()
-                        .map(param -> param.accept(pVisitor))
-                        .collect(toList());
-
                 return new BlockStmtsDcl(
                         ctx.type().getText(),
                         ctx.IDENT().getText(),
-                        params,
+                        pVisitor.visitParam(ctx.param()),
                         Integer.parseInt(ctx.ival().getText())
                 );
             } else {
@@ -311,14 +301,9 @@ public class TaskuinoCustomVisitor {
         public FuncStmt visitFunc_call(TaskuinoParser.Func_callContext ctx) {
             ParamVisitor pVisitor = new ParamVisitor();
 
-            List<Param> params = ctx.param()
-                    .stream()
-                    .map(param -> param.accept(pVisitor))
-                    .collect(toList());
-
             return new FuncStmt(
                     ctx.IDENT().getText(),
-                    params
+                    pVisitor.visitParam(ctx.param())
             );
         }
     }
@@ -465,10 +450,18 @@ public class TaskuinoCustomVisitor {
         }
     }
 
-    private static class ParamVisitor extends TaskuinoBaseVisitor<Param> {
+    private static class ParamVisitor extends TaskuinoBaseVisitor<List<Param>> {
         @Override
-        public Param visitParam(TaskuinoParser.ParamContext ctx) {
-            return super.visitParam(ctx);
+        public List<Param> visitParam(TaskuinoParser.ParamContext ctx) {
+            List<Param> params = new ArrayList<>();
+            int delim = ctx.PARAM_DELIM().size();
+            params.add(new Param(ctx.val(0).getText()));
+
+            for (int i = 1; i < delim; i++) {
+                params.add(new Param(ctx.val(i + 1).getText()));
+            }
+
+            return params;
         }
     }
 
