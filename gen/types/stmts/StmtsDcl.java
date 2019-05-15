@@ -7,4 +7,12 @@ public class StmtsDcl extends Stmts {
     String identifier;
     boolean isArray;
     //value
+
+
+    @Override
+    public String toString() {
+        return "StmtsDcl{" +
+                "type='" + type + '\'' +
+                '}';
+    }
 }

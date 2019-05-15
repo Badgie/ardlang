@@ -14,4 +14,11 @@ public class StmtsTask extends Stmts {
         this.interval = interval;
         this.stmts = stmts;
     }
+
+    @Override
+    public String toString() {
+        return "StmtsTask{" +
+                "identifier='" + identifier + '\'' +
+                '}';
+    }
 }
