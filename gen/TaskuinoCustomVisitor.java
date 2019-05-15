@@ -468,14 +468,20 @@ public class TaskuinoCustomVisitor {
     private static class BoolConditionVisitor extends TaskuinoBaseVisitor<BoolCondition> {
         @Override
         public BoolCondition visitBool_condition(TaskuinoParser.Bool_conditionContext ctx) {
-            return super.visitBool_condition(ctx);
+            if (ctx.bool_expr() != null) {
+                BoolExprVisitor bVisitor = new BoolExprVisitor();
+                return new BoolCondition(bVisitor.visitBool_expr(ctx.bool_expr()));
+            } else {
+                FuncStmtVisitor fVisitor = new FuncStmtVisitor();
+                return new BoolCondition(fVisitor.visitFunc_call(ctx.func_call()));
+            }
         }
     }
 
     private static class OpPresOneVisitor extends TaskuinoBaseVisitor<Operator> {
         @Override
         public Operator visitOp_pres_one(TaskuinoParser.Op_pres_oneContext ctx) {
-            return super.visitOp_pres_one(ctx);
+            
         }
     }
 
