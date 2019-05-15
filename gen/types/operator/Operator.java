@@ -4,7 +4,7 @@ import types.AST;
 
 public abstract class Operator extends AST {
     //arithmetics
-    public class Add extends Operator {
+    public static class Add extends Operator {
         String op;
 
         public Add() {
@@ -12,7 +12,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Sub extends Operator {
+    public static class Sub extends Operator {
         String op;
 
         public Sub() {
@@ -20,7 +20,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Mult extends Operator {
+    public static class Mult extends Operator {
         String op;
 
         public Mult() {
@@ -28,7 +28,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Div extends Operator {
+    public static class Div extends Operator {
         String op;
 
         public Div() {
@@ -36,7 +36,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Mod extends Operator {
+    public static class Mod extends Operator {
         String op;
 
         public Mod() {
@@ -44,7 +44,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Incr extends Operator {
+    public static class Incr extends Operator {
         String op;
 
         public Incr() {
@@ -52,7 +52,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Decr extends Operator {
+    public static class Decr extends Operator {
         String op;
 
         public Decr() {
@@ -60,7 +60,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Assign extends Operator {
+    public static class Assign extends Operator {
         String op;
 
         public Assign() {
@@ -69,7 +69,7 @@ public abstract class Operator extends AST {
     }
 
     //boolean
-    public class Equal extends Operator {
+    public static class Equal extends Operator {
         String op;
 
         public Equal() {
@@ -77,7 +77,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Greater extends Operator {
+    public static class Greater extends Operator {
         String op;
 
         public Greater() {
@@ -85,7 +85,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Lesser extends Operator {
+    public static class Lesser extends Operator {
         String op;
 
         public Lesser() {
@@ -93,7 +93,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class GreaterEqual extends Operator {
+    public static class GreaterEqual extends Operator {
         String op;
 
         public GreaterEqual() {
@@ -101,7 +101,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class LesserEqual extends Operator {
+    public static class LesserEqual extends Operator {
         String op;
 
         public LesserEqual() {
@@ -109,7 +109,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Or extends Operator {
+    public static class Or extends Operator {
         String op;
 
         public Or() {
@@ -117,7 +117,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Xor extends Operator {
+    public static class Xor extends Operator {
         String op;
 
         public Xor() {
@@ -125,7 +125,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class And extends Operator {
+    public static class And extends Operator {
         String op;
 
         public And() {
@@ -133,7 +133,7 @@ public abstract class Operator extends AST {
         }
     }
 
-    public class Not extends Operator {
+    public static class Not extends Operator {
         String op;
 
         public Not() {
