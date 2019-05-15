@@ -222,4 +222,11 @@ public class TaskuinoCustomVisitor {
             return super.visitParam(ctx);
         }
     }
+
+    private static class BoolConditionVisitor extends TaskuinoBaseVisitor<BoolCondition> {
+        @Override
+        public BoolCondition visitBool_condition(TaskuinoParser.Bool_conditionContext ctx) {
+            return super.visitBool_condition(ctx);
+        }
+    }
 }
