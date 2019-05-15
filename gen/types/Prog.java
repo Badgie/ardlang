@@ -1,14 +1,14 @@
 package types;
 
+import types.stmts.Stmts;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Prog {
-    String id;
+public class Prog extends AST {
     List<Stmts> stmts;
 
-    public Prog(String id, List<Stmts> stmts) {
-        this.id = id;
+    public Prog(List<Stmts> stmts) {
         this.stmts = stmts;
     }
 }
