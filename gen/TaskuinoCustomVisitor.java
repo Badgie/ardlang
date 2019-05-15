@@ -351,7 +351,33 @@ public class TaskuinoCustomVisitor {
     private static class BoolExprVisitor extends TaskuinoBaseVisitor<BoolExpr> {
         @Override
         public BoolExpr visitBool_expr(TaskuinoParser.Bool_exprContext ctx) {
-            return super.visitBool_expr(ctx);
+            BoolOpVisitor boolOpVisitor = new BoolOpVisitor();
+            if (ctx.bool() != null) {
+                ValBoolVisitor boolVisitor = new ValBoolVisitor();
+                if (ctx.bool_op() != null) {
+                    return new BoolExpr(
+                            boolVisitor.visitBool(ctx.bool()),
+                            visitBool_expr(ctx.bool_expr()),
+                            boolOpVisitor.visitBool_op(ctx.bool_op())
+                    );
+                } else {
+                    if (ctx.NOT() != null) {
+                        return new BoolExpr(
+                                boolVisitor.visitBool(ctx.bool()),
+                                new Operator.Not()
+                        );
+                    } else {
+                        return new BoolExpr(boolVisitor.visitBool(ctx.bool()));
+                    }
+                }
+            } else {
+                ValVisitor vVisitor = new ValVisitor();
+                return new BoolExpr(
+                        boolOpVisitor.visitBool_op(ctx.bool_op()),
+                        vVisitor.visitVal(ctx.val(0)),
+                        vVisitor.visitVal(ctx.val(1))
+                );
+            }
         }
     }
 
