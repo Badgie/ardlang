@@ -14,7 +14,7 @@ block_stmts         : stmt
 
 task                : TASK IDENT PAREN_LEFT ival PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
-function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
+function            : FUNC IDENT PAREN_LEFT param PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
 
 stmt                : if_stmt
@@ -31,7 +31,7 @@ dcl                 : type IDENT
                     | type IDENT ASSIGN val
                     | type IDENT ASSIGN calc_expr
                     | type IDENT ASSIGN func_call
-                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param* BLOCK_END)?
+                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param BLOCK_END)?
                     ;
 
 assign              : IDENT ASSIGN val
@@ -59,7 +59,7 @@ eif_stmt            : ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START 
 
 for_stmt            : FOR PAREN_LEFT (number | dcl) SEMICOLON bool_condition SEMICOLON calc_expr PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
-func_call           : IDENT PAREN_LEFT param* PAREN_RIGHT ;
+func_call           : IDENT PAREN_LEFT param PAREN_RIGHT ;
 
 calc_expr_one       : number (op_pres_one calc_expr_three)? ;
 
@@ -73,9 +73,7 @@ bool_condition      : bool_expr
                     | func_call
                     ;
 
-param               : val PARAM_DELIM param
-                    | val
-                    ;
+param               : val (PARAM_DELIM val)* ;
 
 op_pres_one         : MULT | DIV | MOD ;
 op_pres_two         : PLUS | MINUS ;
