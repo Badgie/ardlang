@@ -15,6 +15,7 @@ import types.stmt.ForStmt;
 import types.stmt.FuncStmt;
 import types.stmt.IfStmt;
 import types.stmts.*;
+import types.value.*;
 
 
 import java.util.ArrayList;
@@ -266,5 +267,45 @@ public class TaskuinoCustomVisitor {
         }
     }
 
-    
+    private static class ValVisitor extends TaskuinoBaseVisitor<Val> {
+        @Override
+        public Val visitVal(TaskuinoParser.ValContext ctx) {
+            return super.visitVal(ctx);
+        }
+    }
+
+    private static class ValBoolVisitor extends TaskuinoBaseVisitor<ValBool> {
+        @Override
+        public ValBool visitBool(TaskuinoParser.BoolContext ctx) {
+            return super.visitBool(ctx);
+        }
+    }
+
+    private static class ValLiteralVisitor extends TaskuinoBaseVisitor<ValLiteral> {
+        @Override
+        public ValLiteral visitLiterals(TaskuinoParser.LiteralsContext ctx) {
+            return super.visitLiterals(ctx);
+        }
+    }
+
+    private static class ValNumberVisitor extends TaskuinoBaseVisitor<ValNumber> {
+        @Override
+        public ValNumber visitNumber(TaskuinoParser.NumberContext ctx) {
+            return super.visitNumber(ctx);
+        }
+    }
+
+    private static class NumberIvalVisitor extends TaskuinoBaseVisitor<NumberIval> {
+        @Override
+        public NumberIval visitIval(TaskuinoParser.IvalContext ctx) {
+            return super.visitIval(ctx);
+        }
+    }
+
+    private static class NumberFvalVisitor extends TaskuinoBaseVisitor<NumberFval> {
+        @Override
+        public NumberFval visitFval(TaskuinoParser.FvalContext ctx) {
+            return super.visitFval(ctx);
+        }
+    }
 }
