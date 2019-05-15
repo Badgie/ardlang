@@ -1,13 +1,14 @@
 
-import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import types.*;
+import types.blockstmts.BlockStmtsDcl;
+import types.blockstmts.BlockStmtsExpr;
+import types.blockstmts.BlockStmtsStmt;
 import types.stmts.*;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,40 +42,17 @@ public class TaskuinoCustomVisitor {
         @Override
         public Stmts visitStmts(TaskuinoParser.StmtsContext ctx) {
             Stmts stmt = null;
-            if (ctx.dcl() != null) {
-                StmtsDclVisitor visitor = new StmtsDclVisitor();
-                stmt = visitor.visitDcl(ctx.dcl());
-            } else if (ctx.expr() != null) {
-                StmtsExprVisitor visitor = new StmtsExprVisitor();
-                stmt = visitor.visitExpr(ctx.expr());
-            } else if (ctx.function() != null) {
+            if (ctx.function() != null) {
                 StmtsFuncVisitor visitor = new StmtsFuncVisitor();
                 stmt = visitor.visitFunction(ctx.function());
-            } else if (ctx.stmt() != null) {
-                StmtsStmtVisitor visitor = new StmtsStmtVisitor();
-                stmt = visitor.visitStmt(ctx.stmt());
+            } else if (ctx.block_stmts() != null) {
+                BlockStmtsVisitor visitor = new BlockStmtsVisitor();
+                stmt = visitor.visitBlock_stmts(ctx.block_stmts());
             } else if (ctx.task() != null) {
                 StmtsTaskVisitor visitor = new StmtsTaskVisitor();
                 stmt = visitor.visitTask(ctx.task());
             }
             return stmt;
-        }
-    }
-
-    private static class StmtsDclVisitor extends TaskuinoBaseVisitor<StmtsDcl> {
-        @Override
-        public StmtsDcl visitDcl(TaskuinoParser.DclContext ctx) {
-
-            return new StmtsDcl();
-        }
-    }
-
-    private static class StmtsExprVisitor extends TaskuinoBaseVisitor<StmtsExpr> {
-        @Override
-        public StmtsExpr visitExpr(TaskuinoParser.ExprContext ctx) {
-            StmtsExpr expr = null;
-
-            return expr;
         }
     }
 
@@ -87,21 +65,62 @@ public class TaskuinoCustomVisitor {
         }
     }
 
-    private static class StmtsStmtVisitor extends TaskuinoBaseVisitor<StmtsStmt> {
-        @Override
-        public StmtsStmt visitStmt(TaskuinoParser.StmtContext ctx) {
-            StmtsStmt stmt = null;
-
-            return null;
-        }
-    }
-
     private static class StmtsTaskVisitor extends TaskuinoBaseVisitor<StmtsTask> {
         @Override
         public StmtsTask visitTask(TaskuinoParser.TaskContext ctx) {
             String task = ctx.getRuleContext().getText();
 
-            return new StmtsTask("yeet", 3, new ArrayList<>());
+            return new StmtsTask(
+                    ctx.IDENT().getText(),
+                    Integer.parseInt(ctx.ival().getText()),
+                    new ArrayList<>()
+            );
+        }
+    }
+
+    private static class BlockStmtsVisitor extends TaskuinoBaseVisitor<StmtsBlockStmts> {
+        @Override
+        public StmtsBlockStmts visitBlock_stmts(TaskuinoParser.Block_stmtsContext ctx) {
+            StmtsBlockStmts blockStmts = null;
+
+            if (ctx.stmt() != null) {
+                BlockStmtsStmtVisitor visitor = new BlockStmtsStmtVisitor();
+                blockStmts = visitor.visitStmt(ctx.stmt());
+            } else if (ctx.expr() != null) {
+                BlockStmtsExprVisitor visitor = new BlockStmtsExprVisitor();
+                blockStmts = visitor.visitExpr(ctx.expr());
+            } else if (ctx.dcl() != null) {
+                BlockStmtsDclVisitor visitor = new BlockStmtsDclVisitor();
+                blockStmts = visitor.visitDcl(ctx.dcl());
+            }
+
+            return blockStmts;
+        }
+    }
+
+    private static class BlockStmtsStmtVisitor extends TaskuinoBaseVisitor<BlockStmtsStmt> {
+        @Override
+        public BlockStmtsStmt visitStmt(TaskuinoParser.StmtContext ctx) {
+            BlockStmtsStmt stmt = null;
+
+            return null;
+        }
+    }
+
+    private static class BlockStmtsDclVisitor extends TaskuinoBaseVisitor<BlockStmtsDcl> {
+        @Override
+        public BlockStmtsDcl visitDcl(TaskuinoParser.DclContext ctx) {
+
+            return new BlockStmtsDcl();
+        }
+    }
+
+    private static class BlockStmtsExprVisitor extends TaskuinoBaseVisitor<BlockStmtsExpr> {
+        @Override
+        public BlockStmtsExpr visitExpr(TaskuinoParser.ExprContext ctx) {
+            BlockStmtsExpr expr = null;
+
+            return expr;
         }
     }
 }
