@@ -590,21 +590,15 @@ public class TaskuinoCustomVisitor {
     private static class ValNumberVisitor extends TaskuinoBaseVisitor<ValNumber> {
         @Override
         public ValNumber visitNumber(TaskuinoParser.NumberContext ctx) {
-            return super.visitNumber(ctx);
-        }
-    }
-
-    private static class NumberIvalVisitor extends TaskuinoBaseVisitor<NumberIval> {
-        @Override
-        public NumberIval visitIval(TaskuinoParser.IvalContext ctx) {
-            return super.visitIval(ctx);
-        }
-    }
-
-    private static class NumberFvalVisitor extends TaskuinoBaseVisitor<NumberFval> {
-        @Override
-        public NumberFval visitFval(TaskuinoParser.FvalContext ctx) {
-            return super.visitFval(ctx);
+            ValNumber num;
+            if (ctx.ival() != null) {
+                num = new NumberIval(Integer.parseInt(ctx.ival().getText()));
+            } else if (ctx.fval() != null) {
+                num = new NumberFval(Double.parseDouble(ctx.fval().getText()));
+            } else {
+                num = new ValIdent(ctx.IDENT().getText());
+            }
+            return num;
         }
     }
 
