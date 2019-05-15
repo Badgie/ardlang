@@ -172,7 +172,7 @@ public class TaskuinoCustomVisitor {
     private static class BlockStmtsDclVisitor extends TaskuinoBaseVisitor<BlockStmtsDcl> {
         @Override
         public BlockStmtsDcl visitDcl(TaskuinoParser.DclContext ctx) {
-
+            //TODO: this - figure out how to handle the different cases
             return new BlockStmtsDcl();
         }
     }
@@ -180,14 +180,46 @@ public class TaskuinoCustomVisitor {
     private static class IfStmtVisitor extends TaskuinoBaseVisitor<IfStmt> {
         @Override
         public IfStmt visitIf_stmt(TaskuinoParser.If_stmtContext ctx) {
-            return super.visitIf_stmt(ctx);
+            BoolConditionVisitor condVisitor = new BoolConditionVisitor();
+            BlockStmtsVisitor stmtsVisitor = new BlockStmtsVisitor();
+            EifStmtVisitor eifVisitor = new EifStmtVisitor();
+
+            List<StmtsBlockStmts> stmts = ctx.block_stmts()
+                    .stream()
+                    .map(blockstmt -> blockstmt.accept(stmtsVisitor))
+                    .collect(toList());
+            List<EifStmt> eifStmts = ctx.eif_stmt()
+                    .stream()
+                    .map(eif -> eif.accept(eifVisitor))
+                    .collect(toList());
+
+            return new IfStmt(
+                    condVisitor.visitBool_condition(ctx.bool_condition()),
+                    stmts,
+                    eifStmts
+            );
         }
     }
 
     private static class EifStmtVisitor extends TaskuinoBaseVisitor<EifStmt> {
         @Override
         public EifStmt visitEif_stmt(TaskuinoParser.Eif_stmtContext ctx) {
-            return super.visitEif_stmt(ctx);
+            BlockStmtsVisitor blockVisitor = new BlockStmtsVisitor();
+            BoolConditionVisitor boolVisitor = new BoolConditionVisitor();
+
+            List<StmtsBlockStmts> stmts = ctx.block_stmts()
+                    .stream()
+                    .map(stmt -> stmt.accept(blockVisitor))
+                    .collect(toList());
+
+            if (ctx.bool_condition() == null) {
+                return new EifStmt(stmts);
+            } else {
+                return new EifStmt(
+                        boolVisitor.visitBool_condition(ctx.bool_condition()),
+                        stmts
+                );
+            }
         }
     }
 
