@@ -577,8 +577,12 @@ public class TaskuinoCustomVisitor {
                 return new ValLiteral("INPUT");
             } else if (ctx.HIGH() != null) {
                 return new ValLiteral("HIGH");
-            } else {
+            } else if (ctx.LOW() != null) {
                 return new ValLiteral("LOW");
+            } else if (ctx.VOID() != null) {
+                return new ValLiteral("void");
+            } else {
+                return new ValLiteral("null");
             }
         }
     }
