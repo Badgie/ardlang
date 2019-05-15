@@ -45,7 +45,7 @@ calc_expr           : calc_expr_one
                     | IDENT op_pres_two ASSIGN val
                     ;
 
-bool_expr           : bool_expr bool_op bool_expr
+bool_expr           : bool bool_op bool_expr
                     | PAREN_LEFT? val bool_op val PAREN_RIGHT?
                     | (NOT)? bool
                     ;
