@@ -259,5 +259,12 @@ public class TaskuinoCustomVisitor {
         }
     }
 
+    private static class TypeVisitor extends TaskuinoBaseVisitor<Type> {
+        @Override
+        public Type visitType(TaskuinoParser.TypeContext ctx) {
+            return super.visitType(ctx);
+        }
+    }
+
     
 }
