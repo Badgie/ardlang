@@ -6,6 +6,7 @@ import types.*;
 import types.blockstmts.BlockStmtsDcl;
 import types.blockstmts.BlockStmtsExpr;
 import types.blockstmts.BlockStmtsStmt;
+import types.stmt.EifStmt;
 import types.stmt.ForStmt;
 import types.stmt.FuncStmt;
 import types.stmt.IfStmt;
@@ -142,6 +143,13 @@ public class TaskuinoCustomVisitor {
         @Override
         public IfStmt visitIf_stmt(TaskuinoParser.If_stmtContext ctx) {
             return super.visitIf_stmt(ctx);
+        }
+    }
+
+    private static class EifStmtVisitor extends TaskuinoBaseVisitor<EifStmt> {
+        @Override
+        public EifStmt visitEif_stmt(TaskuinoParser.Eif_stmtContext ctx) {
+            return super.visitEif_stmt(ctx);
         }
     }
 
