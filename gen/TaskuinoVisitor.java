@@ -22,6 +22,12 @@ public interface TaskuinoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStmts(TaskuinoParser.StmtsContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TaskuinoParser#block_stmts}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlock_stmts(TaskuinoParser.Block_stmtsContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TaskuinoParser#task}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -75,6 +81,12 @@ public interface TaskuinoVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIf_stmt(TaskuinoParser.If_stmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TaskuinoParser#eif_stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEif_stmt(TaskuinoParser.Eif_stmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TaskuinoParser#for_stmt}.
 	 * @param ctx the parse tree

@@ -1,8 +1,8 @@
 package types.expr;
 
-import types.stmts.StmtsExpr;
+import types.blockstmts.BlockStmtsExpr;
 
-public class AssignExpr extends StmtsExpr {
+public class AssignExpr extends BlockStmtsExpr {
     String identifier;
     //value
 }

@@ -1,6 +1,6 @@
 package types.stmt;
 
-import types.stmts.StmtsStmt;
+import types.blockstmts.BlockStmtsStmt;
 
-public class ForStmt extends StmtsStmt {
+public class ForStmt extends BlockStmtsStmt {
 }

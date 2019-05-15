@@ -1,6 +1,6 @@
 package types.expr;
 
-import types.stmts.StmtsExpr;
+import types.blockstmts.BlockStmtsExpr;
 
-public class CalcExpr extends StmtsExpr {
+public class CalcExpr extends BlockStmtsExpr {
 }
