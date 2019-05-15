@@ -216,5 +216,10 @@ public class TaskuinoCustomVisitor {
         }
     }
 
-    
+    private static class ParamVisitor extends TaskuinoBaseVisitor<Param> {
+        @Override
+        public Param visitParam(TaskuinoParser.ParamContext ctx) {
+            return super.visitParam(ctx);
+        }
+    }
 }
