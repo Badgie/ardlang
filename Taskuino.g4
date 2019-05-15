@@ -20,18 +20,20 @@ stmt                : if_stmt
                     ;
 
 expr                : assign
-                    | calc_expr
                     | bool_expr
+                    | calc_expr
                     ;
 
 dcl                 : type IDENT
                     | type IDENT ASSIGN val
                     | type IDENT ASSIGN calc_expr
+                    | type IDENT ASSIGN func_call
                     | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param* BLOCK_END)?
                     ;
 
 assign              : IDENT ASSIGN val
                     | IDENT ASSIGN calc_expr
+                    | IDENT ASSIGN func_call
                     ;
 
 calc_expr           : calc_expr_one
@@ -77,6 +79,7 @@ bool_op             : EQ
                     | GRT_EQ
                     | LESS_EQ
                     | OR
+                    | XOR
                     | AND
                     ;
 
@@ -93,7 +96,7 @@ type                : TYPE_INT
 val                 : number
                     | STRING
                     | bool
-                    | lconst
+                    | literals
                     | func_call
                     ;
 
@@ -113,7 +116,7 @@ fval                : DIG.DECDIG
                     | .DECDIG
                     ;
 
-lconst              : OUTPUT
+literals            : OUTPUT
                     | INPUT
                     | HIGH
                     | LOW
