@@ -51,6 +51,7 @@ public class TaskuinoCustomVisitor {
         @Override
         public Stmts visitStmts(TaskuinoParser.StmtsContext ctx) {
             Stmts stmt = null;
+
             if (ctx.function() != null) {
                 StmtsFuncVisitor visitor = new StmtsFuncVisitor();
                 stmt = visitor.visitFunction(ctx.function());
@@ -61,6 +62,7 @@ public class TaskuinoCustomVisitor {
                 StmtsTaskVisitor visitor = new StmtsTaskVisitor();
                 stmt = visitor.visitTask(ctx.task());
             }
+
             return stmt;
         }
     }
@@ -68,21 +70,41 @@ public class TaskuinoCustomVisitor {
     private static class StmtsFuncVisitor extends TaskuinoBaseVisitor<StmtsFunc> {
         @Override
         public StmtsFunc visitFunction(TaskuinoParser.FunctionContext ctx) {
-            String func = ctx.getRuleContext().getText();
+            ParamVisitor pVisitor = new ParamVisitor();
+            BlockStmtsVisitor bVisitor = new BlockStmtsVisitor();
 
-            return new StmtsFunc();
+            List<Param> params = ctx.param()
+                    .stream()
+                    .map(param -> param.accept(pVisitor))
+                    .collect(toList());
+
+            List<StmtsBlockStmts> blockStmts = ctx.block_stmts()
+                    .stream()
+                    .map(blockstmt -> blockstmt.accept(bVisitor))
+                    .collect(toList());
+
+            return new StmtsFunc(
+                    ctx.IDENT().getText(),
+                    params,
+                    blockStmts
+            );
         }
     }
 
     private static class StmtsTaskVisitor extends TaskuinoBaseVisitor<StmtsTask> {
         @Override
         public StmtsTask visitTask(TaskuinoParser.TaskContext ctx) {
-            String task = ctx.getRuleContext().getText();
+            BlockStmtsVisitor bVisitor = new BlockStmtsVisitor();
+
+            List<StmtsBlockStmts> blockStmts = ctx.block_stmts()
+                    .stream()
+                    .map(blockstmt -> blockstmt.accept(bVisitor))
+                    .collect(toList());
 
             return new StmtsTask(
                     ctx.IDENT().getText(),
                     Integer.parseInt(ctx.ival().getText()),
-                    new ArrayList<>()
+                    blockStmts
             );
         }
     }
