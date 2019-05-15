@@ -112,7 +112,6 @@ bool                : TRUE
 number              : ival
                     | fval
                     | IDENT
-                    | IDENT ARRAY_START number ARRAY_END
                     ;
 
 ival                : DIG ;
