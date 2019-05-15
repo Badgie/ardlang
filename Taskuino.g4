@@ -4,14 +4,17 @@ prog                : stmts* EOF ;
 
 stmts               : task
                     | function
-                    | stmt
+                    | block_stmts
+                    ;
+
+block_stmts         : stmt
                     | expr
                     | dcl
                     ;
 
-task                : TASK IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END ;
+task                : TASK IDENT PAREN_LEFT ival PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
-function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END ;
+function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
 
 stmt                : if_stmt
@@ -47,14 +50,14 @@ bool_expr           : bool_expr bool_op bool_expr
                     | (NOT)? bool
                     ;
 
-if_stmt             : IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END (if_stmt)* eif_stmt?
+if_stmt             : IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END eif_stmt?
                     ;
 
-eif_stmt            : ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END eif_stmt*
-                    | ELSE BLOCK_START stmt* BLOCK_END
+eif_stmt            : ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END eif_stmt*
+                    | ELSE BLOCK_START (block_stmts)* BLOCK_END
                     ;
 
-for_stmt            : FOR PAREN_LEFT (number | dcl) SEMICOLON bool_condition SEMICOLON calc_expr PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END ;
+for_stmt            : FOR PAREN_LEFT (number | dcl) SEMICOLON bool_condition SEMICOLON calc_expr PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
 func_call           : IDENT PAREN_LEFT param* PAREN_RIGHT ;
 
