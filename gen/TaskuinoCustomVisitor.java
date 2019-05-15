@@ -384,21 +384,84 @@ public class TaskuinoCustomVisitor {
     private static class CalcExprVisitor extends TaskuinoBaseVisitor<CalcExpr> {
         @Override
         public CalcExpr visitCalc_expr(TaskuinoParser.Calc_exprContext ctx) {
-            return super.visitCalc_expr(ctx);
+            CalcExpr calcExpr = null;
+            ValNumberVisitor nVisitor = new ValNumberVisitor();
+
+            if (ctx.calc_expr_one() != null) {
+                CalcExprOneVisitor cOVisitor = new CalcExprOneVisitor();
+                calcExpr = cOVisitor.visitCalc_expr_one(ctx.calc_expr_one());
+            } else if (ctx.calc_expr_two() != null) {
+                CalcExprTwoVisitor cTVisitor = new CalcExprTwoVisitor();
+                calcExpr = cTVisitor.visitCalc_expr_two(ctx.calc_expr_two());
+            } else if (ctx.mod_op() != null) {
+                ModOpVisitor mVisitor = new ModOpVisitor();
+                calcExpr = new CalcExpr(
+                        nVisitor.visitNumber(ctx.number()),
+                        mVisitor.visitMod_op(ctx.mod_op())
+                );
+            } else {
+                OpPresTwoVisitor opVisitor = new OpPresTwoVisitor();
+                calcExpr = new CalcExpr(
+                        ctx.IDENT().getText(),
+                        opVisitor.visitOp_pres_two(ctx.op_pres_two()),
+                        nVisitor.visitNumber(ctx.number())
+                );
+            }
+
+            return calcExpr;
         }
     }
 
+    //TODO: may need revisiting
     private static class CalcExprOneVisitor extends TaskuinoBaseVisitor<CalcExpr> {
         @Override
         public CalcExpr visitCalc_expr_one(TaskuinoParser.Calc_expr_oneContext ctx) {
-            return super.visitCalc_expr_one(ctx);
+            ValNumberVisitor nVisitor = new ValNumberVisitor();
+            OpPresOneVisitor oVisitor = new OpPresOneVisitor();
+            CalcExprThreeVisitor threeVisitor = new CalcExprThreeVisitor();
+
+            if (ctx.op_pres_one() == null) {
+                return new CalcExpr(nVisitor.visitNumber(ctx.number()));
+            } else {
+                return new CalcExpr(
+                        nVisitor.visitNumber(ctx.number()),
+                        oVisitor.visitOp_pres_one(ctx.op_pres_one()),
+                        threeVisitor.visitCalc_expr_three(ctx.calc_expr_three())
+                );
+            }
         }
     }
 
     private static class CalcExprTwoVisitor extends TaskuinoBaseVisitor<CalcExpr> {
         @Override
         public CalcExpr visitCalc_expr_two(TaskuinoParser.Calc_expr_twoContext ctx) {
-            return super.visitCalc_expr_two(ctx);
+            ValNumberVisitor nVisitor = new ValNumberVisitor();
+            OpPresTwoVisitor oVisitor = new OpPresTwoVisitor();
+            CalcExprOneVisitor oneVisitor = new CalcExprOneVisitor();
+
+            if (ctx.op_pres_two() == null) {
+                return new CalcExpr(nVisitor.visitNumber(ctx.number()));
+            } else {
+                return new CalcExpr(
+                        nVisitor.visitNumber(ctx.number()),
+                        oVisitor.visitOp_pres_two(ctx.op_pres_two()),
+                        oneVisitor.visitCalc_expr_one(ctx.calc_expr_one())
+                );
+            }
+        }
+    }
+
+    private static class CalcExprThreeVisitor extends TaskuinoBaseVisitor<CalcExpr> {
+        @Override
+        public CalcExpr visitCalc_expr_three(TaskuinoParser.Calc_expr_threeContext ctx) {
+            ValNumberVisitor nVisitor = new ValNumberVisitor();
+            CalcExprTwoVisitor twoVisitor = new CalcExprTwoVisitor();
+
+            if (ctx.number() != null) {
+                return new CalcExpr(nVisitor.visitNumber(ctx.number()));
+            } else {
+                return new CalcExpr(twoVisitor.visitCalc_expr_two(ctx.calc_expr_two()));
+            }
         }
     }
 
