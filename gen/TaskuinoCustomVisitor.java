@@ -397,7 +397,6 @@ public class TaskuinoCustomVisitor {
         }
     }
 
-    //TODO: may need revisiting
     private static class CalcExprOneVisitor extends TaskuinoBaseVisitor<CalcExpr> {
         @Override
         public CalcExpr visitCalc_expr_one(TaskuinoParser.Calc_expr_oneContext ctx) {
@@ -536,17 +535,23 @@ public class TaskuinoCustomVisitor {
         }
     }
 
-    private static class TypeVisitor extends TaskuinoBaseVisitor<Type> {
-        @Override
-        public Type visitType(TaskuinoParser.TypeContext ctx) {
-            return super.visitType(ctx);
-        }
-    }
-
     private static class ValVisitor extends TaskuinoBaseVisitor<Val> {
         @Override
         public Val visitVal(TaskuinoParser.ValContext ctx) {
-            return super.visitVal(ctx);
+            Val val = null;
+            if (ctx.number() != null) {
+                ValNumberVisitor nVisitor = new ValNumberVisitor();
+                val = nVisitor.visitNumber(ctx.number());
+            } else if (ctx.STRING() != null) {
+                val = new ValString(ctx.STRING().getText());
+            } else if (ctx.bool() != null) {
+                ValBoolVisitor bVisitor = new ValBoolVisitor();
+                val = bVisitor.visitBool(ctx.bool());
+            } else if (ctx.literals() != null) {
+                ValLiteralVisitor lVisitor = new ValLiteralVisitor();
+                val = lVisitor.visitLiterals(ctx.literals());
+            }
+            return val;
         }
     }
 
@@ -582,6 +587,13 @@ public class TaskuinoCustomVisitor {
         @Override
         public NumberFval visitFval(TaskuinoParser.FvalContext ctx) {
             return super.visitFval(ctx);
+        }
+    }
+
+    private static class TypeVisitor extends TaskuinoBaseVisitor<Type> {
+        @Override
+        public Type visitType(TaskuinoParser.TypeContext ctx) {
+            return null;
         }
     }
 }

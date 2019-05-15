@@ -1,4 +1,9 @@
 package types.value;
 
-public abstract class ValLiteral extends Val {
+public class ValLiteral extends Val {
+    String value;
+
+    public ValLiteral(String value) {
+        this.value = value;
+    }
 }
