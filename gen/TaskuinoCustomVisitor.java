@@ -6,6 +6,9 @@ import types.*;
 import types.blockstmts.BlockStmtsDcl;
 import types.blockstmts.BlockStmtsExpr;
 import types.blockstmts.BlockStmtsStmt;
+import types.expr.AssignExpr;
+import types.expr.BoolExpr;
+import types.expr.CalcExpr;
 import types.stmt.EifStmt;
 import types.stmt.ForStmt;
 import types.stmt.FuncStmt;
@@ -122,20 +125,31 @@ public class TaskuinoCustomVisitor {
         }
     }
 
-    private static class BlockStmtsDclVisitor extends TaskuinoBaseVisitor<BlockStmtsDcl> {
-        @Override
-        public BlockStmtsDcl visitDcl(TaskuinoParser.DclContext ctx) {
-
-            return new BlockStmtsDcl();
-        }
-    }
-
     private static class BlockStmtsExprVisitor extends TaskuinoBaseVisitor<BlockStmtsExpr> {
         @Override
         public BlockStmtsExpr visitExpr(TaskuinoParser.ExprContext ctx) {
             BlockStmtsExpr expr = null;
 
+            if (ctx.assign() != null) {
+                AssignVisitor visitor = new AssignVisitor();
+                expr = visitor.visitAssign(ctx.assign());
+            } else if (ctx.bool_expr() != null) {
+                BoolExprVisitor visitor = new BoolExprVisitor();
+                expr = visitor.visitBool_expr(ctx.bool_expr());
+            } else if (ctx.calc_expr() != null) {
+                CalcExprVisitor visitor = new CalcExprVisitor();
+                expr = visitor.visitCalc_expr(ctx.calc_expr());
+            }
+
             return expr;
+        }
+    }
+
+    private static class BlockStmtsDclVisitor extends TaskuinoBaseVisitor<BlockStmtsDcl> {
+        @Override
+        public BlockStmtsDcl visitDcl(TaskuinoParser.DclContext ctx) {
+
+            return new BlockStmtsDcl();
         }
     }
 
@@ -164,6 +178,27 @@ public class TaskuinoCustomVisitor {
         @Override
         public FuncStmt visitFunc_call(TaskuinoParser.Func_callContext ctx) {
             return super.visitFunc_call(ctx);
+        }
+    }
+
+    private static class AssignVisitor extends TaskuinoBaseVisitor<AssignExpr> {
+        @Override
+        public AssignExpr visitAssign(TaskuinoParser.AssignContext ctx) {
+            return super.visitAssign(ctx);
+        }
+    }
+
+    private static class BoolExprVisitor extends TaskuinoBaseVisitor<BoolExpr> {
+        @Override
+        public BoolExpr visitBool_expr(TaskuinoParser.Bool_exprContext ctx) {
+            return super.visitBool_expr(ctx);
+        }
+    }
+
+    private static class CalcExprVisitor extends TaskuinoBaseVisitor<CalcExpr> {
+        @Override
+        public CalcExpr visitCalc_expr(TaskuinoParser.Calc_exprContext ctx) {
+            return super.visitCalc_expr(ctx);
         }
     }
 }
