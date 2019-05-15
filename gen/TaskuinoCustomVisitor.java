@@ -9,6 +9,7 @@ import types.blockstmts.BlockStmtsStmt;
 import types.expr.AssignExpr;
 import types.expr.BoolExpr;
 import types.expr.CalcExpr;
+import types.operator.Operator;
 import types.stmt.EifStmt;
 import types.stmt.ForStmt;
 import types.stmt.FuncStmt;
@@ -227,6 +228,27 @@ public class TaskuinoCustomVisitor {
         @Override
         public BoolCondition visitBool_condition(TaskuinoParser.Bool_conditionContext ctx) {
             return super.visitBool_condition(ctx);
+        }
+    }
+
+    private static class OpPresOneVisitor extends TaskuinoBaseVisitor<Operator> {
+        @Override
+        public Operator visitOp_pres_one(TaskuinoParser.Op_pres_oneContext ctx) {
+            return super.visitOp_pres_one(ctx);
+        }
+    }
+
+    private static class OpPresTwoVisitor extends TaskuinoBaseVisitor<Operator> {
+        @Override
+        public Operator visitOp_pres_two(TaskuinoParser.Op_pres_twoContext ctx) {
+            return super.visitOp_pres_two(ctx);
+        }
+    }
+
+    private static class ModOpVisitor extends TaskuinoBaseVisitor<Operator> {
+        @Override
+        public Operator visitMod_op(TaskuinoParser.Mod_opContext ctx) {
+            return super.visitMod_op(ctx);
         }
     }
 }
