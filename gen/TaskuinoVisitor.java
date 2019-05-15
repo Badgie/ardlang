@@ -1,4 +1,4 @@
-// Generated from C:/Users/Bruger/IdeaProjects/meh/ardlang\Taskuino.g4 by ANTLR 4.7.2
+// Generated from /home/badgy/Desktop/ardlang/Taskuino.g4 by ANTLR 4.7.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -40,29 +40,35 @@ public interface TaskuinoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStmt(TaskuinoParser.StmtContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#assign_stmt}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssign_stmt(TaskuinoParser.Assign_stmtContext ctx);
+	T visitExpr(TaskuinoParser.ExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#assign_comp_stmt}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#dcl}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAssign_comp_stmt(TaskuinoParser.Assign_comp_stmtContext ctx);
+	T visitDcl(TaskuinoParser.DclContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#calc_stmt}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#assign}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCalc_stmt(TaskuinoParser.Calc_stmtContext ctx);
+	T visitAssign(TaskuinoParser.AssignContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#bool_stmt}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#calc_expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBool_stmt(TaskuinoParser.Bool_stmtContext ctx);
+	T visitCalc_expr(TaskuinoParser.Calc_exprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link TaskuinoParser#bool_expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBool_expr(TaskuinoParser.Bool_exprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TaskuinoParser#if_stmt}.
 	 * @param ctx the parse tree
@@ -76,59 +82,29 @@ public interface TaskuinoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFor_stmt(TaskuinoParser.For_stmtContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#dcl_stmt}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#func_call}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDcl_stmt(TaskuinoParser.Dcl_stmtContext ctx);
+	T visitFunc_call(TaskuinoParser.Func_callContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#method_stmt}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#calc_expr_one}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMethod_stmt(TaskuinoParser.Method_stmtContext ctx);
+	T visitCalc_expr_one(TaskuinoParser.Calc_expr_oneContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#func_stmt}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#calc_expr_two}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunc_stmt(TaskuinoParser.Func_stmtContext ctx);
+	T visitCalc_expr_two(TaskuinoParser.Calc_expr_twoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#type_assign}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#bool_condition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitType_assign(TaskuinoParser.Type_assignContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#typeless_assign}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTypeless_assign(TaskuinoParser.Typeless_assignContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#calc_stmt_one}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCalc_stmt_one(TaskuinoParser.Calc_stmt_oneContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#calc_stmt_two}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCalc_stmt_two(TaskuinoParser.Calc_stmt_twoContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#if_cond}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIf_cond(TaskuinoParser.If_condContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#comp_param}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitComp_param(TaskuinoParser.Comp_paramContext ctx);
+	T visitBool_condition(TaskuinoParser.Bool_conditionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TaskuinoParser#param}.
 	 * @param ctx the parse tree
@@ -166,11 +142,11 @@ public interface TaskuinoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitType(TaskuinoParser.TypeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#var}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#val}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVar(TaskuinoParser.VarContext ctx);
+	T visitVal(TaskuinoParser.ValContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TaskuinoParser#bool}.
 	 * @param ctx the parse tree
@@ -178,11 +154,11 @@ public interface TaskuinoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBool(TaskuinoParser.BoolContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#val}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#number}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVal(TaskuinoParser.ValContext ctx);
+	T visitNumber(TaskuinoParser.NumberContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link TaskuinoParser#ival}.
 	 * @param ctx the parse tree
@@ -196,9 +172,9 @@ public interface TaskuinoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFval(TaskuinoParser.FvalContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link TaskuinoParser#lconst}.
+	 * Visit a parse tree produced by {@link TaskuinoParser#literals}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLconst(TaskuinoParser.LconstContext ctx);
+	T visitLiterals(TaskuinoParser.LiteralsContext ctx);
 }

@@ -23,8 +23,11 @@ public class TaskuinoMain {
         try {
             String inputFile = "calc-sum";
             //TODO get relative path to work.
-            CharStream input = new ANTLRFileStream("C:/Users/Bruger/IdeaProjects/meh/ardlang/dreamcode/" + inputFile + ".tsk");
-            TaskuinoLexer lexer = new TaskuinoLexer(input);
+            CharStream input = new ANTLRFileStream("./dreamcode/" + inputFile + ".tsk");
+            TaskuinoCustomVisitor visitor = new TaskuinoCustomVisitor();
+            visitor.parse(input);
+
+            /*TaskuinoLexer lexer = new TaskuinoLexer(input);
             TaskuinoParser parser = new TaskuinoParser(new CommonTokenStream(lexer));
 
             FileWriter fileWriter = new FileWriter(inputFile+".c");
@@ -34,7 +37,7 @@ public class TaskuinoMain {
 
             printWriter.close();
             //parser.addParseListener(new TaskuinoCustomListener());
-            //parser.prog();
+            //parser.prog();*/
         } catch (IOException e) {
             Logger.getLogger(TaskuinoMain.class.getName()).log(Level.SEVERE, (String)null, e);
         }

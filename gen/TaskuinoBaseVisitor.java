@@ -1,4 +1,4 @@
-// Generated from C:/Users/Bruger/IdeaProjects/meh/ardlang\Taskuino.g4 by ANTLR 4.7.2
+// Generated from /home/badgy/Desktop/ardlang/Taskuino.g4 by ANTLR 4.7.2
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
@@ -51,28 +51,35 @@ public class TaskuinoBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAssign_stmt(TaskuinoParser.Assign_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExpr(TaskuinoParser.ExprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAssign_comp_stmt(TaskuinoParser.Assign_comp_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDcl(TaskuinoParser.DclContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCalc_stmt(TaskuinoParser.Calc_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAssign(TaskuinoParser.AssignContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBool_stmt(TaskuinoParser.Bool_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCalc_expr(TaskuinoParser.Calc_exprContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitBool_expr(TaskuinoParser.Bool_exprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -93,63 +100,28 @@ public class TaskuinoBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDcl_stmt(TaskuinoParser.Dcl_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFunc_call(TaskuinoParser.Func_callContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMethod_stmt(TaskuinoParser.Method_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCalc_expr_one(TaskuinoParser.Calc_expr_oneContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFunc_stmt(TaskuinoParser.Func_stmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCalc_expr_two(TaskuinoParser.Calc_expr_twoContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitType_assign(TaskuinoParser.Type_assignContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitTypeless_assign(TaskuinoParser.Typeless_assignContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitCalc_stmt_one(TaskuinoParser.Calc_stmt_oneContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitCalc_stmt_two(TaskuinoParser.Calc_stmt_twoContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitIf_cond(TaskuinoParser.If_condContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitComp_param(TaskuinoParser.Comp_paramContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBool_condition(TaskuinoParser.Bool_conditionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -198,7 +170,7 @@ public class TaskuinoBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVar(TaskuinoParser.VarContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVal(TaskuinoParser.ValContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -212,7 +184,7 @@ public class TaskuinoBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVal(TaskuinoParser.ValContext ctx) { return visitChildren(ctx); }
+	@Override public T visitNumber(TaskuinoParser.NumberContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -233,5 +205,5 @@ public class TaskuinoBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLconst(TaskuinoParser.LconstContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLiterals(TaskuinoParser.LiteralsContext ctx) { return visitChildren(ctx); }
 }
