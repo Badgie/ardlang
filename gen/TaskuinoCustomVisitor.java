@@ -481,21 +481,35 @@ public class TaskuinoCustomVisitor {
     private static class OpPresOneVisitor extends TaskuinoBaseVisitor<Operator> {
         @Override
         public Operator visitOp_pres_one(TaskuinoParser.Op_pres_oneContext ctx) {
-            
+            if (ctx.MULT() != null) {
+                return new Operator.Mult();
+            } else if (ctx.DIV() != null) {
+                return new Operator.Div();
+            } else {
+                return new Operator.Mod();
+            }
         }
     }
 
     private static class OpPresTwoVisitor extends TaskuinoBaseVisitor<Operator> {
         @Override
         public Operator visitOp_pres_two(TaskuinoParser.Op_pres_twoContext ctx) {
-            return super.visitOp_pres_two(ctx);
+            if (ctx.PLUS() != null) {
+                return new Operator.Add();
+            } else {
+                return new Operator.Sub();
+            }
         }
     }
 
     private static class ModOpVisitor extends TaskuinoBaseVisitor<Operator> {
         @Override
         public Operator visitMod_op(TaskuinoParser.Mod_opContext ctx) {
-            return super.visitMod_op(ctx);
+            if (ctx.INCR() != null) {
+                return new Operator.Incr();
+            } else {
+                return new Operator.Decr();
+            }
         }
     }
 
