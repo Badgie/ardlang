@@ -6,6 +6,7 @@
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import types.Prog;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,10 +23,11 @@ public class TaskuinoMain {
     public static void main(String[] args) {
         try {
             String inputFile = "calc-sum";
-            //TODO get relative path to work.
             CharStream input = new ANTLRFileStream("./dreamcode/" + inputFile + ".tsk");
             TaskuinoCustomVisitor visitor = new TaskuinoCustomVisitor();
-            visitor.parse(input);
+            Prog p = visitor.parse(input);
+
+            System.out.println(p);
 
             /*TaskuinoLexer lexer = new TaskuinoLexer(input);
             TaskuinoParser parser = new TaskuinoParser(new CommonTokenStream(lexer));

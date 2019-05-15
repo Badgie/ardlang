@@ -599,6 +599,7 @@ public class TaskuinoCustomVisitor {
                 num = new ValIdent(ctx.IDENT().getText());
             }
             return num;
+            //TODO: implement array index
         }
     }
 
