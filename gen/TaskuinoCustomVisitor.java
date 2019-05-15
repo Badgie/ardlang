@@ -516,7 +516,23 @@ public class TaskuinoCustomVisitor {
     private static class BoolOpVisitor extends TaskuinoBaseVisitor<Operator> {
         @Override
         public Operator visitBool_op(TaskuinoParser.Bool_opContext ctx) {
-            return super.visitBool_op(ctx);
+            if (ctx.EQ() != null) {
+                return new Operator.Equal();
+            } else if (ctx.GRT() != null) {
+                return new Operator.Greater();
+            } else if (ctx.LESS() != null) {
+                return new Operator.Lesser();
+            } else if (ctx.GRT_EQ() != null) {
+                return new Operator.GreaterEqual();
+            } else if (ctx.LESS_EQ() != null) {
+                return new Operator.LesserEqual();
+            } else if (ctx.OR() != null) {
+                return new Operator.Or();
+            } else if (ctx.XOR() != null) {
+                return new Operator.Xor();
+            } else {
+                return new Operator.And();
+            }
         }
     }
 
