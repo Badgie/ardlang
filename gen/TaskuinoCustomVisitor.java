@@ -251,4 +251,13 @@ public class TaskuinoCustomVisitor {
             return super.visitMod_op(ctx);
         }
     }
+
+    private static class BoolOpVisitor extends TaskuinoBaseVisitor<Operator> {
+        @Override
+        public Operator visitBool_op(TaskuinoParser.Bool_opContext ctx) {
+            return super.visitBool_op(ctx);
+        }
+    }
+
+    
 }
