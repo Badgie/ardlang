@@ -326,7 +326,25 @@ public class TaskuinoCustomVisitor {
     private static class AssignVisitor extends TaskuinoBaseVisitor<AssignExpr> {
         @Override
         public AssignExpr visitAssign(TaskuinoParser.AssignContext ctx) {
-            return super.visitAssign(ctx);
+            if (ctx.val() != null) {
+                ValVisitor vVisitor = new ValVisitor();
+                return new AssignExpr(
+                        ctx.IDENT().getText(),
+                        vVisitor.visitVal(ctx.val())
+                );
+            } else if (ctx.calc_expr() != null) {
+                CalcExprVisitor cVisitor = new CalcExprVisitor();
+                return new AssignExpr(
+                        ctx.IDENT().getText(),
+                        cVisitor.visitCalc_expr(ctx.calc_expr())
+                );
+            } else {
+                FuncStmtVisitor fVisitor = new FuncStmtVisitor();
+                return new AssignExpr(
+                        ctx.IDENT().getText(),
+                        fVisitor.visitFunc_call(ctx.func_call())
+                );
+            }
         }
     }
 
