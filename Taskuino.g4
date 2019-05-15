@@ -42,7 +42,7 @@ assign              : IDENT ASSIGN val
 calc_expr           : calc_expr_one
                     | calc_expr_two
                     | number mod_op
-                    | IDENT op_pres_two ASSIGN val
+                    | IDENT op_pres_two ASSIGN number
                     ;
 
 bool_expr           : bool bool_op bool_expr
@@ -61,10 +61,12 @@ for_stmt            : FOR PAREN_LEFT (number | dcl) SEMICOLON bool_condition SEM
 
 func_call           : IDENT PAREN_LEFT param* PAREN_RIGHT ;
 
-calc_expr_one       : number (op_pres_one number)* ;
+calc_expr_one       : number (op_pres_one calc_expr_three)? ;
 
-calc_expr_two       : number (op_pres_two calc_expr_one)*
-                    | number
+calc_expr_two       : number (op_pres_two calc_expr_one)? ;
+
+calc_expr_three     : number
+                    | calc_expr_two
                     ;
 
 bool_condition      : bool_expr
