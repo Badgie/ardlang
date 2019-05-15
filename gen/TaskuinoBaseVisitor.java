@@ -135,6 +135,13 @@ public class TaskuinoBaseVisitor<T> extends AbstractParseTreeVisitor<T> implemen
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitCalc_expr_three(TaskuinoParser.Calc_expr_threeContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitBool_condition(TaskuinoParser.Bool_conditionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

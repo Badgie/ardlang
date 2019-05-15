@@ -112,6 +112,12 @@ public interface TaskuinoVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCalc_expr_two(TaskuinoParser.Calc_expr_twoContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link TaskuinoParser#calc_expr_three}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCalc_expr_three(TaskuinoParser.Calc_expr_threeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link TaskuinoParser#bool_condition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
