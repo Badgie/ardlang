@@ -124,6 +124,8 @@ literals            : OUTPUT
                     | INPUT
                     | HIGH
                     | LOW
+                    | NULL
+                    | VOID
                     ;
 
 // lexer
