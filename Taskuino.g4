@@ -102,7 +102,6 @@ val                 : number
                     | STRING
                     | bool
                     | literals
-                    | func_call
                     ;
 
 bool                : TRUE
