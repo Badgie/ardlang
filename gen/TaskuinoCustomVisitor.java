@@ -552,6 +552,7 @@ public class TaskuinoCustomVisitor {
                 val = lVisitor.visitLiterals(ctx.literals());
             }
             return val;
+            //TODO: implement function calls
         }
     }
 
