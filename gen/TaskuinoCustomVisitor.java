@@ -571,7 +571,15 @@ public class TaskuinoCustomVisitor {
     private static class ValLiteralVisitor extends TaskuinoBaseVisitor<ValLiteral> {
         @Override
         public ValLiteral visitLiterals(TaskuinoParser.LiteralsContext ctx) {
-            return super.visitLiterals(ctx);
+            if (ctx.OUTPUT() != null) {
+                return new ValLiteral("OUTPUT");
+            } else if (ctx.INPUT() != null) {
+                return new ValLiteral("INPUT");
+            } else if (ctx.HIGH() != null) {
+                return new ValLiteral("HIGH");
+            } else {
+                return new ValLiteral("LOW");
+            }
         }
     }
 
