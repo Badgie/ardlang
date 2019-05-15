@@ -6,6 +6,9 @@ import types.*;
 import types.blockstmts.BlockStmtsDcl;
 import types.blockstmts.BlockStmtsExpr;
 import types.blockstmts.BlockStmtsStmt;
+import types.stmt.ForStmt;
+import types.stmt.FuncStmt;
+import types.stmt.IfStmt;
 import types.stmts.*;
 
 
@@ -103,7 +106,18 @@ public class TaskuinoCustomVisitor {
         public BlockStmtsStmt visitStmt(TaskuinoParser.StmtContext ctx) {
             BlockStmtsStmt stmt = null;
 
-            return null;
+            if (ctx.if_stmt() != null) {
+                IfStmtVisitor visitor = new IfStmtVisitor();
+                stmt = visitor.visitIf_stmt(ctx.if_stmt());
+            } else if (ctx.for_stmt() != null) {
+                ForStmtVisitor visitor = new ForStmtVisitor();
+                stmt = visitor.visitFor_stmt(ctx.for_stmt());
+            } else if (ctx.func_call() != null) {
+                FuncStmtVisitor visitor = new FuncStmtVisitor();
+                stmt = visitor.visitFunc_call(ctx.func_call());
+            }
+
+            return stmt;
         }
     }
 
@@ -121,6 +135,27 @@ public class TaskuinoCustomVisitor {
             BlockStmtsExpr expr = null;
 
             return expr;
+        }
+    }
+
+    private static class IfStmtVisitor extends TaskuinoBaseVisitor<IfStmt> {
+        @Override
+        public IfStmt visitIf_stmt(TaskuinoParser.If_stmtContext ctx) {
+            return super.visitIf_stmt(ctx);
+        }
+    }
+
+    private static class ForStmtVisitor extends TaskuinoBaseVisitor<ForStmt> {
+        @Override
+        public ForStmt visitFor_stmt(TaskuinoParser.For_stmtContext ctx) {
+            return super.visitFor_stmt(ctx);
+        }
+    }
+
+    private static class FuncStmtVisitor extends TaskuinoBaseVisitor<FuncStmt> {
+        @Override
+        public FuncStmt visitFunc_call(TaskuinoParser.Func_callContext ctx) {
+            return super.visitFunc_call(ctx);
         }
     }
 }
