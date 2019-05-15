@@ -309,7 +309,17 @@ public class TaskuinoCustomVisitor {
     private static class FuncStmtVisitor extends TaskuinoBaseVisitor<FuncStmt> {
         @Override
         public FuncStmt visitFunc_call(TaskuinoParser.Func_callContext ctx) {
-            return super.visitFunc_call(ctx);
+            ParamVisitor pVisitor = new ParamVisitor();
+
+            List<Param> params = ctx.param()
+                    .stream()
+                    .map(param -> param.accept(pVisitor))
+                    .collect(toList());
+
+            return new FuncStmt(
+                    ctx.IDENT().getText(),
+                    params
+            );
         }
     }
 
