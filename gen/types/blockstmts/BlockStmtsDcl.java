@@ -1,8 +1,8 @@
-package types.stmts;
+package types.blockstmts;
 
-import types.AST;
+import types.stmts.StmtsBlockStmts;
 
-public class StmtsDcl extends Stmts {
+public class BlockStmtsDcl extends StmtsBlockStmts {
     String type;
     String identifier;
     boolean isArray;
@@ -11,7 +11,7 @@ public class StmtsDcl extends Stmts {
 
     @Override
     public String toString() {
-        return "StmtsDcl{" +
+        return "BlockStmtsDcl{" +
                 "type='" + type + '\'' +
                 '}';
     }
