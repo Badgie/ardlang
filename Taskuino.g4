@@ -50,10 +50,10 @@ bool_expr           : bool_expr bool_op bool_expr
                     | (NOT)? bool
                     ;
 
-if_stmt             : IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END eif_stmt?
+if_stmt             : IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END eif_stmt*
                     ;
 
-eif_stmt            : ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END eif_stmt*
+eif_stmt            : ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END eif_stmt?
                     | ELSE BLOCK_START (block_stmts)* BLOCK_END
                     ;
 
