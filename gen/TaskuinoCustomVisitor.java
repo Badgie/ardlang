@@ -18,12 +18,22 @@ import types.stmts.*;
 import types.value.*;
 
 
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
 
 import static java.util.stream.Collectors.toList;
 
 public class TaskuinoCustomVisitor {
+
+    private Stack<Scope> scopes;
+    public TaskuinoCustomVisitor() {
+        scopes = new Stack<Scope>();
+        scopes.push(new Scope(null));
+    }
+
     public Prog parse(CharStream source) {
         TaskuinoLexer lexer = new TaskuinoLexer(source);
         TokenStream tokens = new CommonTokenStream(lexer);
@@ -628,6 +638,7 @@ public class TaskuinoCustomVisitor {
         }
     }
 
+    //TODO no fully implemented
     private static class TypeVisitor extends TaskuinoBaseVisitor<Type> {
         @Override
         public Type visitType(TaskuinoParser.TypeContext ctx) {
