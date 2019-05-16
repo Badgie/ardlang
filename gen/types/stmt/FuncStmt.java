@@ -13,4 +13,12 @@ public class FuncStmt extends BlockStmtsStmt {
         this.identifier = identifier;
         this.params = params;
     }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public List<Param> getParams() {
+        return params;
+    }
 }
