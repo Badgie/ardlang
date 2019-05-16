@@ -550,9 +550,15 @@ public class TaskuinoCustomVisitor {
             } else if (ctx.literals() != null) {
                 ValLiteralVisitor lVisitor = new ValLiteralVisitor();
                 val = lVisitor.visitLiterals(ctx.literals());
+            } else {
+                FuncStmtVisitor fVisitor = new FuncStmtVisitor();
+                FuncStmt func = fVisitor.visitFunc_call(ctx.func_call());
+                val = new ValFunc(
+                        func.getIdentifier(),
+                        func.getParams()
+                );
             }
             return val;
-            //TODO: implement function calls
         }
     }
 
@@ -596,11 +602,15 @@ public class TaskuinoCustomVisitor {
                 num = new NumberIval(Integer.parseInt(ctx.ival().getText()));
             } else if (ctx.fval() != null) {
                 num = new NumberFval(Double.parseDouble(ctx.fval().getText()));
-            } else {
+            } else if (ctx.IDENT() != null) {
                 num = new ValIdent(ctx.IDENT().getText());
+            } else {
+                num = new NumberArrayIndex(
+                        ctx.IDENT().getText(),
+                        visitNumber(ctx.number())
+                );
             }
             return num;
-            //TODO: implement array index
         }
     }
 
