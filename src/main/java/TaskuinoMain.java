@@ -1,10 +1,10 @@
 import dk.aau.cs.sw411.antlr.TaskuinoLexer;
 import dk.aau.cs.sw411.antlr.TaskuinoParser;
+import dk.aau.cs.sw411.antlr.TaskuinoVisitor;
 import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CommonTokenStream;
+import types.Prog;
 
-//import dk.aau.cs.sw411.ardlang.antlr.CellmataLexer;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,11 +18,18 @@ public class TaskuinoMain {
     }
 
     public static void main(String[] args) {
+
         try {
-            String inputFile = "calc-sum";
-            //TODO get relative path to work.
-            CharStream input = new ANTLRFileStream("C:/Users/Bruger/IdeaProjects/meh/ardlang/dreamcode/" + inputFile + ".tsk");
-            TaskuinoLexer lexer = new TaskuinoLexer(input);
+            String files[] = {"led", "calc-sum", "spin-servo"};
+            for (int i = 0; i < files.length; i++) {
+                CharStream input = new ANTLRFileStream("./dreamcode/" + files[i] + ".tsk");
+                TaskuinoCustomVisitor visitor = new TaskuinoCustomVisitor();
+                Prog p = visitor.parse(input);
+
+                System.out.println(p);
+            }
+
+            /*TaskuinoLexer lexer = new TaskuinoLexer(input);
             TaskuinoParser parser = new TaskuinoParser(new CommonTokenStream(lexer));
 
             FileWriter fileWriter = new FileWriter(inputFile + ".c");
@@ -32,7 +39,7 @@ public class TaskuinoMain {
 
             printWriter.close();
             //parser.addParseListener(new TaskuinoCustomListener());
-            //parser.prog();
+            //parser.prog();*/
         } catch (IOException e) {
             Logger.getLogger(TaskuinoMain.class.getName()).log(Level.SEVERE, (String) null, e);
         }

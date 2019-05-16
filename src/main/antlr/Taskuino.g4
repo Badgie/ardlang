@@ -4,14 +4,17 @@ prog                : stmts* EOF ;
 
 stmts               : task
                     | function
-                    | stmt
+                    | block_stmts
+                    ;
+
+block_stmts         : stmt
                     | expr
                     | dcl
                     ;
 
-task                : TASK IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END ;
+task                : TASK IDENT PAREN_LEFT ival PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
-function            : FUNC IDENT PAREN_LEFT param* PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END ;
+function            : FUNC IDENT PAREN_LEFT param? PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
 
 stmt                : if_stmt
@@ -20,53 +23,57 @@ stmt                : if_stmt
                     ;
 
 expr                : assign
-                    | calc_expr
                     | bool_expr
+                    | calc_expr
                     ;
 
 dcl                 : type IDENT
                     | type IDENT ASSIGN val
                     | type IDENT ASSIGN calc_expr
-                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param* BLOCK_END)?
+                    | type IDENT ASSIGN func_call
+                    | type ARRAY_START ival? ARRAY_END IDENT (ASSIGN BLOCK_START param BLOCK_END)?
                     ;
 
 assign              : IDENT ASSIGN val
                     | IDENT ASSIGN calc_expr
+                    | IDENT ASSIGN func_call
                     ;
 
 calc_expr           : calc_expr_one
                     | calc_expr_two
                     | number mod_op
-                    | IDENT op_pres_two ASSIGN val
+                    | IDENT op_pres_two ASSIGN number
                     ;
 
-bool_expr           : bool_expr bool_op bool_expr
+bool_expr           : bool bool_op bool_expr
                     | PAREN_LEFT? val bool_op val PAREN_RIGHT?
                     | (NOT)? bool
                     ;
 
-if_stmt             : IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END (if_stmt)*
-                    | ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END
-                    | ELSE BLOCK_START stmt* BLOCK_END
+if_stmt             : IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END eif_stmt*
                     ;
 
-for_stmt            : FOR PAREN_LEFT (number | dcl) SEMICOLON bool_condition SEMICOLON calc_expr PAREN_RIGHT BLOCK_START (stmt | expr | dcl)* BLOCK_END ;
+eif_stmt            : ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END eif_stmt?
+                    | ELSE BLOCK_START (block_stmts)* BLOCK_END
+                    ;
 
-func_call           : IDENT PAREN_LEFT param* PAREN_RIGHT ;
+for_stmt            : FOR PAREN_LEFT (number | dcl) SEMICOLON bool_condition SEMICOLON calc_expr PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
-calc_expr_one       : number (op_pres_one number)* ;
+func_call           : IDENT PAREN_LEFT param? PAREN_RIGHT ;
 
-calc_expr_two       : number (op_pres_two calc_expr_one)*
-                    | number
+calc_expr_one       : number (op_pres_one calc_expr_three)? ;
+
+calc_expr_two       : number (op_pres_two calc_expr_one)? ;
+
+calc_expr_three     : number
+                    | calc_expr_two
                     ;
 
 bool_condition      : bool_expr
                     | func_call
                     ;
 
-param               : val PARAM_DELIM param
-                    | val
-                    ;
+param               : val (PARAM_DELIM val)* ;
 
 op_pres_one         : MULT | DIV | MOD ;
 op_pres_two         : PLUS | MINUS ;
@@ -77,6 +84,7 @@ bool_op             : EQ
                     | GRT_EQ
                     | LESS_EQ
                     | OR
+                    | XOR
                     | AND
                     ;
 
@@ -93,7 +101,7 @@ type                : TYPE_INT
 val                 : number
                     | STRING
                     | bool
-                    | lconst
+                    | literals
                     | func_call
                     ;
 
@@ -113,10 +121,12 @@ fval                : DIG.DECDIG
                     | .DECDIG
                     ;
 
-lconst              : OUTPUT
+literals            : OUTPUT
                     | INPUT
                     | HIGH
                     | LOW
+                    | NULL
+                    | VOID
                     ;
 
 // lexer
