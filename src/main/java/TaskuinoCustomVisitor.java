@@ -1,4 +1,7 @@
 
+import dk.aau.cs.sw411.antlr.TaskuinoBaseVisitor;
+import dk.aau.cs.sw411.antlr.TaskuinoLexer;
+import dk.aau.cs.sw411.antlr.TaskuinoParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
@@ -17,10 +20,7 @@ import types.stmt.IfStmt;
 import types.stmts.*;
 import types.value.*;
 
-
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -29,6 +29,7 @@ import static java.util.stream.Collectors.toList;
 public class TaskuinoCustomVisitor {
 
     private Stack<Scope> scopes;
+
     public TaskuinoCustomVisitor() {
         scopes = new Stack<Scope>();
         scopes.push(new Scope(null));
@@ -646,3 +647,4 @@ public class TaskuinoCustomVisitor {
         }
     }
 }
+

@@ -1,9 +1,10 @@
 package types;
 
+import java.util.List;
+
 import types.stmts.Stmts;
 
-import java.util.ArrayList;
-import java.util.List;
+//TODO: note that stmts are actually a list of stmt - FIX!
 
 public class Prog extends AST {
     List<Stmts> stmts;
