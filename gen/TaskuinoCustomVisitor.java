@@ -184,12 +184,20 @@ public class TaskuinoCustomVisitor {
             } else if (ctx.ARRAY_START() != null) {
                 ParamVisitor pVisitor = new ParamVisitor();
 
-                return new BlockStmtsDcl(
-                        ctx.type().getText(),
-                        ctx.IDENT().getText(),
-                        pVisitor.visitParam(ctx.param()),
-                        Integer.parseInt(ctx.ival().getText())
-                );
+                if (ctx.ival() != null) {
+                    return new BlockStmtsDcl(
+                            ctx.type().getText(),
+                            ctx.IDENT().getText(),
+                            pVisitor.visitParam(ctx.param()),
+                            Integer.parseInt(ctx.ival().getText())
+                    );
+                } else {
+                    return new BlockStmtsDcl(
+                            ctx.type().getText(),
+                            ctx.IDENT().getText(),
+                            pVisitor.visitParam(ctx.param())
+                    );
+                }
             } else {
                 if (ctx.val() != null) {
                     ValVisitor vVisitor = new ValVisitor();
@@ -453,11 +461,17 @@ public class TaskuinoCustomVisitor {
         @Override
         public List<Param> visitParam(TaskuinoParser.ParamContext ctx) {
             List<Param> params = new ArrayList<>();
-            int delim = ctx.PARAM_DELIM().size();
-            params.add(new Param(ctx.val(0).getText()));
+            if (ctx != null) {
+                if (ctx.val().size() != 0) {
+                    params.add(new Param(ctx.val(0).getText()));
+                    if (ctx.PARAM_DELIM() != null) {
+                        int delim = ctx.PARAM_DELIM().size();
 
-            for (int i = 1; i < delim; i++) {
-                params.add(new Param(ctx.val(i + 1).getText()));
+                        for (int i = 1; i < delim; i++) {
+                            params.add(new Param(ctx.val(i + 1).getText()));
+                        }
+                    }
+                }
             }
 
             return params;

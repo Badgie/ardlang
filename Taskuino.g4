@@ -14,7 +14,7 @@ block_stmts         : stmt
 
 task                : TASK IDENT PAREN_LEFT ival PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
-function            : FUNC IDENT PAREN_LEFT param PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
+function            : FUNC IDENT PAREN_LEFT param? PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
 
 stmt                : if_stmt
@@ -59,7 +59,7 @@ eif_stmt            : ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START 
 
 for_stmt            : FOR PAREN_LEFT (number | dcl) SEMICOLON bool_condition SEMICOLON calc_expr PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
-func_call           : IDENT PAREN_LEFT param PAREN_RIGHT ;
+func_call           : IDENT PAREN_LEFT param? PAREN_RIGHT ;
 
 calc_expr_one       : number (op_pres_one calc_expr_three)? ;
 

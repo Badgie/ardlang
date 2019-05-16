@@ -57,6 +57,12 @@ public class BlockStmtsDcl extends StmtsBlockStmts {
         this.arraySize = arraySize;
     }
 
+    public BlockStmtsDcl(String type, String identifier, List<Param> params) {
+        this.type = type;
+        this.identifier = identifier;
+        this.params = params;
+    }
+
     @Override
     public String toString() {
         return "BlockStmtsDcl{" +
