@@ -22,12 +22,14 @@ public class TaskuinoMain {
 
     public static void main(String[] args) {
         try {
-            String inputFile = "calc-sum";
-            CharStream input = new ANTLRFileStream("./dreamcode/" + inputFile + ".tsk");
-            TaskuinoCustomVisitor visitor = new TaskuinoCustomVisitor();
-            Prog p = visitor.parse(input);
+            String files[] = {"led", "calc-sum", "spin-servo"};
+            for (int i = 0; i < files.length; i++) {
+                CharStream input = new ANTLRFileStream("./dreamcode/" + files[i] + ".tsk");
+                TaskuinoCustomVisitor visitor = new TaskuinoCustomVisitor();
+                Prog p = visitor.parse(input);
 
-            System.out.println(p);
+                System.out.println(p);
+            }
 
             /*TaskuinoLexer lexer = new TaskuinoLexer(input);
             TaskuinoParser parser = new TaskuinoParser(new CommonTokenStream(lexer));

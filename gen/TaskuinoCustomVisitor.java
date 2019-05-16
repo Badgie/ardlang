@@ -42,7 +42,7 @@ public class TaskuinoCustomVisitor {
                     .stream()
                     .map(stmts -> stmts.accept(stmtsVisitor))
                     .collect(toList());
-            System.out.println(stmtsList);
+
             return new Prog(stmtsList);
         }
     }
