@@ -1,5 +1,7 @@
 package types.expr;
 
+import dk.aau.cs.sw411.antlr.TaskuinoParser;
+import org.antlr.v4.runtime.ParserRuleContext;
 import types.blockstmts.BlockStmtsExpr;
 import types.stmt.FuncStmt;
 import types.value.Val;
@@ -9,19 +11,23 @@ public class AssignExpr extends BlockStmtsExpr {
     Val value;
     CalcExpr cExpr;
     FuncStmt fStmt;
+    ParserRuleContext ctx;
 
-    public AssignExpr(String identifier, Val value) {
+    public AssignExpr(String identifier, Val value, ParserRuleContext ctx) {
         this.identifier = identifier;
         this.value = value;
+        this.ctx = ctx;
     }
 
-    public AssignExpr(String identifier, CalcExpr cExpr) {
+    public AssignExpr(String identifier, CalcExpr cExpr, ParserRuleContext ctx) {
         this.identifier = identifier;
         this.cExpr = cExpr;
+        this.ctx = ctx;
     }
 
-    public AssignExpr(String identifier, FuncStmt fStmt) {
+    public AssignExpr(String identifier, FuncStmt fStmt, ParserRuleContext ctx) {
         this.identifier = identifier;
         this.fStmt = fStmt;
+        this.ctx = ctx;
     }
 }

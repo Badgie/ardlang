@@ -4,6 +4,7 @@ import dk.aau.cs.sw411.antlr.TaskuinoLexer;
 import dk.aau.cs.sw411.antlr.TaskuinoParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStream;
 import types.*;
 import types.blockstmts.BlockStmtsDcl;
@@ -35,14 +36,10 @@ public class TaskuinoCustomVisitor {
         scopes.push(new Scope(null));
     }
 
-    public Prog parse(CharStream source) {
-        TaskuinoLexer lexer = new TaskuinoLexer(source);
-        TokenStream tokens = new CommonTokenStream(lexer);
-        TaskuinoParser parser = new TaskuinoParser(tokens);
-
+    public Prog parse(ParserRuleContext ctx) {
         ProgVisitor visitor = new ProgVisitor();
 
-        return visitor.visit(parser.prog());
+        return visitor.visit(ctx);
     }
 
     private static class ProgVisitor extends TaskuinoBaseVisitor<Prog> {
@@ -54,7 +51,7 @@ public class TaskuinoCustomVisitor {
                     .map(stmts -> stmts.accept(stmtsVisitor))
                     .collect(toList());
 
-            return new Prog(stmtsList);
+            return new Prog(stmtsList, ctx);
         }
     }
 
@@ -92,7 +89,8 @@ public class TaskuinoCustomVisitor {
             return new StmtsFunc(
                     ctx.IDENT().getText(),
                     pVisitor.visitParam(ctx.param()),
-                    blockStmts
+                    blockStmts,
+                    ctx
             );
         }
     }
@@ -110,7 +108,8 @@ public class TaskuinoCustomVisitor {
             return new StmtsTask(
                     ctx.IDENT().getText(),
                     Integer.parseInt(ctx.ival().getText()),
-                    blockStmts
+                    blockStmts,
+                    ctx
             );
         }
     }
@@ -182,14 +181,16 @@ public class TaskuinoCustomVisitor {
                 if (ctx.ARRAY_START() == null) {
                     return new BlockStmtsDcl(
                             ctx.type().getText(),
-                            ctx.IDENT().getText()
+                            ctx.IDENT().getText(),
+                            ctx
                     );
                 } else {
                     return new BlockStmtsDcl(
                             ctx.type().getText(),
                             ctx.IDENT().getText(),
                             true,
-                            Integer.parseInt(ctx.ival().getText())
+                            Integer.parseInt(ctx.ival().getText()),
+                            ctx
                     );
                 }
             } else if (ctx.ARRAY_START() != null) {
@@ -200,13 +201,15 @@ public class TaskuinoCustomVisitor {
                             ctx.type().getText(),
                             ctx.IDENT().getText(),
                             pVisitor.visitParam(ctx.param()),
-                            Integer.parseInt(ctx.ival().getText())
+                            Integer.parseInt(ctx.ival().getText()),
+                            ctx
                     );
                 } else {
                     return new BlockStmtsDcl(
                             ctx.type().getText(),
                             ctx.IDENT().getText(),
-                            pVisitor.visitParam(ctx.param())
+                            pVisitor.visitParam(ctx.param()),
+                            ctx
                     );
                 }
             } else {
@@ -215,21 +218,24 @@ public class TaskuinoCustomVisitor {
                     return new BlockStmtsDcl(
                             ctx.type().getText(),
                             ctx.IDENT().getText(),
-                            vVisitor.visitVal(ctx.val())
+                            vVisitor.visitVal(ctx.val()),
+                            ctx
                     );
                 } else if (ctx.calc_expr() != null) {
                     CalcExprVisitor cVisitor = new CalcExprVisitor();
                     return new BlockStmtsDcl(
                             ctx.type().getText(),
                             ctx.IDENT().getText(),
-                            cVisitor.visitCalc_expr(ctx.calc_expr())
+                            cVisitor.visitCalc_expr(ctx.calc_expr()),
+                            ctx
                     );
                 } else if (ctx.func_call() != null) {
                     FuncStmtVisitor fVisitor = new FuncStmtVisitor();
                     return new BlockStmtsDcl(
                             ctx.type().getText(),
                             ctx.IDENT().getText(),
-                            fVisitor.visitFunc_call(ctx.func_call())
+                            fVisitor.visitFunc_call(ctx.func_call()),
+                            ctx
                     );
                 }
             }
@@ -256,7 +262,8 @@ public class TaskuinoCustomVisitor {
             return new IfStmt(
                     condVisitor.visitBool_condition(ctx.bool_condition()),
                     stmts,
-                    eifStmts
+                    eifStmts,
+                    ctx
             );
         }
     }
@@ -273,11 +280,12 @@ public class TaskuinoCustomVisitor {
                     .collect(toList());
 
             if (ctx.bool_condition() == null) {
-                return new EifStmt(stmts);
+                return new EifStmt(stmts, ctx);
             } else {
                 return new EifStmt(
                         boolVisitor.visitBool_condition(ctx.bool_condition()),
-                        stmts
+                        stmts,
+                        ctx
                 );
             }
         }
@@ -302,14 +310,16 @@ public class TaskuinoCustomVisitor {
                         dclVisitor.visitDcl(ctx.dcl()),
                         boolVisitor.visitBool_condition(ctx.bool_condition()),
                         calcVisitor.visitCalc_expr(ctx.calc_expr()),
-                        stmts
+                        stmts,
+                        ctx
                 );
             } else {
                 return new ForStmt(
                         numVisitor.visitNumber(ctx.number()),
                         boolVisitor.visitBool_condition(ctx.bool_condition()),
                         calcVisitor.visitCalc_expr(ctx.calc_expr()),
-                        stmts
+                        stmts,
+                        ctx
                 );
             }
         }
@@ -322,7 +332,8 @@ public class TaskuinoCustomVisitor {
 
             return new FuncStmt(
                     ctx.IDENT().getText(),
-                    pVisitor.visitParam(ctx.param())
+                    pVisitor.visitParam(ctx.param()),
+                    ctx
             );
         }
     }
@@ -334,19 +345,22 @@ public class TaskuinoCustomVisitor {
                 ValVisitor vVisitor = new ValVisitor();
                 return new AssignExpr(
                         ctx.IDENT().getText(),
-                        vVisitor.visitVal(ctx.val())
+                        vVisitor.visitVal(ctx.val()),
+                        ctx
                 );
             } else if (ctx.calc_expr() != null) {
                 CalcExprVisitor cVisitor = new CalcExprVisitor();
                 return new AssignExpr(
                         ctx.IDENT().getText(),
-                        cVisitor.visitCalc_expr(ctx.calc_expr())
+                        cVisitor.visitCalc_expr(ctx.calc_expr()),
+                        ctx
                 );
             } else {
                 FuncStmtVisitor fVisitor = new FuncStmtVisitor();
                 return new AssignExpr(
                         ctx.IDENT().getText(),
-                        fVisitor.visitFunc_call(ctx.func_call())
+                        fVisitor.visitFunc_call(ctx.func_call()),
+                        ctx
                 );
             }
         }
@@ -362,16 +376,21 @@ public class TaskuinoCustomVisitor {
                     return new BoolExpr(
                             boolVisitor.visitBool(ctx.bool()),
                             visitBool_expr(ctx.bool_expr()),
-                            boolOpVisitor.visitBool_op(ctx.bool_op())
+                            boolOpVisitor.visitBool_op(ctx.bool_op()),
+                            ctx
                     );
                 } else {
                     if (ctx.NOT() != null) {
                         return new BoolExpr(
                                 boolVisitor.visitBool(ctx.bool()),
-                                new Operator.Not()
+                                new Operator.Not(),
+                                ctx
                         );
                     } else {
-                        return new BoolExpr(boolVisitor.visitBool(ctx.bool()));
+                        return new BoolExpr(
+                                boolVisitor.visitBool(ctx.bool()),
+                                ctx
+                        );
                     }
                 }
             } else {
@@ -379,7 +398,8 @@ public class TaskuinoCustomVisitor {
                 return new BoolExpr(
                         boolOpVisitor.visitBool_op(ctx.bool_op()),
                         vVisitor.visitVal(ctx.val(0)),
-                        vVisitor.visitVal(ctx.val(1))
+                        vVisitor.visitVal(ctx.val(1)),
+                        ctx
                 );
             }
         }
@@ -401,14 +421,16 @@ public class TaskuinoCustomVisitor {
                 ModOpVisitor mVisitor = new ModOpVisitor();
                 calcExpr = new CalcExpr(
                         nVisitor.visitNumber(ctx.number()),
-                        mVisitor.visitMod_op(ctx.mod_op())
+                        mVisitor.visitMod_op(ctx.mod_op()),
+                        ctx
                 );
             } else {
                 OpPresTwoVisitor opVisitor = new OpPresTwoVisitor();
                 calcExpr = new CalcExpr(
                         ctx.IDENT().getText(),
                         opVisitor.visitOp_pres_two(ctx.op_pres_two()),
-                        nVisitor.visitNumber(ctx.number())
+                        nVisitor.visitNumber(ctx.number()),
+                        ctx
                 );
             }
 
@@ -424,12 +446,16 @@ public class TaskuinoCustomVisitor {
             CalcExprThreeVisitor threeVisitor = new CalcExprThreeVisitor();
 
             if (ctx.op_pres_one() == null) {
-                return new CalcExpr(nVisitor.visitNumber(ctx.number()));
+                return new CalcExpr(
+                        nVisitor.visitNumber(ctx.number()),
+                        ctx
+                );
             } else {
                 return new CalcExpr(
                         nVisitor.visitNumber(ctx.number()),
                         oVisitor.visitOp_pres_one(ctx.op_pres_one()),
-                        threeVisitor.visitCalc_expr_three(ctx.calc_expr_three())
+                        threeVisitor.visitCalc_expr_three(ctx.calc_expr_three()),
+                        ctx
                 );
             }
         }
@@ -443,12 +469,16 @@ public class TaskuinoCustomVisitor {
             CalcExprOneVisitor oneVisitor = new CalcExprOneVisitor();
 
             if (ctx.op_pres_two() == null) {
-                return new CalcExpr(nVisitor.visitNumber(ctx.number()));
+                return new CalcExpr(
+                        nVisitor.visitNumber(ctx.number()),
+                        ctx
+                );
             } else {
                 return new CalcExpr(
                         nVisitor.visitNumber(ctx.number()),
                         oVisitor.visitOp_pres_two(ctx.op_pres_two()),
-                        oneVisitor.visitCalc_expr_one(ctx.calc_expr_one())
+                        oneVisitor.visitCalc_expr_one(ctx.calc_expr_one()),
+                        ctx
                 );
             }
         }
@@ -461,9 +491,15 @@ public class TaskuinoCustomVisitor {
             CalcExprTwoVisitor twoVisitor = new CalcExprTwoVisitor();
 
             if (ctx.number() != null) {
-                return new CalcExpr(nVisitor.visitNumber(ctx.number()));
+                return new CalcExpr(
+                        nVisitor.visitNumber(ctx.number()),
+                        ctx
+                );
             } else {
-                return new CalcExpr(twoVisitor.visitCalc_expr_two(ctx.calc_expr_two()));
+                return new CalcExpr(
+                        twoVisitor.visitCalc_expr_two(ctx.calc_expr_two()),
+                        ctx
+                );
             }
         }
     }
@@ -474,12 +510,12 @@ public class TaskuinoCustomVisitor {
             List<Param> params = new ArrayList<>();
             if (ctx != null) {
                 if (ctx.val().size() != 0) {
-                    params.add(new Param(ctx.val(0).getText()));
+                    params.add(new Param(ctx.val(0).getText(), ctx));
                     if (ctx.PARAM_DELIM() != null) {
                         int delim = ctx.PARAM_DELIM().size();
 
                         for (int i = 1; i < delim; i++) {
-                            params.add(new Param(ctx.val(i + 1).getText()));
+                            params.add(new Param(ctx.val(i + 1).getText(), ctx));
                         }
                     }
                 }
@@ -494,10 +530,10 @@ public class TaskuinoCustomVisitor {
         public BoolCondition visitBool_condition(TaskuinoParser.Bool_conditionContext ctx) {
             if (ctx.bool_expr() != null) {
                 BoolExprVisitor bVisitor = new BoolExprVisitor();
-                return new BoolCondition(bVisitor.visitBool_expr(ctx.bool_expr()));
+                return new BoolCondition(bVisitor.visitBool_expr(ctx.bool_expr()), ctx);
             } else {
                 FuncStmtVisitor fVisitor = new FuncStmtVisitor();
-                return new BoolCondition(fVisitor.visitFunc_call(ctx.func_call()));
+                return new BoolCondition(fVisitor.visitFunc_call(ctx.func_call()), ctx);
             }
         }
     }
@@ -568,7 +604,7 @@ public class TaskuinoCustomVisitor {
                 ValNumberVisitor nVisitor = new ValNumberVisitor();
                 val = nVisitor.visitNumber(ctx.number());
             } else if (ctx.STRING() != null) {
-                val = new ValString(ctx.STRING().getText());
+                val = new ValString(ctx.STRING().getText(), ctx);
             } else if (ctx.bool() != null) {
                 ValBoolVisitor bVisitor = new ValBoolVisitor();
                 val = bVisitor.visitBool(ctx.bool());
@@ -580,7 +616,8 @@ public class TaskuinoCustomVisitor {
                 FuncStmt func = fVisitor.visitFunc_call(ctx.func_call());
                 val = new ValFunc(
                         func.getIdentifier(),
-                        func.getParams()
+                        func.getParams(),
+                        ctx
                 );
             }
             return val;
@@ -591,11 +628,11 @@ public class TaskuinoCustomVisitor {
         @Override
         public ValBool visitBool(TaskuinoParser.BoolContext ctx) {
             if (ctx.TRUE() != null) {
-                return new ValBool(true);
+                return new ValBool(true, ctx);
             } else if (ctx.FALSE() != null) {
-                return new ValBool(false);
+                return new ValBool(false, ctx);
             } else {
-                return new ValBool(ctx.IDENT().getText());
+                return new ValBool(ctx.IDENT().getText(), ctx);
             }
         }
     }
@@ -604,17 +641,17 @@ public class TaskuinoCustomVisitor {
         @Override
         public ValLiteral visitLiterals(TaskuinoParser.LiteralsContext ctx) {
             if (ctx.OUTPUT() != null) {
-                return new ValLiteral("OUTPUT");
+                return new ValLiteral("OUTPUT", ctx);
             } else if (ctx.INPUT() != null) {
-                return new ValLiteral("INPUT");
+                return new ValLiteral("INPUT", ctx);
             } else if (ctx.HIGH() != null) {
-                return new ValLiteral("HIGH");
+                return new ValLiteral("HIGH", ctx);
             } else if (ctx.LOW() != null) {
-                return new ValLiteral("LOW");
+                return new ValLiteral("LOW", ctx);
             } else if (ctx.VOID() != null) {
-                return new ValLiteral("void");
+                return new ValLiteral("void", ctx);
             } else {
-                return new ValLiteral("null");
+                return new ValLiteral("null", ctx);
             }
         }
     }
@@ -624,15 +661,16 @@ public class TaskuinoCustomVisitor {
         public ValNumber visitNumber(TaskuinoParser.NumberContext ctx) {
             ValNumber num;
             if (ctx.ival() != null) {
-                num = new NumberIval(Integer.parseInt(ctx.ival().getText()));
+                num = new NumberIval(Integer.parseInt(ctx.ival().getText()), ctx);
             } else if (ctx.fval() != null) {
-                num = new NumberFval(Double.parseDouble(ctx.fval().getText()));
+                num = new NumberFval(Double.parseDouble(ctx.fval().getText()), ctx);
             } else if (ctx.IDENT() != null) {
-                num = new ValIdent(ctx.IDENT().getText());
+                num = new ValIdent(ctx.IDENT().getText(), ctx);
             } else {
                 num = new NumberArrayIndex(
                         ctx.IDENT().getText(),
-                        visitNumber(ctx.number())
+                        visitNumber(ctx.number()),
+                        ctx
                 );
             }
             return num;
