@@ -1,11 +1,8 @@
-package types.prettyprint;
+package visitor;
 
 import dk.aau.cs.sw411.antlr.TaskuinoBaseVisitor;
 import dk.aau.cs.sw411.antlr.TaskuinoParser;
-import types.AST;
-import types.BoolCondition;
-import types.Param;
-import types.Prog;
+import types.*;
 import types.blockstmts.BlockStmtsDcl;
 import types.blockstmts.BlockStmtsExpr;
 import types.blockstmts.BlockStmtsStmt;
@@ -28,77 +25,184 @@ public class PrettyPrint extends ASTVisitor<AST> {
     private StringBuilder string = new StringBuilder();
 
     public void print(AST ast) {
-
+        visit(ast);
     }
 
     @Override
     public AST visit(Prog node) {
-
+        for (Stmts s : node.getStmts()) {
+            visit(s);
+            string.append("\n");
+        }
         return null;
     }
 
     @Override
     public AST visit(Stmts node) {
+        visit((AST) node);
         return null;
     }
 
     @Override
     public AST visit(StmtsTask node) {
+        string.append("task ")
+                .append(node.getIdentifier())
+                .append("(")
+                .append(node.getInterval())
+                .append(") {");
+        for (StmtsBlockStmts s : node.getStmts()) {
+            visit(s);
+        }
+        string.append("}");
+
         return null;
     }
 
     @Override
     public AST visit(StmtsFunc node) {
+        string.append("func ")
+                .append(node.getIdentifier())
+                .append("(");
+        for (Param p : node.getParams()) {
+            visit(p);
+        }
+        string.append(") {");
+        for (StmtsBlockStmts s : node.getStmts()) {
+            visit(s);
+        }
+        string.append("}");
         return null;
     }
 
     @Override
     public AST visit(StmtsBlockStmts node) {
+        visit((AST) node);
         return null;
     }
 
     @Override
     public AST visit(BlockStmtsDcl node) {
+        visit(node.getType());
+        if (!node.isArray()) {
+            string.append(node.getIdentifier())
+                    .append(" = ");
+            if (node.getValue() != null) {
+                string.append(node.getValue());
+            } else if (node.getcExpr() != null) {
+                visit(node.getcExpr());
+            } else {
+                visit(node.getfStmt());
+            }
+        } else {
+            string.append("[")
+                    .append(node.getArraySize())
+                    .append("]")
+                    .append(node.getIdentifier());
+            if (node.getParams() != null) {
+                string.append(" = ")
+                        .append("{");
+                for (Param p : node.getParams()) {
+                    visit(p);
+                }
+                string.append("}");
+            }
+        }
         return null;
     }
 
     @Override
     public AST visit(BlockStmtsExpr node) {
+        visit((AST) node);
         return null;
     }
 
     @Override
     public AST visit(BlockStmtsStmt node) {
+        visit((AST) node);
         return null;
     }
 
     @Override
     public AST visit(IfStmt node) {
+        string.append("if (");
+        visit(node.getCondition());
+        string.append(") {");
+        for (StmtsBlockStmts s : node.getStmts()) {
+            visit(s);
+        }
+        string.append("}");
+        for (EifStmt e : node.getEifStmts()) {
+            visit(e);
+        }
         return null;
     }
 
     @Override
     public AST visit(EifStmt node) {
+        if (node.getCondition() != null) {
+            string.append("else if (");
+            visit(node.getCondition());
+            string.append(") {");
+        } else {
+            string.append("else {");
+        }
+        for (StmtsBlockStmts s : node.getStmts()) {
+            visit(s);
+        }
+        string.append("}");
         return null;
     }
 
     @Override
     public AST visit(ForStmt node) {
+        string.append("for (");
+        if (node.getDcl() != null) {
+            visit(node.getDcl());
+        } else {
+            visit(node.getNum());
+        }
+        string.append(";");
+        visit(node.getCond());
+        string.append(";");
+        visit(node.getcExpr());
+        string.append(") {");
+        for (StmtsBlockStmts s : node.getStmts()) {
+            visit(s);
+        }
+        string.append("}");
         return null;
     }
 
     @Override
     public AST visit(FuncStmt node) {
+        string.append(node.getIdentifier())
+                .append("(");
+        if (node.getParams() != null) {
+            for (Param p : node.getParams()) {
+                visit(p);
+            }
+        }
+        string.append(")");
         return null;
     }
 
     @Override
     public AST visit(AssignExpr node) {
+        string.append(node.getIdentifier())
+                .append(" = ");
+        if (node.getfStmt() != null) {
+            visit(node.getfStmt());
+        } else if (node.getcExpr() != null) {
+            visit(node.getcExpr());
+        } else {
+            visit(node.getValue());
+        }
         return null;
     }
 
     @Override
     public AST visit(BoolExpr node) {
+        
         return null;
     }
 
@@ -255,5 +359,35 @@ public class PrettyPrint extends ASTVisitor<AST> {
     @Override
     public AST visit(Operator.Equal node) {
         return null;
+    }
+
+    @Override
+    public AST visit(Type node) {
+        return null;
+    }
+
+    @Override
+    public AST visit(Type.TypeInt node) {
+        return null;
+    }
+
+    @Override
+    public AST visit(Type.TypeString node) {
+        return null;
+    }
+
+    @Override
+    public AST visit(Type.TypeDouble node) {
+        return null;
+    }
+
+    @Override
+    public AST visit(Type.TypeBool node) {
+        return null;
+    }
+
+    @Override
+    public AST visit(AST node) {
+        return super.visit(node);
     }
 }
