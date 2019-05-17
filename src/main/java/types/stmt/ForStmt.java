@@ -33,4 +33,28 @@ public class ForStmt extends BlockStmtsStmt {
         this.stmts = stmts;
         this.ctx = ctx;
     }
+
+    public BlockStmtsDcl getDcl() {
+        return dcl;
+    }
+
+    public ValNumber getNum() {
+        return num;
+    }
+
+    public BoolCondition getCond() {
+        return cond;
+    }
+
+    public CalcExpr getcExpr() {
+        return cExpr;
+    }
+
+    public List<StmtsBlockStmts> getStmts() {
+        return stmts;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

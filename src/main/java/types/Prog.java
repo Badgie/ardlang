@@ -15,4 +15,12 @@ public class Prog extends AST {
         this.stmts = stmts;
         this.ctx = ctx;
     }
+
+    public List<Stmts> getStmts() {
+        return stmts;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

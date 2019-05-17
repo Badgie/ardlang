@@ -10,4 +10,12 @@ public class NumberFval extends ValNumber {
         this.value = value;
         this.ctx = ctx;
     }
+
+    public double getValue() {
+        return value;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

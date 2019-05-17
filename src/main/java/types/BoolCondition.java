@@ -18,4 +18,16 @@ public class BoolCondition extends AST {
         this.funcStmt = funcStmt;
         this.ctx = ctx;
     }
+
+    public BoolExpr getBoolExpr() {
+        return boolExpr;
+    }
+
+    public FuncStmt getFuncStmt() {
+        return funcStmt;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

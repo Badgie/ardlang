@@ -16,4 +16,16 @@ public class ValBool extends Val {
         this.identifier = identifier;
         this.ctx = ctx;
     }
+
+    public boolean isValue() {
+        return value;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

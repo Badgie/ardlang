@@ -17,6 +17,10 @@ public class FuncStmt extends BlockStmtsStmt {
         this.ctx = ctx;
     }
 
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
+
     public String getIdentifier() {
         return identifier;
     }

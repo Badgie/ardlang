@@ -19,4 +19,16 @@ public class Param extends AST {
         this.param = param;
         this.ctx = ctx;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public Param getParam() {
+        return param;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

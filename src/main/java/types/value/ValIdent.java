@@ -10,4 +10,12 @@ public class ValIdent extends ValNumber {
         this.identifier = identifier;
         this.ctx = ctx;
     }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

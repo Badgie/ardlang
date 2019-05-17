@@ -19,6 +19,22 @@ public class StmtsFunc extends Stmts {
         this.ctx = ctx;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public List<Param> getParams() {
+        return params;
+    }
+
+    public List<StmtsBlockStmts> getStmts() {
+        return stmts;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
+
     @Override
     public String toString() {
         return "StmtsFunc{" +

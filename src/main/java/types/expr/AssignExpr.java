@@ -30,4 +30,24 @@ public class AssignExpr extends BlockStmtsExpr {
         this.fStmt = fStmt;
         this.ctx = ctx;
     }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public Val getValue() {
+        return value;
+    }
+
+    public CalcExpr getcExpr() {
+        return cExpr;
+    }
+
+    public FuncStmt getfStmt() {
+        return fStmt;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

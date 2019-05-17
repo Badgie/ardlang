@@ -15,4 +15,16 @@ public class ValFunc extends Val {
         this.params = params;
         this.ctx = ctx;
     }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public List<Param> getParams() {
+        return params;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

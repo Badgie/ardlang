@@ -43,4 +43,40 @@ public class BoolExpr extends BlockStmtsExpr {
         this.negation = negation;
         this.ctx = ctx;
     }
+
+    public ValBool getBool() {
+        return bool;
+    }
+
+    public ValBool getLeftBool() {
+        return leftBool;
+    }
+
+    public ValBool getRightBool() {
+        return rightBool;
+    }
+
+    public BoolExpr getRightBoolExpr() {
+        return rightBoolExpr;
+    }
+
+    public Operator getOp() {
+        return op;
+    }
+
+    public Val getLeftVal() {
+        return leftVal;
+    }
+
+    public Val getRightVal() {
+        return rightVal;
+    }
+
+    public Operator.Not getNegation() {
+        return negation;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

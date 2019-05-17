@@ -12,4 +12,16 @@ public class NumberArrayIndex extends ValNumber {
         this.index = index;
         this.ctx = ctx;
     }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public ValNumber getIndex() {
+        return index;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

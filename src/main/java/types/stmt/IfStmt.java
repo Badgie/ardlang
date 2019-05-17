@@ -19,4 +19,20 @@ public class IfStmt extends BlockStmtsStmt {
         this.eifStmts = eifStmts;
         this.ctx = ctx;
     }
+
+    public BoolCondition getCondition() {
+        return condition;
+    }
+
+    public List<StmtsBlockStmts> getStmts() {
+        return stmts;
+    }
+
+    public List<EifStmt> getEifStmts() {
+        return eifStmts;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

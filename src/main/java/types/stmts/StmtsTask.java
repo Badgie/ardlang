@@ -18,6 +18,22 @@ public class StmtsTask extends Stmts {
         this.ctx = ctx;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public List<StmtsBlockStmts> getStmts() {
+        return stmts;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
+
     @Override
     public String toString() {
         return "StmtsTask{" +

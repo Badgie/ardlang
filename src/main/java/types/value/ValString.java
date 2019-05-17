@@ -10,4 +10,12 @@ public class ValString extends Val {
         this.value = value;
         this.ctx = ctx;
     }
+
+    public String getValue() {
+        return value;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }

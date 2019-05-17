@@ -73,6 +73,42 @@ public class BlockStmtsDcl extends StmtsBlockStmts {
         this.ctx = ctx;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public boolean isArray() {
+        return isArray;
+    }
+
+    public Val getValue() {
+        return value;
+    }
+
+    public CalcExpr getcExpr() {
+        return cExpr;
+    }
+
+    public FuncStmt getfStmt() {
+        return fStmt;
+    }
+
+    public List<Param> getParams() {
+        return params;
+    }
+
+    public int getArraySize() {
+        return arraySize;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
+
     @Override
     public String toString() {
         return "BlockStmtsDcl{" +

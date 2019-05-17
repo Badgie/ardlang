@@ -45,4 +45,28 @@ public class CalcExpr extends BlockStmtsExpr {
         this.expr = expr;
         this.ctx = ctx;
     }
+
+    public ValNumber getNum() {
+        return num;
+    }
+
+    public ValNumber getNumRight() {
+        return numRight;
+    }
+
+    public Operator getOp() {
+        return op;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public CalcExpr getExpr() {
+        return expr;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
+    }
 }
