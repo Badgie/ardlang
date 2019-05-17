@@ -3,6 +3,7 @@ package types.blockstmts;
 import dk.aau.cs.sw411.antlr.TaskuinoParser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import types.Param;
+import types.Type;
 import types.expr.CalcExpr;
 import types.stmt.FuncStmt;
 import types.stmts.StmtsBlockStmts;
@@ -12,7 +13,7 @@ import types.value.Val;
 import java.util.List;
 
 public class BlockStmtsDcl extends StmtsBlockStmts {
-    String type;
+    Type type;
     String identifier;
     boolean isArray;
     Val value;
@@ -22,34 +23,34 @@ public class BlockStmtsDcl extends StmtsBlockStmts {
     int arraySize;
     ParserRuleContext ctx;
 
-    public BlockStmtsDcl(String type, String identifier, ParserRuleContext ctx) {
+    public BlockStmtsDcl(Type type, String identifier, ParserRuleContext ctx) {
         this.type = type;
         this.identifier = identifier;
         this.ctx = ctx;
     }
 
-    public BlockStmtsDcl(String type, String identifier, Val value, ParserRuleContext ctx) {
+    public BlockStmtsDcl(Type type, String identifier, Val value, ParserRuleContext ctx) {
         this.type = type;
         this.identifier = identifier;
         this.value = value;
         this.ctx = ctx;
     }
 
-    public BlockStmtsDcl(String type, String identifier, CalcExpr cExpr, ParserRuleContext ctx) {
+    public BlockStmtsDcl(Type type, String identifier, CalcExpr cExpr, ParserRuleContext ctx) {
         this.type = type;
         this.identifier = identifier;
         this.cExpr = cExpr;
         this.ctx = ctx;
     }
 
-    public BlockStmtsDcl(String type, String identifier, FuncStmt fStmt, ParserRuleContext ctx) {
+    public BlockStmtsDcl(Type type, String identifier, FuncStmt fStmt, ParserRuleContext ctx) {
         this.type = type;
         this.identifier = identifier;
         this.fStmt = fStmt;
         this.ctx = ctx;
     }
 
-    public BlockStmtsDcl(String type, String identifier, boolean isArray, int arraySize, ParserRuleContext ctx) {
+    public BlockStmtsDcl(Type type, String identifier, boolean isArray, int arraySize, ParserRuleContext ctx) {
         this.type = type;
         this.identifier = identifier;
         this.isArray = isArray;
@@ -57,7 +58,7 @@ public class BlockStmtsDcl extends StmtsBlockStmts {
         this.ctx = ctx;
     }
 
-    public BlockStmtsDcl(String type, String identifier, List<Param> params, int arraySize, ParserRuleContext ctx) {
+    public BlockStmtsDcl(Type type, String identifier, List<Param> params, int arraySize, ParserRuleContext ctx) {
         this.type = type;
         this.identifier = identifier;
         this.isArray = true;
@@ -66,14 +67,14 @@ public class BlockStmtsDcl extends StmtsBlockStmts {
         this.ctx = ctx;
     }
 
-    public BlockStmtsDcl(String type, String identifier, List<Param> params, ParserRuleContext ctx) {
+    public BlockStmtsDcl(Type type, String identifier, List<Param> params, ParserRuleContext ctx) {
         this.type = type;
         this.identifier = identifier;
         this.params = params;
         this.ctx = ctx;
     }
 
-    public String getType() {
+    public Type getType() {
         return type;
     }
 

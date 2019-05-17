@@ -1,9 +1,6 @@
 package visitor;
 
-import types.AST;
-import types.BoolCondition;
-import types.Param;
-import types.Prog;
+import types.*;
 import types.blockstmts.BlockStmtsDcl;
 import types.blockstmts.BlockStmtsExpr;
 import types.blockstmts.BlockStmtsStmt;
@@ -67,6 +64,11 @@ public abstract class ASTVisitor<T> {
     public abstract T visit(Operator.Lesser node);
     public abstract T visit(Operator.Xor node);
     public abstract T visit(Operator.Equal node);
+    public abstract T visit(Type node);
+    public abstract T visit(Type.TypeInt node);
+    public abstract T visit(Type.TypeString node);
+    public abstract T visit(Type.TypeDouble node);
+    public abstract T visit(Type.TypeBool node);
 
     public T visit(AST node) {
         if (node instanceof Prog) {
@@ -170,6 +172,18 @@ public abstract class ASTVisitor<T> {
                 return visit((ValLiteral) node);
             } else if (node instanceof ValBool) {
                 return visit((ValBool) node);
+            } else {
+                throw new Error("node not recognized");
+            }
+        } else if (node instanceof Type) {
+            if (node instanceof Type.TypeInt) {
+                return visit((Type.TypeInt) node);
+            } else if (node instanceof Type.TypeString) {
+                return visit((Type.TypeString) node);
+            } else if (node instanceof Type.TypeDouble) {
+                return visit((Type.TypeDouble) node);
+            } else if (node instanceof Type.TypeBool) {
+                return visit((Type.TypeBool) node);
             } else {
                 throw new Error("node not recognized");
             }

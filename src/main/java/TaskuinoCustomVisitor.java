@@ -177,16 +177,17 @@ public class TaskuinoCustomVisitor {
     private static class BlockStmtsDclVisitor extends TaskuinoBaseVisitor<BlockStmtsDcl> {
         @Override
         public BlockStmtsDcl visitDcl(TaskuinoParser.DclContext ctx) {
+            TypeVisitor visitor = new TypeVisitor();
             if (ctx.ASSIGN() == null) {
                 if (ctx.ARRAY_START() == null) {
                     return new BlockStmtsDcl(
-                            ctx.type().getText(),
+                            visitor.visitType(ctx.type()),
                             ctx.IDENT().getText(),
                             ctx
                     );
                 } else {
                     return new BlockStmtsDcl(
-                            ctx.type().getText(),
+                            visitor.visitType(ctx.type()),
                             ctx.IDENT().getText(),
                             true,
                             Integer.parseInt(ctx.ival().getText()),
@@ -198,7 +199,7 @@ public class TaskuinoCustomVisitor {
 
                 if (ctx.ival() != null) {
                     return new BlockStmtsDcl(
-                            ctx.type().getText(),
+                            visitor.visitType(ctx.type()),
                             ctx.IDENT().getText(),
                             pVisitor.visitParam(ctx.param()),
                             Integer.parseInt(ctx.ival().getText()),
@@ -206,7 +207,7 @@ public class TaskuinoCustomVisitor {
                     );
                 } else {
                     return new BlockStmtsDcl(
-                            ctx.type().getText(),
+                            visitor.visitType(ctx.type()),
                             ctx.IDENT().getText(),
                             pVisitor.visitParam(ctx.param()),
                             ctx
@@ -216,7 +217,7 @@ public class TaskuinoCustomVisitor {
                 if (ctx.val() != null) {
                     ValVisitor vVisitor = new ValVisitor();
                     return new BlockStmtsDcl(
-                            ctx.type().getText(),
+                            visitor.visitType(ctx.type()),
                             ctx.IDENT().getText(),
                             vVisitor.visitVal(ctx.val()),
                             ctx
@@ -224,7 +225,7 @@ public class TaskuinoCustomVisitor {
                 } else if (ctx.calc_expr() != null) {
                     CalcExprVisitor cVisitor = new CalcExprVisitor();
                     return new BlockStmtsDcl(
-                            ctx.type().getText(),
+                            visitor.visitType(ctx.type()),
                             ctx.IDENT().getText(),
                             cVisitor.visitCalc_expr(ctx.calc_expr()),
                             ctx
@@ -232,7 +233,7 @@ public class TaskuinoCustomVisitor {
                 } else if (ctx.func_call() != null) {
                     FuncStmtVisitor fVisitor = new FuncStmtVisitor();
                     return new BlockStmtsDcl(
-                            ctx.type().getText(),
+                            visitor.visitType(ctx.type()),
                             ctx.IDENT().getText(),
                             fVisitor.visitFunc_call(ctx.func_call()),
                             ctx
@@ -681,7 +682,15 @@ public class TaskuinoCustomVisitor {
     private static class TypeVisitor extends TaskuinoBaseVisitor<Type> {
         @Override
         public Type visitType(TaskuinoParser.TypeContext ctx) {
-            return null;
+            if (ctx.TYPE_INT() != null) {
+                return new Type.TypeInt();
+            } else if (ctx.TYPE_STRING() != null) {
+                return new Type.TypeString();
+            } else if (ctx.TYPE_DOUBLE() != null) {
+                return new Type.TypeDouble();
+            } else {
+                return new Type.TypeBool();
+            }
         }
     }
 }
