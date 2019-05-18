@@ -21,7 +21,7 @@ import types.stmts.StmtsTask;
 import types.value.*;
 import visitor.ASTVisitor;
 
-public class PrettyPrint extends ASTVisitor<AST> {
+public class PrettyPrint extends ASTVisitor {
     private StringBuilder string = new StringBuilder();
 
     public void print(AST ast) {
@@ -30,22 +30,20 @@ public class PrettyPrint extends ASTVisitor<AST> {
     }
 
     @Override
-    public AST visit(Prog node) {
+    public void visit(Prog node) {
         for (Stmts s : node.getStmts()) {
             visit(s);
             string.append("\n");
         }
-        return null;
     }
 
     @Override
-    public AST visit(Stmts node) {
+    public void visit(Stmts node) {
         visit((AST) node);
-        return null;
     }
 
     @Override
-    public AST visit(StmtsTask node) {
+    public void visit(StmtsTask node) {
         string.append("task ")
                 .append(node.getIdentifier())
                 .append("(")
@@ -56,11 +54,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
         }
         string.append("}");
 
-        return null;
     }
 
     @Override
-    public AST visit(StmtsFunc node) {
+    public void visit(StmtsFunc node) {
         string.append("func ")
                 .append(node.getIdentifier())
                 .append("(");
@@ -76,17 +73,15 @@ public class PrettyPrint extends ASTVisitor<AST> {
             visit(s);
         }
         string.append("}");
-        return null;
     }
 
     @Override
-    public AST visit(StmtsBlockStmts node) {
+    public void visit(StmtsBlockStmts node) {
         visit((AST) node);
-        return null;
     }
 
     @Override
-    public AST visit(BlockStmtsDcl node) {
+    public void visit(BlockStmtsDcl node) {
         visit(node.getType());
         if (!node.isArray()) {
             string.append(node.getIdentifier())
@@ -116,23 +111,20 @@ public class PrettyPrint extends ASTVisitor<AST> {
                 string.append("}");
             }
         }
-        return null;
     }
 
     @Override
-    public AST visit(BlockStmtsExpr node) {
+    public void visit(BlockStmtsExpr node) {
         visit((AST) node);
-        return null;
     }
 
     @Override
-    public AST visit(BlockStmtsStmt node) {
+    public void visit(BlockStmtsStmt node) {
         visit((AST) node);
-        return null;
     }
 
     @Override
-    public AST visit(IfStmt node) {
+    public void visit(IfStmt node) {
         string.append("if (");
         visit(node.getCondition());
         string.append(") {");
@@ -143,11 +135,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
         for (EifStmt e : node.getEifStmts()) {
             visit(e);
         }
-        return null;
     }
 
     @Override
-    public AST visit(EifStmt node) {
+    public void visit(EifStmt node) {
         if (node.getCondition() != null) {
             string.append("else if (");
             visit(node.getCondition());
@@ -159,11 +150,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
             visit(s);
         }
         string.append("}");
-        return null;
     }
 
     @Override
-    public AST visit(ForStmt node) {
+    public void visit(ForStmt node) {
         string.append("for (");
         if (node.getDcl() != null) {
             visit(node.getDcl());
@@ -179,11 +169,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
             visit(s);
         }
         string.append("}");
-        return null;
     }
 
     @Override
-    public AST visit(FuncStmt node) {
+    public void visit(FuncStmt node) {
         string.append(node.getIdentifier());
         string.append("(");
         if (node.getParams() != null) {
@@ -197,11 +186,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
             }
         }
         string.append(")");
-        return null;
     }
 
     @Override
-    public AST visit(AssignExpr node) {
+    public void visit(AssignExpr node) {
         string.append(node.getIdentifier())
                 .append(" = ");
         if (node.getfStmt() != null) {
@@ -211,11 +199,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
         } else {
             visit(node.getValue());
         }
-        return null;
     }
 
     @Override
-    public AST visit(BoolExpr node) {
+    public void visit(BoolExpr node) {
         if (node.getLeftBool() != null || node.getBool() != null) {
             if (node.getOp() != null) {
                 visit(node.getLeftBool());
@@ -232,11 +219,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
             visit(node.getOp());
             visit(node.getRightVal());
         }
-        return null;
     }
 
     @Override
-    public AST visit(CalcExpr node) {
+    public void visit(CalcExpr node) {
         if (node.getOp() instanceof Operator.Incr ||
                 node.getOp() instanceof Operator.Decr) {
             visit(node.getNum());
@@ -257,33 +243,29 @@ public class PrettyPrint extends ASTVisitor<AST> {
                 }
             }
         }
-        return null;
     }
 
     @Override
-    public AST visit(BoolCondition node) {
+    public void visit(BoolCondition node) {
         if (node.getBoolExpr() != null) {
             visit(node.getBoolExpr());
         } else {
             visit(node.getFuncStmt());
         }
-        return null;
     }
 
     @Override
-    public AST visit(Param node) {
+    public void visit(Param node) {
         string.append(node.getValue());
-        return null;
     }
 
     @Override
-    public AST visit(Val node) {
+    public void visit(Val node) {
         super.visit((AST) node);
-        return null;
     }
 
     @Override
-    public AST visit(ValBool node) {
+    public void visit(ValBool node) {
         if (node.getIdentifier() != null) {
             string.append(node.getIdentifier());
         } else {
@@ -293,11 +275,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
                 string.append("false");
             }
         }
-        return null;
     }
 
     @Override
-    public AST visit(ValFunc node) {
+    public void visit(ValFunc node) {
         string.append(node.getIdentifier())
                 .append("(");
         if (node.getParams() != null) {
@@ -311,196 +292,165 @@ public class PrettyPrint extends ASTVisitor<AST> {
             }
         }
         string.append(")");
-        return null;
     }
 
     @Override
-    public AST visit(ValIdent node) {
+    public void visit(ValIdent node) {
         string.append(node.getIdentifier());
-        return null;
     }
 
     @Override
-    public AST visit(ValLiteral node) {
+    public void visit(ValLiteral node) {
         string.append(node.getValue());
-        return null;
     }
 
     @Override
-    public AST visit(ValString node) {
+    public void visit(ValString node) {
         string.append("\"")
                 .append(node.getValue())
                 .append("\"");
-        return null;
     }
 
     @Override
-    public AST visit(ValNumber node) {
+    public void visit(ValNumber node) {
         super.visit((AST) node);
-        return null;
     }
 
     @Override
-    public AST visit(NumberIval node) {
+    public void visit(NumberIval node) {
         string.append(String.valueOf(node.getValue()));
-        return null;
     }
 
     @Override
-    public AST visit(NumberFval node) {
+    public void visit(NumberFval node) {
         string.append(String.valueOf(node.getValue()));
-        return null;
     }
 
     @Override
-    public AST visit(NumberArrayIndex node) {
+    public void visit(NumberArrayIndex node) {
         string.append(node.getIdentifier())
                 .append("[");
         visit(node.getIndex());
         string.append("]");
-        return null;
     }
 
     @Override
-    public AST visit(Operator node) {
+    public void visit(Operator node) {
         super.visit((AST) node);
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Decr node) {
+    public void visit(Operator.Decr node) {
         string.append("--");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Incr node) {
+    public void visit(Operator.Incr node) {
         string.append("++");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Assign node) {
+    public void visit(Operator.Assign node) {
         string.append("=");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.GreaterEqual node) {
+    public void visit(Operator.GreaterEqual node) {
         string.append(">=");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Not node) {
+    public void visit(Operator.Not node) {
         string.append("!");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Div node) {
+    public void visit(Operator.Div node) {
         string.append("/");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Mult node) {
+    public void visit(Operator.Mult node) {
         string.append("*");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.LesserEqual node) {
+    public void visit(Operator.LesserEqual node) {
         string.append("<=");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Greater node) {
+    public void visit(Operator.Greater node) {
         string.append(">");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Sub node) {
+    public void visit(Operator.Sub node) {
         string.append("-");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Mod node) {
+    public void visit(Operator.Mod node) {
         string.append("%");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.And node) {
+    public void visit(Operator.And node) {
         string.append("and");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Or node) {
+    public void visit(Operator.Or node) {
         string.append("or");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Add node) {
+    public void visit(Operator.Add node) {
         string.append("+");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Lesser node) {
+    public void visit(Operator.Lesser node) {
         string.append("<");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Xor node) {
+    public void visit(Operator.Xor node) {
         string.append("xor");
-        return null;
     }
 
     @Override
-    public AST visit(Operator.Equal node) {
+    public void visit(Operator.Equal node) {
         string.append("is");
-        return null;
     }
 
     @Override
-    public AST visit(Type node) {
+    public void visit(Type node) {
         super.visit((AST) node);
-        return null;
     }
 
     @Override
-    public AST visit(Type.TypeInt node) {
+    public void visit(Type.TypeInt node) {
         string.append("int");
-        return null;
     }
 
     @Override
-    public AST visit(Type.TypeString node) {
+    public void visit(Type.TypeString node) {
         string.append("str");
-        return null;
     }
 
     @Override
-    public AST visit(Type.TypeDouble node) {
+    public void visit(Type.TypeDouble node) {
         string.append("dbl");
-        return null;
     }
 
     @Override
-    public AST visit(Type.TypeBool node) {
+    public void visit(Type.TypeBool node) {
         string.append("bool");
-        return null;
     }
 
     @Override
-    public AST visit(AST node) {
-        return super.visit(node);
+    public void visit(AST node) {
+        super.visit(node);
     }
 }
