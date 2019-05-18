@@ -208,6 +208,7 @@ public class TaskuinoCustomVisitor {
                 } else {
                     return new BlockStmtsDcl(
                             visitor.visitType(ctx.type()),
+                            true,
                             ctx.IDENT().getText(),
                             pVisitor.visitParam(ctx.param()),
                             ctx
@@ -515,7 +516,7 @@ public class TaskuinoCustomVisitor {
                     if (ctx.PARAM_DELIM() != null) {
                         int delim = ctx.PARAM_DELIM().size();
 
-                        for (int i = 1; i < delim; i++) {
+                        for (int i = 0; i < delim; i++) {
                             params.add(new Param(ctx.val(i + 1).getText(), ctx));
                         }
                     }

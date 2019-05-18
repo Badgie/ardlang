@@ -67,8 +67,9 @@ public class BlockStmtsDcl extends StmtsBlockStmts {
         this.ctx = ctx;
     }
 
-    public BlockStmtsDcl(Type type, String identifier, List<Param> params, ParserRuleContext ctx) {
+    public BlockStmtsDcl(Type type, boolean isArray, String identifier, List<Param> params, ParserRuleContext ctx) {
         this.type = type;
+        this.isArray = isArray;
         this.identifier = identifier;
         this.params = params;
         this.ctx = ctx;
