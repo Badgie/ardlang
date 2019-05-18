@@ -38,7 +38,7 @@ int getNextTask(Task tasks[], int numberOfTasks) {
       selectedTask = checkTask;
     } else {
       delay(1000);//TODO reduce delay later
-      CountDwonTasks(tasks, numberOfTasks)
+      CountDwonTasks(tasks, numberOfTasks);
     }
   }
   return selectedTask;
