@@ -26,6 +26,7 @@ public class PrettyPrint extends ASTVisitor<AST> {
 
     public void print(AST ast) {
         visit(ast);
+        System.out.println(string);
     }
 
     @Override
@@ -65,6 +66,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
                 .append("(");
         for (Param p : node.getParams()) {
             visit(p);
+            string.append(",");
+        }
+        if (string.charAt(string.length() - 1) == ',') {
+            string.deleteCharAt(string.length() - 1);
         }
         string.append(") {");
         for (StmtsBlockStmts s : node.getStmts()) {
@@ -87,10 +92,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
             string.append(node.getIdentifier())
                     .append(" = ");
             if (node.getValue() != null) {
-                string.append(node.getValue());
+                visit(node.getValue());
             } else if (node.getcExpr() != null) {
                 visit(node.getcExpr());
-            } else {
+            } else if (node.getfStmt() != null) {
                 visit(node.getfStmt());
             }
         } else {
@@ -103,6 +108,10 @@ public class PrettyPrint extends ASTVisitor<AST> {
                         .append("{");
                 for (Param p : node.getParams()) {
                     visit(p);
+                    string.append(",");
+                }
+                if (string.charAt(string.length() - 1) == ',') {
+                    string.deleteCharAt(string.length() - 1);
                 }
                 string.append("}");
             }
@@ -175,11 +184,16 @@ public class PrettyPrint extends ASTVisitor<AST> {
 
     @Override
     public AST visit(FuncStmt node) {
-        string.append(node.getIdentifier())
-                .append("(");
+        string.append(node.getIdentifier());
+        string.append("(");
         if (node.getParams() != null) {
             for (Param p : node.getParams()) {
                 visit(p);
+                string.append(",");
+            }
+            // delete last comma separator
+            if (string.charAt(string.length() - 1) == ',') {
+                string.deleteCharAt(string.length() - 1);
             }
         }
         string.append(")");
@@ -202,187 +216,286 @@ public class PrettyPrint extends ASTVisitor<AST> {
 
     @Override
     public AST visit(BoolExpr node) {
-        
+        if (node.getLeftBool() != null || node.getBool() != null) {
+            if (node.getOp() != null) {
+                visit(node.getLeftBool());
+                visit(node.getOp());
+                visit(node.getRightBoolExpr());
+            } else {
+                if (node.getNegation() != null) {
+                    string.append("!");
+                }
+                visit(node.getBool());
+            }
+        } else {
+            visit(node.getLeftVal());
+            visit(node.getOp());
+            visit(node.getRightVal());
+        }
         return null;
     }
 
     @Override
     public AST visit(CalcExpr node) {
+        if (node.getOp() instanceof Operator.Incr ||
+                node.getOp() instanceof Operator.Decr) {
+            visit(node.getNum());
+            visit(node.getOp());
+        } else if (node.getIdentifier() != null) {
+            string.append(node.getIdentifier());
+            visit(node.getOp());
+            string.append("= ");
+            visit(node.getNum());
+        } else {
+            visit(node.getNum());
+            if (node.getOp() != null) {
+                visit(node.getOp());
+                if (node.getExpr() != null) {
+                    visit(node.getExpr());
+                } else {
+                    visit(node.getNumRight());
+                }
+            }
+        }
         return null;
     }
 
     @Override
     public AST visit(BoolCondition node) {
+        if (node.getBoolExpr() != null) {
+            visit(node.getBoolExpr());
+        } else {
+            visit(node.getFuncStmt());
+        }
         return null;
     }
 
     @Override
     public AST visit(Param node) {
+        string.append(node.getValue());
         return null;
     }
 
     @Override
     public AST visit(Val node) {
+        super.visit((AST) node);
         return null;
     }
 
     @Override
     public AST visit(ValBool node) {
+        if (node.getIdentifier() != null) {
+            string.append(node.getIdentifier());
+        } else {
+            if (node.isValue()) {
+                string.append("true");
+            } else {
+                string.append("false");
+            }
+        }
         return null;
     }
 
     @Override
     public AST visit(ValFunc node) {
+        string.append(node.getIdentifier())
+                .append("(");
+        if (node.getParams() != null) {
+            for (Param p : node.getParams()) {
+                visit(p);
+                string.append(",");
+            }
+            // delete last comma separator
+            if (string.charAt(string.length() - 1) == ',') {
+                string.deleteCharAt(string.length() - 1);
+            }
+        }
+        string.append(")");
         return null;
     }
 
     @Override
     public AST visit(ValIdent node) {
+        string.append(node.getIdentifier());
         return null;
     }
 
     @Override
     public AST visit(ValLiteral node) {
+        string.append(node.getValue());
         return null;
     }
 
     @Override
     public AST visit(ValString node) {
+        string.append("\"")
+                .append(node.getValue())
+                .append("\"");
         return null;
     }
 
     @Override
     public AST visit(ValNumber node) {
+        super.visit((AST) node);
         return null;
     }
 
     @Override
     public AST visit(NumberIval node) {
+        string.append(String.valueOf(node.getValue()));
         return null;
     }
 
     @Override
     public AST visit(NumberFval node) {
+        string.append(String.valueOf(node.getValue()));
         return null;
     }
 
     @Override
     public AST visit(NumberArrayIndex node) {
+        string.append(node.getIdentifier())
+                .append("[");
+        visit(node.getIndex());
+        string.append("]");
         return null;
     }
 
     @Override
     public AST visit(Operator node) {
+        super.visit((AST) node);
         return null;
     }
 
     @Override
     public AST visit(Operator.Decr node) {
+        string.append("--");
         return null;
     }
 
     @Override
     public AST visit(Operator.Incr node) {
+        string.append("++");
         return null;
     }
 
     @Override
     public AST visit(Operator.Assign node) {
+        string.append("=");
         return null;
     }
 
     @Override
     public AST visit(Operator.GreaterEqual node) {
+        string.append(">=");
         return null;
     }
 
     @Override
     public AST visit(Operator.Not node) {
+        string.append("!");
         return null;
     }
 
     @Override
     public AST visit(Operator.Div node) {
+        string.append("/");
         return null;
     }
 
     @Override
     public AST visit(Operator.Mult node) {
+        string.append("*");
         return null;
     }
 
     @Override
     public AST visit(Operator.LesserEqual node) {
+        string.append("<=");
         return null;
     }
 
     @Override
     public AST visit(Operator.Greater node) {
+        string.append(">");
         return null;
     }
 
     @Override
     public AST visit(Operator.Sub node) {
+        string.append("-");
         return null;
     }
 
     @Override
     public AST visit(Operator.Mod node) {
+        string.append("%");
         return null;
     }
 
     @Override
     public AST visit(Operator.And node) {
+        string.append("and");
         return null;
     }
 
     @Override
     public AST visit(Operator.Or node) {
+        string.append("or");
         return null;
     }
 
     @Override
     public AST visit(Operator.Add node) {
+        string.append("+");
         return null;
     }
 
     @Override
     public AST visit(Operator.Lesser node) {
+        string.append("<");
         return null;
     }
 
     @Override
     public AST visit(Operator.Xor node) {
+        string.append("xor");
         return null;
     }
 
     @Override
     public AST visit(Operator.Equal node) {
+        string.append("is");
         return null;
     }
 
     @Override
     public AST visit(Type node) {
+        super.visit((AST) node);
         return null;
     }
 
     @Override
     public AST visit(Type.TypeInt node) {
+        string.append("int");
         return null;
     }
 
     @Override
     public AST visit(Type.TypeString node) {
+        string.append("str");
         return null;
     }
 
     @Override
     public AST visit(Type.TypeDouble node) {
+        string.append("dbl");
         return null;
     }
 
     @Override
     public AST visit(Type.TypeBool node) {
+        string.append("bool");
         return null;
     }
 
