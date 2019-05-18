@@ -1,3 +1,4 @@
+import dk.aau.cs.sw411.antlr.TaskuinoBaseVisitor;
 import dk.aau.cs.sw411.antlr.TaskuinoLexer;
 import dk.aau.cs.sw411.antlr.TaskuinoParser;
 import org.antlr.v4.runtime.ANTLRFileStream;
@@ -5,6 +6,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import types.AST;
+import visitor.PrettyPrint;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -27,9 +29,12 @@ public class TaskuinoMain {
                 TokenStream tokens = new CommonTokenStream(lexer);
                 TaskuinoParser parser = new TaskuinoParser(tokens);
                 TaskuinoCustomVisitor visitor = new TaskuinoCustomVisitor();
-                AST prog = visitor.parse(parser.prog());
 
-                System.out.println(prog);
+                AST prog = visitor.parse(parser.prog());
+                System.out.println("Program " + files[i] + " parsed, prettyprinting..\n");
+
+                PrettyPrint pretty = new PrettyPrint();
+                pretty.print(prog);
             }
 
 
