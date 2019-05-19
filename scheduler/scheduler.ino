@@ -22,23 +22,38 @@ public:
 };
 
 
-void CountDwonTasks(Task tasks[], int numberOfTasks) {
+void CountDownTasks(Task tasks[], int numberOfTasks) {
   for (int i = 0; i < numberOfTasks; i++)
   {
     tasks[i].countDown();
   }
 }
 
-//TODO consider creating a better stratigy
+int getNumberOfReadyTasks(Task tasks[], int numberOfTasks) {
+  int count = 0;
+  for (int i = 0; i < numberOfTasks; i++) {
+    if(tasks[i].Ready()) {
+      count++;
+    }
+  }
+  return count;
+}
+
+
+//TODO consider creating a better stratigy´
+//Or at least optimize this.
 int getNextTask(Task tasks[], int numberOfTasks) {
   int selectedTask = -1;
   while(selectedTask = -1) {
-    int checkTask = random(0,numberOfTasks);
-    if(tasks[checkTask].Ready()) {
-      selectedTask = checkTask;
+    int numberOfReadyTasks = getNumberOfReadyTasks(tasks, numberOfTasks);
+    if(numberOfReadyTasks > 0) {
+      int checkTask = random(0,numberOfTasks);
+      if(tasks[checkTask].Ready()) {
+        selectedTask = checkTask;
+      } 
     } else {
-      delay(1000);//TODO reduce delay later
-      CountDwonTasks(tasks, numberOfTasks);
+      delay(1000);
+      CountDownTasks(tasks, numberOfTasks);
     }
   }
   return selectedTask;
@@ -70,32 +85,34 @@ void setup() {
   tasks[2].RunInterval(6);
   tasks[3].RunInterval(9);
 
-  int selectedTask = getNextTask(tasks,numberOfTasks);
-  
-  switch (selectedTask) {//TODO add all tasks here
-  case 0:
-    /* code */
-    task0();
-    break;
-  case 1:
-    /* code */
-    task1();
-    break;
-  case 2:
-    /* code */
-    task2();
-    break;
-  case 3:
-    /* code */
-    task3();
-    break;
-  default:
-    /*Left blank*/
-    break;
+  while(true) {
+    int selectedTask = getNextTask(tasks,numberOfTasks);
+    
+    switch (selectedTask) {//TODO add all tasks here
+    case 0:
+      /* code */
+      task0();
+      break;
+    case 1:
+      /* code */
+      task1();
+      break;
+    case 2:
+      /* code */
+      task2();
+      break;
+    case 3:
+      /* code */
+      task3();
+      break;
+    default:
+      /*Left blank*/
+      break;
+    
+    }
+
+    CountDownTasks(tasks, numberOfTasks);
   }
-
-  CountDwonTasks(tasks, numberOfTasks);
-
 }
 
 void loop() {
