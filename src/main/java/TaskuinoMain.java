@@ -7,6 +7,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import types.AST;
 import visitor.PrettyPrint;
+import visitor.ScopeCheck;
+import visitor.TypeCheck;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -32,9 +34,21 @@ public class TaskuinoMain {
 
                 AST prog = visitor.parse(parser.prog());
                 System.out.println("Program " + files[i] + " parsed, prettyprinting..\n");
-
                 PrettyPrint pretty = new PrettyPrint();
                 pretty.print(prog);
+
+                System.out.println("Analyzing symbol table..");
+                ScopeCheck scope = new ScopeCheck();
+                scope.check(prog);
+
+                System.out.println("\n");
+                System.out.println("Checking types");
+                TypeCheck type = new TypeCheck();
+                type.check(prog);
+
+                System.out.println("\n");
+                System.out.println("----------------------------");
+                System.out.println("\n");
             }
 
 
