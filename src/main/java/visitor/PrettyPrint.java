@@ -256,7 +256,7 @@ public class PrettyPrint extends ASTVisitor {
 
     @Override
     public void visit(Param node) {
-        string.append(node.getValue());
+        visit(node.getValue());
     }
 
     @Override

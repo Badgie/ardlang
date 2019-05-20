@@ -1,26 +1,27 @@
 package types;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import types.value.Val;
 
 import java.util.List;
 
 public class Param extends AST {
-    String value;
+    Val value;
     Param param;
     ParserRuleContext ctx;
 
-    public Param(String value, ParserRuleContext ctx) {
+    public Param(Val value, ParserRuleContext ctx) {
         this.value = value;
         this.ctx = ctx;
     }
 
-    public Param(String value, Param param, ParserRuleContext ctx) {
+    public Param(Val value, Param param, ParserRuleContext ctx) {
         this.value = value;
         this.param = param;
         this.ctx = ctx;
     }
 
-    public String getValue() {
+    public Val getValue() {
         return value;
     }
 
