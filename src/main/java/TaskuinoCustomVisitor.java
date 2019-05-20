@@ -502,12 +502,19 @@ public class TaskuinoCustomVisitor {
             List<Param> params = new ArrayList<>();
             if (ctx != null) {
                 if (ctx.val().size() != 0) {
-                    params.add(new Param(ctx.val(0).getText(), ctx));
+                    ValVisitor vVisitor = new ValVisitor();
+                    params.add(new Param(
+                            vVisitor.visitVal(ctx.val(0)),
+                            ctx
+                    ));
                     if (ctx.PARAM_DELIM() != null) {
                         int delim = ctx.PARAM_DELIM().size();
 
                         for (int i = 0; i < delim; i++) {
-                            params.add(new Param(ctx.val(i + 1).getText(), ctx));
+                            params.add(new Param(
+                                    vVisitor.visitVal(ctx.val(i + 1)),
+                                    ctx
+                            ));
                         }
                     }
                 }
