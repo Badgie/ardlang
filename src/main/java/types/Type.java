@@ -17,4 +17,12 @@ public abstract class Type extends AST {
     public static class TypeBool extends Type {
 
     }
+
+    public static class TypeFunc extends Type {
+
+    }
+
+    public static class TypeTask extends Type {
+
+    }
 }
