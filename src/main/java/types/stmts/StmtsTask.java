@@ -2,6 +2,7 @@ package types.stmts;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import types.AST;
+import types.Type;
 
 import java.util.List;
 
@@ -10,8 +11,10 @@ public class StmtsTask extends Stmts {
     int interval;
     List<StmtsBlockStmts> stmts;
     ParserRuleContext ctx;
+    Type type;
 
     public StmtsTask(String identifier, int interval, List<StmtsBlockStmts> stmts, ParserRuleContext ctx) {
+        this.type = new Type.TypeTask();
         this.identifier = identifier;
         this.interval = interval;
         this.stmts = stmts;
@@ -32,6 +35,10 @@ public class StmtsTask extends Stmts {
 
     public ParserRuleContext getCtx() {
         return ctx;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     @Override
