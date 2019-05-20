@@ -1,12 +1,15 @@
 package types;
 
 import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
 
-public class Scope extends HashSet<String> {
+public class Scope extends Hashtable<String, String> {
 
-    final Scope parent;
+    final AST parent;
+    List<Scope> 
 
-    public Scope(Scope parent) {
+    public Scope(AST parent) {
         this.parent = parent;
     }
 
@@ -16,4 +19,8 @@ public class Scope extends HashSet<String> {
         }
         return parent == null ? false : parent.inScope(varName);
     }
+
+    public void enterScope() {}
+
+    public void exitScope() {}
 }
