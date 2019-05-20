@@ -53,7 +53,7 @@ bool_expr           : bool bool_op bool_expr
 if_stmt             : IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END eif_stmt*
                     ;
 
-eif_stmt            : ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END eif_stmt?
+eif_stmt            : ELSE IF PAREN_LEFT bool_condition PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END
                     | ELSE BLOCK_START (block_stmts)* BLOCK_END
                     ;
 
