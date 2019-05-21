@@ -616,7 +616,7 @@ public class TaskuinoCustomVisitor {
             } else if (ctx.literals() != null) {
                 ValLiteralVisitor lVisitor = new ValLiteralVisitor();
                 val = lVisitor.visitLiterals(ctx.literals());
-            } else {
+            } else if (ctx.func_call() != null) {
                 FuncStmtVisitor fVisitor = new FuncStmtVisitor();
                 FuncStmt func = fVisitor.visitFunc_call(ctx.func_call());
                 val = new ValFunc(
@@ -624,6 +624,8 @@ public class TaskuinoCustomVisitor {
                         func.getParams(),
                         ctx
                 );
+            } else {
+                throw new Error("Val not recognized");
             }
             return val;
         }
@@ -669,14 +671,16 @@ public class TaskuinoCustomVisitor {
                 num = new NumberIval(Integer.parseInt(ctx.ival().getText()), ctx);
             } else if (ctx.fval() != null) {
                 num = new NumberFval(Double.parseDouble(ctx.fval().getText()), ctx);
-            } else if (ctx.IDENT() != null) {
-                num = new ValIdent(ctx.IDENT().getText(), ctx);
-            } else {
+            } else if (ctx.ARRAY_START() != null) {
                 num = new NumberArrayIndex(
                         ctx.IDENT().getText(),
                         visitNumber(ctx.number()),
                         ctx
                 );
+            } else if (ctx.IDENT() != null) {
+                num = new ValIdent(ctx.IDENT().getText(), ctx);
+            } else {
+                throw new Error("value not recognized");
             }
             return num;
         }

@@ -188,6 +188,7 @@ TYPE_BOOL           : 'bool' ;
 WHITESPACE          : ' ' -> skip ;
 NEWLINE             : '\n' -> skip ;
 CAR_RETURN          : '\r' -> skip ;
+COMMENT             : DIV DIV CHARS -> skip ;
 
 IDENT               : [a-zA-Z]([a-zA-Z0-9]*)? ;
 DIG                 : [1-9][0-9]* | [0] ;
