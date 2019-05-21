@@ -66,7 +66,8 @@ public class CodeGen extends ASTVisitor {
 
     @Override
     public void visit(Stmts node) {
-
+        super.visit((AST) node);
+        code.append("\n");
     }
 
     @Override
@@ -107,12 +108,42 @@ public class CodeGen extends ASTVisitor {
 
     @Override
     public void visit(BlockStmtsDcl node) {
-        //TODO: implement ino behavior
+        visit(node.getType());
+        if (!node.isArray()) {
+            code.append(node.getIdentifier())
+                    .append(" = ");
+            if (node.getValue() != null) {
+                visit(node.getValue());
+            } else if (node.getcExpr() != null) {
+                visit(node.getcExpr());
+            } else if (node.getfStmt() != null) {
+                visit(node.getfStmt());
+            }
+        } else {
+            code.append("[")
+                    .append(node.getArraySize())
+                    .append("]")
+                    .append(node.getIdentifier());
+            if (node.getParams() != null) {
+                code.append(" = ")
+                        .append("{");
+                for (Param p : node.getParams()) {
+                    visit(p);
+                    code.append(",");
+                }
+                if (code.charAt(code.length() - 1) == ',') {
+                    code.deleteCharAt(code.length() - 1);
+                }
+                code.append("}");
+            }
+        }
+        code.append(";");
     }
 
     @Override
     public void visit(BlockStmtsExpr node) {
         super.visit((AST) node);
+        code.append(";");
     }
 
     @Override
@@ -169,22 +200,81 @@ public class CodeGen extends ASTVisitor {
 
     @Override
     public void visit(FuncStmt node) {
-        //TODO: implement ino behavior
+        code.append(node.getIdentifier());
+        code.append("(");
+        if (node.getParams() != null) {
+            for (Param p : node.getParams()) {
+                visit(p);
+                code.append(",");
+            }
+            // delete last comma separator
+            if (code.charAt(code.length() - 1) == ',') {
+                code.deleteCharAt(code.length() - 1);
+            }
+        }
+        code.append(")");
     }
 
     @Override
     public void visit(AssignExpr node) {
-        //TODO: implement ino behavior
+        code.append(node.getIdentifier())
+                .append(" = ");
+        if (node.getfStmt() != null) {
+            visit(node.getfStmt());
+        } else if (node.getcExpr() != null) {
+            visit(node.getcExpr());
+        } else {
+            visit(node.getValue());
+        }
     }
 
     @Override
     public void visit(BoolExpr node) {
-        //TODO: implement ino behavior
+        if (node.getLeftBool() != null || node.getBool() != null) {
+            if (node.getOp() != null) {
+                visit(node.getLeftBool());
+                visit(node.getOp());
+                visit(node.getRightBoolExpr());
+            } else {
+                if (node.getNegation() != null) {
+                    visit(node.getNegation());
+                }
+                visit(node.getBool());
+            }
+        } else {
+            visit(node.getLeftVal());
+            visit(node.getOp());
+            visit(node.getRightVal());
+        }
     }
 
     @Override
     public void visit(CalcExpr node) {
-        //TODO: implement ino behavior
+        if (node.getOp() instanceof Operator.Incr ||
+                node.getOp() instanceof Operator.Decr) {
+            visit(node.getNum());
+            visit(node.getOp());
+        } else if (node.getIdentifier() != null) {
+            code.append(node.getIdentifier());
+            visit(node.getOp());
+            code.append("=");
+            visit(node.getNum());
+        } else if (node.getExpr() != null) {
+            visit(node.getNum());
+            if (node.getOp() != null) {
+                visit(node.getOp());
+                if (node.getExpr() != null) {
+                    visit(node.getExpr());
+                }
+            } else {
+                visit(node.getNumRight());
+            }
+        } else if (node.getNum() != null) {
+            visit(node.getNum());
+        } else {
+            System.out.println(node.getCtx().getText());
+            throw new Error("calc expression not valid");
+        }
     }
 
     @Override
