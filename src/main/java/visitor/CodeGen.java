@@ -28,6 +28,7 @@ public class CodeGen extends ASTVisitor {
 
     public String gen(AST node) {
         setupScheduler();
+        addNewline();
         visit(node);
         return code.toString();
     }
@@ -78,9 +79,10 @@ public class CodeGen extends ASTVisitor {
     public void visit(StmtsTask node) {
         code.append("void task")
                 .append(taskCount)
-                .append("() {");
+                .append("() {\n");
         for (StmtsBlockStmts s : node.getStmts()) {
             visit(s);
+            addNewline();
         }
         code.append("}");
     }
@@ -98,11 +100,12 @@ public class CodeGen extends ASTVisitor {
                 code.deleteCharAt(code.length() - 1);
             }
         }
-        code.append(") {");
+        code.append(") {\n");
         for (StmtsBlockStmts s : node.getStmts()) {
             visit(s);
+            addNewline();
         }
-        code.append("}");
+        code.append("}\n");
     }
 
     @Override
@@ -159,11 +162,12 @@ public class CodeGen extends ASTVisitor {
     public void visit(IfStmt node) {
         code.append("if (");
         visit(node.getCondition());
-        code.append(") {");
+        code.append(") {\n");
         for (StmtsBlockStmts s : node.getStmts()) {
             visit(s);
+            addNewline();
         }
-        code.append("}");
+        code.append("}\n");
         for (EifStmt e : node.getEifStmts()) {
             visit(e);
         }
@@ -174,13 +178,15 @@ public class CodeGen extends ASTVisitor {
         if (node.getCondition() != null) {
             code.append("else if (");
             visit(node.getCondition());
-            code.append(") {");
+            code.append(") {\n");
         } else {
-            code.append("else {");
+            code.append("else {\n");
         }
         for (StmtsBlockStmts s : node.getStmts()) {
             visit(s);
+            addNewline();
         }
+        code.append("}\n");
     }
 
     @Override
@@ -195,11 +201,12 @@ public class CodeGen extends ASTVisitor {
         visit(node.getCond());
         code.append(";");
         visit(node.getcExpr());
-        code.append(") {");
+        code.append(") {\n");
         for (StmtsBlockStmts s : node.getStmts()) {
             visit(s);
+            addNewline();
         }
-        code.append("}");
+        code.append("}\n");
     }
 
     @Override
@@ -547,29 +554,33 @@ public class CodeGen extends ASTVisitor {
     }
 
     public void createSetupFuncStart() {
-        code.append("void setup() {");
+        code.append("\nvoid setup() {\n");
     }
 
     public void createSetupFuncEnd() {
         code.append("int numberOfTasks = ");
         code.append(taskCount);
-        code.append("; Task tasks[numberOfTasks];");
+        code.append(";\n Task tasks[numberOfTasks];\n");
         for (int i = 0; i < taskList.size(); i++) {
             code.append("tasks[")
                     .append(i)
                     .append("].RunInterval(")
                     .append(taskList.get(i).getInterval())
-                    .append(");");
+                    .append(");\n");
         }
-        code.append("while(true) {int selectedTask = getNextTask(tasks, numberOfTasks);")
-                .append("switch (selectedTask) {");
+        code.append("while(true) {\nint selectedTask = getNextTask(tasks, numberOfTasks);\n")
+                .append("switch (selectedTask) {\n");
         for (int i = 0; i < taskList.size(); i++) {
             code.append("case ")
                     .append(i)
-                    .append(": task")
+                    .append(":\n task")
                     .append(i)
-                    .append("();break;");
+                    .append("();\nbreak;\n");
         }
-        code.append("default: break;}CountDownTasks(tasks, numberOfTasks)}}void loop(){}");
+        code.append("default: \nbreak;\n}\nCountDownTasks(tasks, numberOfTasks)\n}\n}\nvoid loop(){}\n");
+    }
+
+    public void addNewline() {
+        code.append("\n");
     }
 }
