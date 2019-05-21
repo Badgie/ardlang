@@ -24,7 +24,7 @@ import java.util.List;
 public class CodeGen extends ASTVisitor {
     private StringBuilder code = new StringBuilder();
     private int taskCount = 0;
-    private List<StmtsTask> taskList;
+    private List<StmtsTask> taskList = new ArrayList<>();
 
     public String gen(AST node) {
         setupScheduler();
@@ -48,16 +48,20 @@ public class CodeGen extends ASTVisitor {
             }
         }
 
-        taskList = tasks;
+        taskList.addAll(tasks);
 
         for (StmtsTask s : tasks) {
             visit(s);
             taskCount++;
         }
 
+        createSetupFuncStart();
+
         for (Stmts s : stmts) {
             visit(s);
         }
+
+        createSetupFuncEnd();
 
         for (StmtsFunc s : funcs) {
             visit(s);
@@ -540,5 +544,32 @@ public class CodeGen extends ASTVisitor {
                 "  }\n" +
                 "  return selectedTask;\n" +
                 "}");
+    }
+
+    public void createSetupFuncStart() {
+        code.append("void setup() {");
+    }
+
+    public void createSetupFuncEnd() {
+        code.append("int numberOfTasks = ");
+        code.append(taskCount);
+        code.append("; Task tasks[numberOfTasks];");
+        for (int i = 0; i < taskList.size(); i++) {
+            code.append("tasks[")
+                    .append(i)
+                    .append("].RunInterval(")
+                    .append(taskList.get(i).getInterval())
+                    .append(");");
+        }
+        code.append("while(true) {int selectedTask = getNextTask(tasks, numberOfTasks);")
+                .append("switch (selectedTask) {");
+        for (int i = 0; i < taskList.size(); i++) {
+            code.append("case ")
+                    .append(i)
+                    .append(": task")
+                    .append(i)
+                    .append("();break;");
+        }
+        code.append("default: break;}CountDownTasks(tasks, numberOfTasks)}}void loop(){}");
     }
 }
