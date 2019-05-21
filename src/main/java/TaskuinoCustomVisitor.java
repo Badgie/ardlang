@@ -70,16 +70,22 @@ public class TaskuinoCustomVisitor {
         public StmtsFunc visitFunction(TaskuinoParser.FunctionContext ctx) {
             ParamVisitor pVisitor = new ParamVisitor();
             BlockStmtsVisitor bVisitor = new BlockStmtsVisitor();
+            TypeVisitor tVisitor = new TypeVisitor();
 
             List<StmtsBlockStmts> blockStmts = ctx.block_stmts()
                     .stream()
                     .map(blockstmt -> blockstmt.accept(bVisitor))
                     .collect(toList());
 
+            Type type = ctx.type() != null ?
+                        tVisitor.visitType(ctx.type()) :
+                        new Type.TypeVoid();
+
             return new StmtsFunc(
                     ctx.IDENT().getText(),
                     pVisitor.visitParam(ctx.param()),
                     blockStmts,
+                    type,
                     ctx
             );
         }

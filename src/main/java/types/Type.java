@@ -25,4 +25,8 @@ public abstract class Type extends AST {
     public static class TypeTask extends Type {
 
     }
+
+    public static class TypeVoid extends Type {
+
+    }
 }

@@ -14,7 +14,7 @@ block_stmts         : stmt
 
 task                : TASK IDENT PAREN_LEFT ival PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
-function            : FUNC IDENT PAREN_LEFT param? PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
+function            : (type | VOID) FUNC IDENT PAREN_LEFT param? PAREN_RIGHT BLOCK_START (block_stmts)* BLOCK_END ;
 
 
 stmt                : if_stmt

@@ -16,7 +16,7 @@ task displaySum(1000) {
     writeLCD(lcd, sum)
 }
 
-func calcSum() {
+void func calcSum() {
     for (int j = 0; j < lengthOf(array); j++) {
         sum = sum + array[j]
     }

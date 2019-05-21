@@ -14,8 +14,8 @@ public class StmtsFunc extends Stmts {
     ParserRuleContext ctx;
     Type type;
 
-    public StmtsFunc(String identifier, List<Param> params, List<StmtsBlockStmts> stmts, ParserRuleContext ctx) {
-        this.type = new Type.TypeFunc();
+    public StmtsFunc(String identifier, List<Param> params, List<StmtsBlockStmts> stmts, Type type, ParserRuleContext ctx) {
+        this.type = type;
         this.identifier = identifier;
         this.params = params;
         this.stmts = stmts;
