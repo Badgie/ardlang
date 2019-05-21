@@ -283,7 +283,6 @@ public class CodeGen extends ASTVisitor {
         } else if (node.getNum() != null) {
             visit(node.getNum());
         } else {
-            System.out.println(node.getCtx().getText());
             throw new Error("calc expression not valid");
         }
     }
