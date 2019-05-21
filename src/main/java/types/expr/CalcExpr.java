@@ -1,12 +1,9 @@
 package types.expr;
 
-import dk.aau.cs.sw411.antlr.TaskuinoParser;
-import org.antlr.v4.runtime.ParserRuleContext;
 import types.blockstmts.BlockStmtsExpr;
 import types.operator.Operator;
 import types.value.ValNumber;
-
-import java.util.List;
+import util.SourceContext;
 
 public class CalcExpr extends BlockStmtsExpr {
     ValNumber num;
@@ -14,34 +11,34 @@ public class CalcExpr extends BlockStmtsExpr {
     Operator op;
     String identifier;
     CalcExpr expr;
-    ParserRuleContext ctx;
+    SourceContext ctx;
 
-    public CalcExpr(ValNumber num, ParserRuleContext ctx) {
+    public CalcExpr(ValNumber num, SourceContext ctx) {
         this.num = num;
         this.ctx = ctx;
     }
 
-    public CalcExpr(ValNumber num, Operator op, ParserRuleContext ctx) {
+    public CalcExpr(ValNumber num, Operator op, SourceContext ctx) {
         this.num = num;
         this.op = op;
         this.ctx = ctx;
     }
 
-    public CalcExpr(String identifier, Operator op, ValNumber num, ParserRuleContext ctx) {
+    public CalcExpr(String identifier, Operator op, ValNumber num, SourceContext ctx) {
         this.identifier = identifier;
         this.op = op;
         this.num = num;
         this.ctx = ctx;
     }
 
-    public CalcExpr(ValNumber num, Operator op, CalcExpr expr, ParserRuleContext ctx) {
+    public CalcExpr(ValNumber num, Operator op, CalcExpr expr, SourceContext ctx) {
         this.num = num;
         this.op = op;
         this.expr = expr;
         this.ctx = ctx;
     }
 
-    public CalcExpr(CalcExpr expr, ParserRuleContext ctx) {
+    public CalcExpr(CalcExpr expr, SourceContext ctx) {
         this.expr = expr;
         this.ctx = ctx;
     }
@@ -66,7 +63,7 @@ public class CalcExpr extends BlockStmtsExpr {
         return expr;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 }

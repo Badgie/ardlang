@@ -1,12 +1,12 @@
 package types.value;
 
-import org.antlr.v4.runtime.ParserRuleContext;
+import util.SourceContext;
 
 public class ValIdent extends ValNumber {
     String identifier;
-    ParserRuleContext ctx;
+    SourceContext ctx;
 
-    public ValIdent(String identifier, ParserRuleContext ctx) {
+    public ValIdent(String identifier, SourceContext ctx) {
         this.identifier = identifier;
         this.ctx = ctx;
     }
@@ -15,7 +15,7 @@ public class ValIdent extends ValNumber {
         return identifier;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 }

@@ -1,16 +1,16 @@
 package types.value;
 
-import org.antlr.v4.runtime.ParserRuleContext;
 import types.Param;
+import util.SourceContext;
 
 import java.util.List;
 
 public class ValFunc extends Val {
     String identifier;
     List<Param> params;
-    ParserRuleContext ctx;
+    SourceContext ctx;
 
-    public ValFunc(String identifier, List<Param> params, ParserRuleContext ctx) {
+    public ValFunc(String identifier, List<Param> params, SourceContext ctx) {
         this.identifier = identifier;
         this.params = params;
         this.ctx = ctx;
@@ -24,7 +24,7 @@ public class ValFunc extends Val {
         return params;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 }

@@ -1,9 +1,8 @@
 package types.stmts;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import types.AST;
 import types.Param;
 import types.Type;
+import util.SourceContext;
 
 import java.util.List;
 
@@ -11,10 +10,10 @@ public class StmtsFunc extends Stmts {
     String identifier;
     List<Param> params;
     List<StmtsBlockStmts> stmts;
-    ParserRuleContext ctx;
+    SourceContext ctx;
     Type type;
 
-    public StmtsFunc(String identifier, List<Param> params, List<StmtsBlockStmts> stmts, Type type, ParserRuleContext ctx) {
+    public StmtsFunc(String identifier, List<Param> params, List<StmtsBlockStmts> stmts, Type type, SourceContext ctx) {
         this.type = type;
         this.identifier = identifier;
         this.params = params;
@@ -34,7 +33,7 @@ public class StmtsFunc extends Stmts {
         return stmts;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 

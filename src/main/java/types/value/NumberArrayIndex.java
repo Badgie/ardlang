@@ -1,13 +1,13 @@
 package types.value;
 
-import org.antlr.v4.runtime.ParserRuleContext;
+import util.SourceContext;
 
 public class NumberArrayIndex extends ValNumber {
     String identifier;
     ValNumber index;
-    ParserRuleContext ctx;
+    SourceContext ctx;
 
-    public NumberArrayIndex(String identifier, ValNumber index, ParserRuleContext ctx) {
+    public NumberArrayIndex(String identifier, ValNumber index, SourceContext ctx) {
         this.identifier = identifier;
         this.index = index;
         this.ctx = ctx;
@@ -21,7 +21,7 @@ public class NumberArrayIndex extends ValNumber {
         return index;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 }

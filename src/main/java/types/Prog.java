@@ -2,16 +2,14 @@ package types;
 
 import java.util.List;
 
-import org.antlr.v4.runtime.ParserRuleContext;
 import types.stmts.Stmts;
-
-//TODO: note that stmts are actually a list of stmt - FIX!
+import util.SourceContext;
 
 public class Prog extends AST {
     List<Stmts> stmts;
-    ParserRuleContext ctx;
+    SourceContext ctx;
 
-    public Prog(List<Stmts> stmts, ParserRuleContext ctx) {
+    public Prog(List<Stmts> stmts, SourceContext ctx) {
         this.stmts = stmts;
         this.ctx = ctx;
     }
@@ -20,7 +18,7 @@ public class Prog extends AST {
         return stmts;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 }

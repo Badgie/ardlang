@@ -1,12 +1,12 @@
 package types.value;
 
-import org.antlr.v4.runtime.ParserRuleContext;
+import util.SourceContext;
 
 public class NumberIval extends ValNumber {
     int value;
-    ParserRuleContext ctx;
+    SourceContext ctx;
 
-    public NumberIval(int value, ParserRuleContext ctx) {
+    public NumberIval(int value, SourceContext ctx) {
         this.value = value;
         this.ctx = ctx;
     }
@@ -15,7 +15,7 @@ public class NumberIval extends ValNumber {
         return value;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 }

@@ -1,18 +1,18 @@
 package types.value;
 
-import org.antlr.v4.runtime.ParserRuleContext;
+import util.SourceContext;
 
 public class ValBool extends Val {
     boolean value;
     String identifier;
-    ParserRuleContext ctx;
+    SourceContext ctx;
 
-    public ValBool(boolean value, ParserRuleContext ctx) {
+    public ValBool(boolean value, SourceContext ctx) {
         this.value = value;
         this.ctx = ctx;
     }
 
-    public ValBool(String identifier, ParserRuleContext ctx) {
+    public ValBool(String identifier, SourceContext ctx) {
         this.identifier = identifier;
         this.ctx = ctx;
     }
@@ -25,7 +25,7 @@ public class ValBool extends Val {
         return identifier;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 }

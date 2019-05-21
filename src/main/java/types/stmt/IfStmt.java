@@ -1,9 +1,9 @@
 package types.stmt;
 
-import org.antlr.v4.runtime.ParserRuleContext;
 import types.BoolCondition;
 import types.blockstmts.BlockStmtsStmt;
 import types.stmts.StmtsBlockStmts;
+import util.SourceContext;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ public class IfStmt extends BlockStmtsStmt {
     BoolCondition condition;
     List<StmtsBlockStmts> stmts;
     List<EifStmt> eifStmts;
-    ParserRuleContext ctx;
+    SourceContext ctx;
 
-    public IfStmt(BoolCondition condition, List<StmtsBlockStmts> stmts, List<EifStmt> eifStmts, ParserRuleContext ctx) {
+    public IfStmt(BoolCondition condition, List<StmtsBlockStmts> stmts, List<EifStmt> eifStmts, SourceContext ctx) {
         this.condition = condition;
         this.stmts = stmts;
         this.eifStmts = eifStmts;
@@ -32,7 +32,7 @@ public class IfStmt extends BlockStmtsStmt {
         return eifStmts;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 }

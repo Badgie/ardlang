@@ -1,12 +1,12 @@
 package types.value;
 
-import org.antlr.v4.runtime.ParserRuleContext;
+import util.SourceContext;
 
 public class ValLiteral extends Val {
     String value;
-    ParserRuleContext ctx;
+    SourceContext ctx;
 
-    public ValLiteral(String value, ParserRuleContext ctx) {
+    public ValLiteral(String value, SourceContext ctx) {
         this.value = value;
         this.ctx = ctx;
     }
@@ -15,7 +15,7 @@ public class ValLiteral extends Val {
         return value;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 }

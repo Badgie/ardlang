@@ -1,20 +1,20 @@
 package types;
 
-import org.antlr.v4.runtime.ParserRuleContext;
 import types.expr.BoolExpr;
 import types.stmt.FuncStmt;
+import util.SourceContext;
 
 public class BoolCondition extends AST {
     BoolExpr boolExpr;
     FuncStmt funcStmt;
-    ParserRuleContext ctx;
+    SourceContext ctx;
 
-    public BoolCondition(BoolExpr boolExpr, ParserRuleContext ctx) {
+    public BoolCondition(BoolExpr boolExpr, SourceContext ctx) {
         this.boolExpr = boolExpr;
         this.ctx = ctx;
     }
 
-    public BoolCondition(FuncStmt funcStmt, ParserRuleContext ctx) {
+    public BoolCondition(FuncStmt funcStmt, SourceContext ctx) {
         this.funcStmt = funcStmt;
         this.ctx = ctx;
     }
@@ -27,7 +27,7 @@ public class BoolCondition extends AST {
         return funcStmt;
     }
 
-    public ParserRuleContext getCtx() {
+    public SourceContext getCtx() {
         return ctx;
     }
 }
