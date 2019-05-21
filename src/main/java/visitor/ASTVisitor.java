@@ -69,6 +69,7 @@ public abstract class ASTVisitor {
     public abstract void visit(Type.TypeString node);
     public abstract void visit(Type.TypeDouble node);
     public abstract void visit(Type.TypeBool node);
+    public abstract void visit(Type.TypeVoid node);
 
     public void visit(AST node) {
         if (node instanceof Prog) {
@@ -184,6 +185,8 @@ public abstract class ASTVisitor {
                 visit((Type.TypeDouble) node);
             } else if (node instanceof Type.TypeBool) {
                 visit((Type.TypeBool) node);
+            } else if (node instanceof Type.TypeVoid) {
+                visit((Type.TypeVoid) node);
             } else {
                 throw new Error("node not recognized");
             }

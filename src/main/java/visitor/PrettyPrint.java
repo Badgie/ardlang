@@ -450,6 +450,11 @@ public class PrettyPrint extends ASTVisitor {
     }
 
     @Override
+    public void visit(Type.TypeVoid node) {
+        string.append("void");
+    }
+
+    @Override
     public void visit(AST node) {
         super.visit(node);
     }

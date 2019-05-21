@@ -299,6 +299,11 @@ public class TypeCheck extends ASTVisitor {
     }
 
     @Override
+    public void visit(Type.TypeVoid node) {
+        //do nothing
+    }
+
+    @Override
     public void visit(AST node) {
         super.visit(node);
     }
