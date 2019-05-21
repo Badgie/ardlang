@@ -85,8 +85,13 @@ public class CodeGen extends ASTVisitor {
         visit((AST) node.getType());
         code.append(node.getIdentifier())
                 .append("(");
-        for (Param p : node.getParams()) {
-            visit(p);
+        if (node.getParams() != null) {
+            for (Param p : node.getParams()) {
+                visit(p);
+            }
+            if (code.charAt(code.length() - 1) == ',') {
+                code.deleteCharAt(code.length() - 1);
+            }
         }
         code.append(") {");
         for (StmtsBlockStmts s : node.getStmts()) {
@@ -193,7 +198,7 @@ public class CodeGen extends ASTVisitor {
 
     @Override
     public void visit(Param node) {
-        //TODO: implement ino behavior
+        visit(node.getValue());
     }
 
     @Override
@@ -203,27 +208,44 @@ public class CodeGen extends ASTVisitor {
 
     @Override
     public void visit(ValBool node) {
-        //TODO: implement ino behavior
+        if (node.isValue()) {
+            code.append("true");
+        } else {
+            code.append("false");
+        }
     }
 
     @Override
     public void visit(ValFunc node) {
-        //TODO: implement ino behavior
+        code.append(node.getIdentifier())
+                .append("(");
+        if (node.getParams() != null) {
+            for (Param p : node.getParams()) {
+                visit(p);
+                code.append(",");
+            }
+            if (code.charAt(code.length() - 1) == ',') {
+                code.deleteCharAt(code.length() - 1);
+            }
+        }
+        code.append(")");
     }
 
     @Override
     public void visit(ValIdent node) {
-        //TODO: implement ino behavior
+        code.append(node.getIdentifier());
     }
 
     @Override
     public void visit(ValLiteral node) {
-        //TODO: implement ino behavior
+        code.append(node.getValue());
     }
 
     @Override
     public void visit(ValString node) {
-        //TODO: implement ino behavior
+        code.append("\"")
+                .append(node.getValue())
+                .append("\"");
     }
 
     @Override
@@ -233,17 +255,20 @@ public class CodeGen extends ASTVisitor {
 
     @Override
     public void visit(NumberIval node) {
-        //TODO: implement ino behavior
+        code.append(String.valueOf(node.getValue()));
     }
 
     @Override
     public void visit(NumberFval node) {
-        //TODO: implement ino behavior
+        code.append(String.valueOf(node.getValue()));
     }
 
     @Override
     public void visit(NumberArrayIndex node) {
-        //TODO: implement ino behavior
+        code.append(node.getIdentifier())
+                .append("[");
+        visit(node.getIndex());
+        code.append("]");
     }
 
     @Override
