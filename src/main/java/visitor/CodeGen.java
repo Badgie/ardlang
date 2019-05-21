@@ -253,117 +253,117 @@ public class CodeGen extends ASTVisitor {
 
     @Override
     public void visit(Operator.Decr node) {
-        //TODO: implement ino behavior
+        code.append("--");
     }
 
     @Override
     public void visit(Operator.Incr node) {
-        //TODO: implement ino behavior
+        code.append("++");
     }
 
     @Override
     public void visit(Operator.Assign node) {
-        //TODO: implement ino behavior
+        code.append("=");
     }
 
     @Override
     public void visit(Operator.GreaterEqual node) {
-        //TODO: implement ino behavior
+        code.append(">=");
     }
 
     @Override
     public void visit(Operator.Not node) {
-        //TODO: implement ino behavior
+        code.append("!");
     }
 
     @Override
     public void visit(Operator.Div node) {
-        //TODO: implement ino behavior
+        code.append("/");
     }
 
     @Override
     public void visit(Operator.Mult node) {
-        //TODO: implement ino behavior
+        code.append("*");
     }
 
     @Override
     public void visit(Operator.LesserEqual node) {
-        //TODO: implement ino behavior
+        code.append("<=");
     }
 
     @Override
     public void visit(Operator.Greater node) {
-        //TODO: implement ino behavior
+        code.append(">");
     }
 
     @Override
     public void visit(Operator.Sub node) {
-        //TODO: implement ino behavior
+        code.append("-");
     }
 
     @Override
     public void visit(Operator.Mod node) {
-        //TODO: implement ino behavior
+        code.append("%");
     }
 
     @Override
     public void visit(Operator.And node) {
-        //TODO: implement ino behavior
+        code.append("&&");
     }
 
     @Override
     public void visit(Operator.Or node) {
-        //TODO: implement ino behavior
+        code.append("||");
     }
 
     @Override
     public void visit(Operator.Add node) {
-        //TODO: implement ino behavior
+        code.append("+");
     }
 
     @Override
     public void visit(Operator.Lesser node) {
-        //TODO: implement ino behavior
+        code.append("<");
     }
 
     @Override
     public void visit(Operator.Xor node) {
-        //TODO: implement ino behavior
+        code.append("^");
     }
 
     @Override
     public void visit(Operator.Equal node) {
-        //TODO: implement ino behavior
+        code.append("==");
     }
 
     @Override
     public void visit(Type node) {
-        //TODO: implement ino behavior
+        super.visit((AST) node);
     }
 
     @Override
     public void visit(Type.TypeInt node) {
-        //TODO: implement ino behavior
+        code.append("int");
     }
 
     @Override
     public void visit(Type.TypeString node) {
-        //TODO: implement ino behavior
+        code.append("String");
     }
 
     @Override
     public void visit(Type.TypeDouble node) {
-        //TODO: implement ino behavior
+        code.append("double");
     }
 
     @Override
     public void visit(Type.TypeBool node) {
-        //TODO: implement ino behavior
+        code.append("bool");
     }
 
     @Override
     public void visit(Type.TypeVoid node) {
-        //TODO: implement ino behavior
+        code.append("void");
     }
 
     @Override
