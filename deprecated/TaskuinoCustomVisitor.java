@@ -1,4 +1,4 @@
-
+/*
 import dk.aau.cs.sw411.antlr.TaskuinoBaseVisitor;
 import dk.aau.cs.sw411.antlr.TaskuinoParser;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -24,6 +24,7 @@ import java.util.Stack;
 
 import static java.util.stream.Collectors.toList;
 
+@Deprecated
 public class TaskuinoCustomVisitor {
 
     public Prog parse(ParserRuleContext ctx) {
@@ -686,7 +687,6 @@ public class TaskuinoCustomVisitor {
         }
     }
 
-    //TODO no fully implemented
     private static class TypeVisitor extends TaskuinoBaseVisitor<Type> {
         @Override
         public Type visitType(TaskuinoParser.TypeContext ctx) {
@@ -703,3 +703,4 @@ public class TaskuinoCustomVisitor {
     }
 }
 
+*/
