@@ -29,7 +29,7 @@ public class Reduce extends TaskuinoBaseVisitor<AST> {
 
     public AST reduce(TaskuinoParser.ProgContext ctx, List<String> source) {
         sourceList = source;
-        return visitProg(ctx);
+        return visit(ctx);
     }
 
     @Override

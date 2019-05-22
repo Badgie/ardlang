@@ -28,10 +28,9 @@ public class SymbolTable extends HashMap<String, Type> {
 
     public void checkDeclaration(String id, Type type) {
         if (!(this.symbolTables.get(this.symbolTables.size() - 1).containsKey(id))) {
-            System.out.println("Variable " + id + " is valid, adding to symbol table");
             this.symbolTables.get(this.symbolTables.size() - 1).put(id, type);
         } else {
-            throw new Error("variable already declared");
+            throw new Error("Variable" + id + "(" + type + ")" + "already declared");
         }
     }
 
