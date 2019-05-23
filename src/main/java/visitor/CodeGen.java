@@ -56,6 +56,10 @@ public class CodeGen extends ASTVisitor {
             taskCount++;
         }
 
+        for (StmtsFunc s : funcs) {
+            visit(s);
+        }
+
         createSetupFuncStart();
 
         for (Stmts s : stmts) {
@@ -63,10 +67,6 @@ public class CodeGen extends ASTVisitor {
         }
 
         createSetupFuncEnd();
-
-        for (StmtsFunc s : funcs) {
-            visit(s);
-        }
     }
 
     @Override
@@ -218,7 +218,6 @@ public class CodeGen extends ASTVisitor {
                 visit(p);
                 code.append(",");
             }
-            // delete last comma separator
             if (code.charAt(code.length() - 1) == ',') {
                 code.deleteCharAt(code.length() - 1);
             }
