@@ -64,6 +64,7 @@ public class CodeGen extends ASTVisitor {
 
         for (Stmts s : stmts) {
             visit(s);
+            code.append(";\n");
         }
 
         createSetupFuncEnd();
@@ -81,7 +82,6 @@ public class CodeGen extends ASTVisitor {
                 .append("() {\n");
         for (StmtsBlockStmts s : node.getStmts()) {
             visit(s);
-            addNewline();
         }
         code.append("}\n");
     }
@@ -102,7 +102,6 @@ public class CodeGen extends ASTVisitor {
         code.append(") {\n");
         for (StmtsBlockStmts s : node.getStmts()) {
             visit(s);
-            addNewline();
         }
         code.append("}\n");
     }
@@ -110,6 +109,9 @@ public class CodeGen extends ASTVisitor {
     @Override
     public void visit(StmtsBlockStmts node) {
         super.visit((AST) node);
+        if (!(node instanceof BlockStmtsStmt)) {
+            code.append(";\n");
+        }
     }
 
     @Override
@@ -143,7 +145,6 @@ public class CodeGen extends ASTVisitor {
                 code.append("}");
             }
         }
-        code.append(";\n");
     }
 
     @Override
@@ -155,7 +156,11 @@ public class CodeGen extends ASTVisitor {
     @Override
     public void visit(BlockStmtsStmt node) {
         super.visit((AST) node);
-        addNewline();
+        if (node instanceof ForStmt || node instanceof IfStmt) {
+            code.append("\n");
+        } else {
+            code.append(";\n");
+        }
     }
 
     @Override
@@ -222,7 +227,7 @@ public class CodeGen extends ASTVisitor {
                 code.deleteCharAt(code.length() - 1);
             }
         }
-        code.append(")");
+        code.append(");\n");
     }
 
     @Override
