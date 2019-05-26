@@ -51,6 +51,11 @@ public class CodeGen extends ASTVisitor {
 
         taskList.addAll(tasks);
 
+        for (Stmts s : stmts) {
+            visit(s);
+            code.append(";\n");
+        }
+
         for (StmtsTask s : tasks) {
             visit(s);
             taskCount++;
@@ -60,14 +65,7 @@ public class CodeGen extends ASTVisitor {
             visit(s);
         }
 
-        createSetupFuncStart();
-
-        for (Stmts s : stmts) {
-            visit(s);
-            code.append(";\n");
-        }
-
-        createSetupFuncEnd();
+        createSetupFunc();
     }
 
     @Override
@@ -521,7 +519,7 @@ public class CodeGen extends ASTVisitor {
                 "  bool Ready() {\n" +
                 "    return (_timeTilNextRun < 1);\n" +
                 "  }\n" +
-                "};");
+                "}\n;");
         code.append("void CountDownTasks(Task tasks[], int numberOfTasks) {\n" +
                 "  for (int i = 0; i < numberOfTasks; i++)\n" +
                 "  {\n" +
@@ -537,7 +535,7 @@ public class CodeGen extends ASTVisitor {
                 "    }\n" +
                 "  }\n" +
                 "  return count;\n" +
-                "}");
+                "}\n");
         code.append("int getNextTask(Task tasks[], int numberOfTasks) {\n" +
                 "  int selectedTask = -1;\n" +
                 "  while(selectedTask = -1) {\n" +
@@ -553,17 +551,14 @@ public class CodeGen extends ASTVisitor {
                 "    }\n" +
                 "  }\n" +
                 "  return selectedTask;\n" +
-                "}");
+                "}\n");
     }
 
-    public void createSetupFuncStart() {
-        code.append("\nvoid setup() {\n");
-    }
-
-    public void createSetupFuncEnd() {
-        code.append("int numberOfTasks = ");
-        code.append(taskCount);
-        code.append(";\n Task tasks[numberOfTasks];\n");
+    public void createSetupFunc() {
+        code.append("\nvoid setup() {\n")
+                .append("int numberOfTasks = ")
+                .append(taskCount)
+                .append(";\n Task tasks[numberOfTasks];\n");
         for (int i = 0; i < taskList.size(); i++) {
             code.append("tasks[")
                     .append(i)
@@ -580,7 +575,7 @@ public class CodeGen extends ASTVisitor {
                     .append(i)
                     .append("();\nbreak;\n");
         }
-        code.append("default: \nbreak;\n}\nCountDownTasks(tasks, numberOfTasks)\n}\n}\nvoid loop(){}\n");
+        code.append("default: \nbreak;\n}\nCountDownTasks(tasks, numberOfTasks);\n}\n}\nvoid loop(){}\n");
     }
 
     public void addNewline() {
